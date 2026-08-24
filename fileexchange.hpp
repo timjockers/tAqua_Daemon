@@ -1,7 +1,7 @@
-#ifndef FILEEXCHANGE_HPP
-#define FILEEXCHANGE_HPP
+#pragma once
 
 #include <string>
+#include <array>
 #include <libconfig.h++>
 
 class ConfigManager {
@@ -10,6 +10,6 @@ public:
     void read();
 private:
     const std::string path;
-};
 
-#endif // FILEEXCHANGE_HPP
+    std::array<int, 8> relayConfig;
+};

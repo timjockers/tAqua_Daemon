@@ -7,7 +7,8 @@ using namespace std;
 
 ConfigManager::ConfigManager(const string& filepath)
     : path(filepath)
-{
+{   
+    relayConfig = {0};
     read();
 }
 
