@@ -24,6 +24,17 @@ void ConfigManager::read()
 }
 
 void ConfigManager::store()
-{
-    
+{   
+    const Setting& root = cfg.getRoot();
+
+    try
+    {
+        const Setting& r = root["relayConfig"];
+        int count = r.getLength();
+
+    }
+    catch(const SettingNotFoundException &nfex)
+    {
+        cerr << "Error: relayConfig could not be found." << endl;
+    }
 }
