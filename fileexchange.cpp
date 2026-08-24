@@ -25,5 +25,5 @@ void ConfigManager::read()
 
 void ConfigManager::store()
 {
-
+    
 }

@@ -84,7 +84,6 @@ CMakeLists.txt.user*
 /.qtcreator/
 
 # tAqua
-taqua.cfg
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
