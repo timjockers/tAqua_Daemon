@@ -16,10 +16,18 @@ ConfigManager::ConfigManager(const string& filepath)
 
 void ConfigManager::read()
 {
-    try {
+    try
+    {
         cfg.readFile(path.c_str());
-    } catch (...) {
-        cerr << "Error loading the file: " << path << endl;
+    }
+    catch(const FileIOException &fioex)
+    {
+        cerr << "I/O error while reading file." << endl;
+    }
+    catch(const ParseException &pex)
+    {
+        cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
+                << " - " << pex.getError() << std::endl;
     }
 }
 
