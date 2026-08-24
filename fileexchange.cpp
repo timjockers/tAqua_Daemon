@@ -32,16 +32,24 @@ void ConfigManager::read()
 }
 
 void ConfigManager::store()
-{   
-    const Setting& root = cfg.getRoot();
-
+{
     try
     {
-        const Setting& r = root["relayConfig"];
-        int count = r.getLength();
+        const Setting& r = cfg.lookup("relayConfig");
+        const size_t count = static_cast<size_t>(r.getLength());
 
+        if (count != relayConfig.size())
+        {
+            cerr << "Length of array relayConfig not " << relayConfig.size() << endl;
+            return;
+        }
+
+        for (size_t i = 0; i < relayConfig.size(); ++i)
+        {
+            relayConfig[i] = r[i];
+        }
     }
-    catch(const SettingNotFoundException &nfex)
+    catch (const SettingNotFoundException&)
     {
         cerr << "Error: relayConfig could not be found." << endl;
     }
