@@ -10,6 +10,11 @@ ConfigManager::ConfigManager(const string& filepath)
 {
     relayConfig = {0};
 
+    updateConfig();
+}
+
+void ConfigManager::updateConfig()
+{
     read();
     store();
 }

@@ -7,9 +7,13 @@
 class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
+
+    void updateConfig();
+    
+private:
     void read();
     void store();
-private:
+
     const std::string path;
 
     libconfig::Config cfg;
