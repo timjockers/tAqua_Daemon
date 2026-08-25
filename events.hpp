@@ -4,9 +4,9 @@
 
 class irrigationEvent {
 public:
-    std::string getInfo();
+    virtual std::string getInfo();
 
-    void activate();
-    void deactivate();
-    bool isActive();
+    virtual void activate();
+    virtual void deactivate();
+    virtual bool isActive();
 };
