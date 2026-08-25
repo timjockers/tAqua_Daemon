@@ -280,7 +280,7 @@ The exact implementation of the weather integration has not yet been decided.
 
 The web interface writes the settings to the `taqua.cfg` file used by the daemon.
 
-`tAqua_Web` has not been published yet, but will be available soon at
+Development of `tAqua_Web` has not yet begun, but the repository is already available at:
 
 ```text
 https://github.com/timjockers/tAqua_Web
