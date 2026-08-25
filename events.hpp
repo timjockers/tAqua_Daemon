@@ -12,6 +12,7 @@ public:
     virtual bool isActive();
 };
 
+
 class relayEvent : public irrigationEvent {
 public:
     relayEvent(int r);
@@ -27,6 +28,9 @@ class buttonEvent : public relayEvent {
 public:
     buttonEvent(int r, std::chrono::seconds irrDuration);
 
-protected:
-    std::chrono::seconds duration;
+    void activate() override;
+
+private:
+    std::chrono::duration<int> duration;
+    std::chrono::time_point<std::chrono::system_clock> startTime;
 };

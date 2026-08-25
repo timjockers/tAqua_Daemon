@@ -1,8 +1,10 @@
 #include "events.hpp"
 
+#include <iostream>
+
 using namespace std;
 
-std::string irrigationEvent::getInfo()
+string irrigationEvent::getInfo()
 {
     return "IrrigationEvent";
 }
@@ -22,14 +24,21 @@ relayEvent::relayEvent(int r)
     : relay(r)
 {}
 
-std::string relayEvent::getInfo()
+string relayEvent::getInfo()
 {
     return "RelayEvent: R" + to_string(relay);
 }
 
 
 
-
-buttonEvent::buttonEvent(int r, std::chrono::seconds irrDuration)
+buttonEvent::buttonEvent(int r, chrono::seconds irrDuration)
     : relayEvent(r), duration(irrDuration)
 {}
+
+void buttonEvent::activate()
+{
+    relayEvent::activate();
+    startTime = chrono::system_clock::now();
+
+    duration = chrono::duration_cast<chrono::seconds>(chrono::system_clock::now() - startTime);
+}
