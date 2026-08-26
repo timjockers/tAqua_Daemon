@@ -31,6 +31,6 @@ public:
     void activate() override;
 
 private:
-    std::chrono::duration<int> duration;
+    std::chrono::seconds duration;
     std::chrono::time_point<std::chrono::system_clock> startTime;
 };
