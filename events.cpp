@@ -38,7 +38,16 @@ buttonEvent::buttonEvent(int r, chrono::seconds irrDuration)
 void buttonEvent::activate()
 {
     relayEvent::activate();
-    startTime = chrono::system_clock::now();
 
-    duration = chrono::duration_cast<chrono::seconds>(chrono::system_clock::now() - startTime);
+    startTime = chrono::system_clock::now();
+}
+
+void buttonEvent::deactivate()
+{
+    relayEvent::deactivate();
+}
+
+bool buttonEvent::isActive()
+{
+    return (chrono::system_clock::now() - startTime) < duration;
 }
