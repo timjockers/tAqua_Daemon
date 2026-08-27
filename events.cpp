@@ -35,6 +35,11 @@ buttonEvent::buttonEvent(int r, chrono::seconds irrDuration)
     : relayEvent(r), duration(irrDuration)
 {}
 
+string buttonEvent::getInfo()
+{
+    return "ButtonEvent: R_" + to_string(relay) + "  D_" + to_string(duration.count()) + "s";
+}
+
 void buttonEvent::activate()
 {
     relayEvent::activate();

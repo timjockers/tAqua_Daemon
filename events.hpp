@@ -28,6 +28,7 @@ class buttonEvent : public relayEvent {
 public:
     buttonEvent(int r, std::chrono::seconds irrDuration);
 
+    std::string getInfo() override;
     void activate() override;
     void deactivate() override;
     bool isActive() override;

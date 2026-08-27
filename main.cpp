@@ -7,6 +7,9 @@
 
 int main() {
     buttonEvent *e = new buttonEvent(0, std::chrono::seconds(10));
+
+    std::cout << e->getInfo() << std::endl;
+
     e->activate();
     while (e->isActive())
     {
