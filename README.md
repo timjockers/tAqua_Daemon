@@ -312,3 +312,6 @@ Development of `tAqua_Web` has not yet begun, but the repository is already avai
 ```text
 https://github.com/timjockers/tAqua_Web
 ```
+
+# To-Dos
+[ ] README.md: Add autostart instructions
