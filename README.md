@@ -232,12 +232,12 @@ mkdir taqua
 cd taqua
 ```
 
-Clone the tAqua_Daemon git repository:
+Clone the `tAqua_Daemon` git repository:
 ```bash
 git clone https://github.com/timjockers/tAqua_Daemon
 ```
 
-The tAqua_Daemon folder should have been created automatically.
+The folder `tAqua_Daemon/` should have been created automatically.
 
 
 ### 3. Build the project using CMake
@@ -263,7 +263,7 @@ After successful compilation, the daemon can be started manually with:
 ./_daemon
 ```
 
-It is recommended to start the tAqua_Daemon (as well as tAqua_Web) automatically when the Raspberry Pi boots.
+It is recommended to start the `tAqua_Daemon` (as well as tAqua_Web) automatically when the Raspberry Pi boots.
 Run the following commands to set this up:
 
 ```bash
