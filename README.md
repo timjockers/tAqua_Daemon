@@ -214,13 +214,36 @@ The daemon is written in **C++** and is intended to run on a Raspberry Pi using 
 
 The project uses **CMake** as its build system.
 
-### 1. Copy the repository to the Raspberry Pi
+### 1. Install required packages
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install git
+sudo apt install cmake
+sudo apt install libconfig++-dev
+```
 
-The repository can be copied to any suitable directory on the Raspberry Pi.
+### 2. Copy the repository to the Raspberry Pi
 
-### 2. Build the project using CMake
+Create the folder ~/tadmin/ by running the following commands
+```bash
+cd
+mkdir taqua
+cd taqua
+```
 
-From the project directory, configure the project using the included `CMakeLists.txt`:
+Clone the tAqua_Daemon git repository:
+```bash
+git clone https://github.com/timjockers/tAqua_Daemon
+```
+
+The tAqua_Daemon folder should have been created automatically.
+
+
+### 3. Build the project using CMake
+
+Configure the project using the included `CMakeLists.txt`.
+Run the following commands in the ~/taqua/tAqua_Daemon folder:
 
 ```bash
 cmake .
@@ -232,23 +255,27 @@ Then compile the project:
 make
 ```
 
-### 3. Start the daemon
+### 4. Start the daemon
 
-After a successful compilation, the daemon can be started with:
+After successful compilation, the daemon can be started manually with:
 
 ```bash
 ./_daemon
+```
+
+It is recommended to start the tAqua_Daemon (as well as tAqua_Web) automatically when the Raspberry Pi boots.
+Run the following commands to set this up:
+
+```bash
+Add instructions here
 ```
 
 ## Requirements
 
 * Raspberry Pi 1 Model B+
 * Raspberry Pi OS
-* CMake
-* `make`
-* C++ compiler
 * Connected tAqua hardware
-* Valid `taqua.cfg`
+
 
 ## Development Status
 
