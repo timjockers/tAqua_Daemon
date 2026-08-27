@@ -225,7 +225,7 @@ sudo apt install libconfig++-dev
 
 ### 2. Copy the repository to the Raspberry Pi
 
-Create the folder ~/tadmin/ by running the following commands
+Create the folder `~/tadmin/` by running the following commands
 ```bash
 cd
 mkdir taqua
@@ -243,7 +243,7 @@ The tAqua_Daemon folder should have been created automatically.
 ### 3. Build the project using CMake
 
 Configure the project using the included `CMakeLists.txt`.
-Run the following commands in the ~/taqua/tAqua_Daemon folder:
+Run the following commands in the `~/taqua/tAqua_Daemon/` folder:
 
 ```bash
 cmake .
