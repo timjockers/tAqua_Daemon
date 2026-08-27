@@ -314,4 +314,4 @@ https://github.com/timjockers/tAqua_Web
 ```
 
 # To-Dos
-[ ] README.md: Add autostart instructions
+- [ ] README.md: Add autostart instructions
