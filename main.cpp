@@ -1,12 +1,13 @@
 #include "fileexchange.hpp"
-
 #include "events.hpp"
+#include "io.hpp"
+
 #include <chrono>
 #include <unistd.h>
 #include <iostream>
 
 int main() {
-    buttonEvent *e = new buttonEvent(0, std::chrono::seconds(10));
+    /*buttonEvent *e = new buttonEvent(0, std::chrono::seconds(10));
 
     std::cout << e->getInfo() << std::endl;
 
@@ -16,9 +17,11 @@ int main() {
         sleep(1);
         std::cout << "Active" << std::endl;
     }
-    std::cout << "Deactive" << std::endl;
+    std::cout << "Deactive" << std::endl;*/
 
     ConfigManager *manager = new ConfigManager("taqua.cfg");
+
+    ioManager *ioM = new ioManager(manager);
 
     return 0;
 }
