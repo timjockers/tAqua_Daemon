@@ -221,6 +221,7 @@ sudo apt upgrade
 sudo apt install git
 sudo apt install cmake
 sudo apt install libconfig++-dev
+sudo apt install libgpiod-dev gpiod
 ```
 
 ### 2. Copy the repository to the Raspberry Pi

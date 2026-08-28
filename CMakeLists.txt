@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(_DAEMON CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
@@ -16,3 +16,21 @@ add_executable(_daemon
 
 target_link_libraries(_daemon PRIVATE ${LIBCONFIGPP_LIBRARIES})
 target_include_directories(_daemon PRIVATE ${LIBCONFIGPP_INCLUDE_DIRS})
+
+
+# Linux / Raspberry Pi
+if(UNIX AND NOT APPLE)
+
+    pkg_check_modules(GPIOD REQUIRED IMPORTED_TARGET libgpiod)
+
+    target_link_libraries(_daemon
+        PRIVATE
+            PkgConfig::GPIOD
+    )
+
+    target_compile_definitions(_daemon
+        PRIVATE
+            HAS_GPIOD
+    )
+
+endif()
