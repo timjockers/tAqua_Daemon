@@ -247,6 +247,7 @@ Configure the project using the included `CMakeLists.txt`.
 Run the following commands in the `~/taqua/tAqua_Daemon/` folder:
 
 ```bash
+cd tAqua_Daemon
 cmake .
 ```
 
