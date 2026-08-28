@@ -309,9 +309,7 @@ The web interface writes the settings to the `taqua.cfg` file used by the daemon
 
 Development of `tAqua_Web` has not yet begun, but the repository is already available at:
 
-```text
-https://github.com/timjockers/tAqua_Web
-```
+[https://github.com/timjockers/tAqua_Web](https://github.com/timjockers/tAqua_Web)
 
 # To-Dos
 - [ ] README.md: Add autostart instructions
