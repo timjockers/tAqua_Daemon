@@ -12,6 +12,7 @@ add_executable(_daemon
     main.cpp
     fileexchange.cpp
     events.cpp
+    io.cpp
 )
 
 target_link_libraries(_daemon PRIVATE ${LIBCONFIGPP_LIBRARIES})
