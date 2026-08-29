@@ -22,5 +22,5 @@ void ioManager::setRelay(int relay, int state)
 
 int ioManager::getRelay(int relay)
 {
-
+    return 0;
 }
