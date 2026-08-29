@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef HAS_GPIOD
-#include <gpiod.hpp>
+#include <gpiod.h>
 #endif
 
 #include "fileexchange.hpp"
