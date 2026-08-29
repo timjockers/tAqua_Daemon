@@ -17,6 +17,12 @@ ioManager::ioManager(ConfigManager *cfgM)
     }
 #endif
 }
+ioManager::~ioManager()
+{
+#ifdef HAS_GPIOD
+    gpiod_chip_close(chip);
+#endif
+}
 
 void ioManager::setRelay(int relay, int state)
 {

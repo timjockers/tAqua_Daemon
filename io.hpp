@@ -19,6 +19,7 @@
 class ioManager {
 public:
     ioManager(ConfigManager *cfgM);
+    ~ioManager();
 
     void setRelay(int relay, int state);
     int getRelay(int relay);
