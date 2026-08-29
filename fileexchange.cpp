@@ -59,3 +59,8 @@ void ConfigManager::store()
         cerr << "Error: relayConfig could not be found." << endl;
     }
 }
+
+int ConfigManager::getRelayConfig(int relay)
+{
+    return relayConfig[relay];
+}

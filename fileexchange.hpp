@@ -9,6 +9,7 @@ public:
     ConfigManager(const std::string& filepath);
 
     void updateConfig();
+    int getRelayConfig(int relay);
     
 private:
     void read();
