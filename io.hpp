@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "fileexchange.hpp"
+#include <cerrno>
+#include <cstring>
 
 #ifdef HAS_GPIOD
 #include <gpiod.h>
