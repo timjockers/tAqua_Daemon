@@ -15,6 +15,8 @@ ioManager::ioManager(ConfigManager *cfgM)
         cerr << "Failed to open gpio chip: "
             << strerror(errno)
             << " (errno=" << errno << ")" << endl;
+
+        return;
     }
 
 
@@ -29,21 +31,22 @@ ioManager::ioManager(ConfigManager *cfgM)
         return;
     }
 
-    gpiod_line_settings_set_direction(
-        settings,
-        GPIOD_LINE_DIRECTION_OUTPUT
-    );
-
-    gpiod_line_settings_set_output_value(
-        settings,
-        GPIOD_LINE_VALUE_INACTIVE
-    );
-
     if (gpiod_line_settings_set_direction(
             settings,
             GPIOD_LINE_DIRECTION_OUTPUT) < 0)
     {
         cerr << "Failed to set GPIO direction: "
+             << strerror(errno)
+             << endl;
+
+        gpiod_line_settings_free(settings);
+        return;
+    }
+    if (gpiod_line_settings_set_output_value(
+            settings,
+            GPIOD_LINE_VALUE_INACTIVE) < 0)
+    {
+        cerr << "Failed to set GPIO initial value: "
              << strerror(errno)
              << endl;
 
@@ -133,10 +136,17 @@ ioManager::ioManager(ConfigManager *cfgM)
     gpiod_line_settings_free(settings);
 #endif
 }
+
 ioManager::~ioManager()
 {
 #ifdef HAS_GPIOD
-    gpiod_chip_close(chip);
+
+    if (relayRequest)
+        gpiod_line_request_release(relayRequest);
+
+    if (chip)
+        gpiod_chip_close(chip);
+
 #endif
 }
 
