@@ -28,6 +28,8 @@ private:
     ConfigManager *configM;
 
 #ifdef HAS_GPIOD
+    bool initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
+
     struct gpiod_chip *chip;
     gpiod_line_request* relayRequest;
 #endif
