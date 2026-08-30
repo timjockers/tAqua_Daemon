@@ -14,7 +14,7 @@ enum class RelayConfig {
 
 
 template <typename Enum, std::size_t N>
-std::array<int, N> toUIntArray(const std::array<Enum, N>& input)
+std::array<unsigned int, N> toUIntArray(const std::array<Enum, N>& input)
 {
     std::array<unsigned int, N> output{};
 
