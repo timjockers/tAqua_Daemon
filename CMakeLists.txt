@@ -22,7 +22,10 @@ target_include_directories(_daemon PRIVATE ${LIBCONFIGPP_INCLUDE_DIRS})
 # Linux / Raspberry Pi
 if(UNIX AND NOT APPLE)
 
-    pkg_check_modules(GPIOD REQUIRED IMPORTED_TARGET libgpiod)
+    # Require libgpiod >= 2.0
+    pkg_check_modules(GPIOD REQUIRED IMPORTED_TARGET
+        libgpiod>=2.0
+    )
 
     target_link_libraries(_daemon
         PRIVATE
