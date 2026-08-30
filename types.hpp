@@ -12,6 +12,24 @@ enum class RelayConfig {
 };
 
 
+template <typename Enum, std::size_t N>
+std::array<int, N> toIntArray(const std::array<Enum, N>& input)
+{
+    std::array<int, N> output{};
+
+    std::transform(
+        input.begin(),
+        input.end(),
+        output.begin(),
+        [](Enum value) {
+            return static_cast<int>(value);
+        }
+    );
+
+    return output;
+}
+
+
 // Relay pins
 enum class Relay {
     R1 = 18,

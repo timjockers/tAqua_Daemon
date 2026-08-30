@@ -21,8 +21,8 @@ ioManager::ioManager(ConfigManager *cfgM)
 
 
     if (!initGpioOutputs(
-        RELAY_PINS.data(),
-        RELAY_PINS.size(),
+        toIntArray(RELAYS),
+        RELAYS.size(),
         relayRequest))
     {
         cerr << "Failed to initialize relay GPIOs" << endl;
