@@ -19,13 +19,10 @@ ioManager::ioManager(ConfigManager *cfgM)
         return;
     }
 
-
+    // Init relays
     auto relayGpios = toUIntArray(RELAYS);
 
-    if (!initGpioOutputs(
-        relayGpios.data(),
-        relayGpios.size(),
-        relayRequest))
+    if (!initGPIOOutputs(relayGpios.data(), relayGpios.size(), relayRequest))
     {
         cerr << "Failed to initialize relay GPIOs" << endl;
     }
@@ -48,47 +45,35 @@ ioManager::~ioManager()
 #ifdef HAS_GPIOD
 bool ioManager::initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request)
 {
-    gpiod_line_settings* settings =
-        gpiod_line_settings_new();
+    gpiod_line_settings* settings = gpiod_line_settings_new();
 
     if (!settings)
     {
-        cerr << "Failed to create GPIO line settings"
-             << endl;
+        cerr << "Failed to create GPIO line settings" << endl;
         return false;
     }
 
-    if (gpiod_line_settings_set_direction(
-            settings,
-            GPIOD_LINE_DIRECTION_OUTPUT) < 0)
+    if (gpiod_line_settings_set_direction(settings, GPIOD_LINE_DIRECTION_OUTPUT) < 0)
     {
-        cerr << "Failed to set GPIO direction: "
-             << strerror(errno)
-             << endl;
+        cerr << "Failed to set GPIO direction: " << strerror(errno) << endl;
 
         gpiod_line_settings_free(settings);
         return false;
     }
 
-    if (gpiod_line_settings_set_output_value(
-            settings,
-            GPIOD_LINE_VALUE_INACTIVE) < 0)
+    if (gpiod_line_settings_set_output_value(settings, GPIOD_LINE_VALUE_INACTIVE) < 0)
     {
-        cerr << "Failed to set GPIO initial value: "
-             << strerror(errno)
-             << endl;
+        cerr << "Failed to set GPIO initial value: " << strerror(errno) << endl;
 
         gpiod_line_settings_free(settings);
         return false;
     }
 
-    gpiod_line_config* lineConfig =
-        gpiod_line_config_new();
+    gpiod_line_config* lineConfig = gpiod_line_config_new();
 
     if (!lineConfig)
     {
-        cerr << "Failed to create GPIO line config"
-             << endl;
+        cerr << "Failed to create GPIO line config" << endl;
 
         gpiod_line_settings_free(settings);
         return false;
@@ -114,13 +99,11 @@ bool ioManager::initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_l
         }
     }
 
-    gpiod_request_config* requestConfig =
-        gpiod_request_config_new();
+    gpiod_request_config* requestConfig = gpiod_request_config_new();
 
     if (!requestConfig)
     {
-        cerr << "Failed to create request config"
-             << endl;
+        cerr << "Failed to create request config" << endl;
 
         gpiod_line_config_free(lineConfig);
         gpiod_line_settings_free(settings);
@@ -140,9 +123,7 @@ bool ioManager::initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_l
 
     if (!request)
     {
-        cerr << "Failed to request GPIO lines: "
-             << strerror(errno)
-             << endl;
+        cerr << "Failed to request GPIO lines: " << strerror(errno) << endl;
     }
 
     gpiod_request_config_free(requestConfig);
@@ -150,6 +131,72 @@ bool ioManager::initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_l
     gpiod_line_settings_free(settings);
 
     return request != nullptr;
+}
+#endif
+
+
+#ifdef HAS_GPIOD
+bool ioManager::setGPIO(gpiod_line_request* request, unsigned int gpio, bool state)
+{
+    if (!request)
+    {
+        cerr << "GPIO request is not initialized" << endl;
+
+        return false;
+    }
+
+    const gpiod_line_value value =
+        state
+            ? GPIOD_LINE_VALUE_ACTIVE
+            : GPIOD_LINE_VALUE_INACTIVE;
+
+    if (gpiod_line_request_set_value(
+            request,
+            gpio,
+            value) < 0)
+    {
+        cerr << "Failed to set GPIO "
+             << gpio
+             << ": "
+             << strerror(errno)
+             << endl;
+
+        return false;
+    }
+
+    return true;
+}
+#endif
+
+
+#ifdef HAS_GPIOD
+bool ioManager::getGPIO(gpiod_line_request* request, unsigned int gpio)
+{
+    if (!request)
+    {
+        cerr << "GPIO request is not initialized" << endl;
+
+        return false;
+    }
+
+    const gpiod_line_value value =
+        gpiod_line_request_get_value(
+            request,
+            gpio
+        );
+
+    if (value == GPIOD_LINE_VALUE_ERROR)
+    {
+        cerr << "Failed to read GPIO "
+             << gpio
+             << ": "
+             << strerror(errno)
+             << endl;
+
+        return false;
+    }
+
+    return value == GPIOD_LINE_VALUE_ACTIVE;
 }
 #endif
 
