@@ -29,6 +29,6 @@ private:
 
 #ifdef HAS_GPIOD
     struct gpiod_chip *chip;
-    std::array<gpiod_line*, 8> relayLines;
+    gpiod_line_request* relayRequest;
 #endif
 };
