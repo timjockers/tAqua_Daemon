@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <array>
+#include <algorithm>
 
 
 // The 3 possible relay configurations
