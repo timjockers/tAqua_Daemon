@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <array>
 
 
 // The 3 possible relay configurations
@@ -21,6 +22,17 @@ enum class Relay {
     R6 = 16,
     R7 = 20,
     R8 = 21
+};
+
+constexpr std::array<Relay, 8> RELAYS = {
+    Relay::R1,
+    Relay::R2,
+    Relay::R3,
+    Relay::R4,
+    Relay::R5,
+    Relay::R6,
+    Relay::R7,
+    Relay::R8
 };
 
 constexpr std::size_t relayIndex(Relay relay)
