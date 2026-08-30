@@ -14,16 +14,16 @@ enum class RelayConfig {
 
 
 template <typename Enum, std::size_t N>
-std::array<int, N> toIntArray(const std::array<Enum, N>& input)
+std::array<int, N> toUIntArray(const std::array<Enum, N>& input)
 {
-    std::array<int, N> output{};
+    std::array<unsigned int, N> output{};
 
     std::transform(
         input.begin(),
         input.end(),
         output.begin(),
         [](Enum value) {
-            return static_cast<int>(value);
+            return static_cast<unsigned int>(value);
         }
     );
 
