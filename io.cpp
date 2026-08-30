@@ -29,6 +29,16 @@ ioManager::ioManager(ConfigManager *cfgM)
         return;
     }
 
+    gpiod_line_settings_set_direction(
+        settings,
+        GPIOD_LINE_DIRECTION_OUTPUT
+    );
+
+    gpiod_line_settings_set_output_value(
+        settings,
+        GPIOD_LINE_VALUE_INACTIVE
+    );
+
     if (gpiod_line_settings_set_direction(
             settings,
             GPIOD_LINE_DIRECTION_OUTPUT) < 0)
