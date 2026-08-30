@@ -1,5 +1,6 @@
 #include "io.hpp"
 
+#include <iostream>
 using namespace std;
 
 
@@ -8,7 +9,7 @@ ioManager::ioManager(ConfigManager *cfgM)
     configM = cfgM;
 
 #ifdef HAS_GPIOD
-    chip = gpiod_chip_open(CHIP_PATH);
+    chip = gpiod_chip_open(GPIO_CHIP);
 
     if (!chip) {
         cerr << "Failed to open gpio chip: "
@@ -24,17 +25,17 @@ ioManager::~ioManager()
 #endif
 }
 
-void ioManager::setRelay(int relay, int state)
+void ioManager::setRelay(Relay relay, int state)
 {
-    if (configM->getRelayConfig(relay) == RC_VALVE)
+    if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
     {
         cout << "Setting valve" << endl;
     }
 }
 
-int ioManager::getRelay(int relay)
+int ioManager::getRelay(Relay relay)
 {   
-    if (configM->getRelayConfig(relay) == RC_UNUSED)
+    if (configM->getRelayConfig(relay) == RelayConfig::UNUSED)
     {
         return 0;
     }

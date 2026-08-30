@@ -3,18 +3,15 @@
 #include <string>
 #include <array>
 #include <libconfig.h++>
+#include "types.hpp"
 
-
-#define RC_UNUSED         0
-#define RC_VALVE          1
-#define RC_PERMANENTPOWER 2
 
 class ConfigManager {
 public:
     ConfigManager(const std::string& filepath);
 
     void updateConfig();
-    int getRelayConfig(int relay);
+    RelayConfig getRelayConfig(Relay relay);
     
 private:
     void read();
@@ -24,5 +21,5 @@ private:
 
     libconfig::Config cfg;
 
-    std::array<int, 8> relayConfig;
+    std::array<RelayConfig, 8> relayConfig;
 };

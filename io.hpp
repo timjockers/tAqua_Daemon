@@ -1,8 +1,9 @@
 #pragma once
 
 
-#include <iostream>
+#include "types.hpp"
 #include "fileexchange.hpp"
+#include <array>
 #include <cerrno>
 #include <cstring>
 
@@ -12,8 +13,7 @@
 
 
 
-#define CHIP_PATH "/dev/gpiochip0"
-
+static constexpr const char *GPIO_CHIP = "/dev/gpiochip0";
 
 
 class ioManager {
@@ -21,13 +21,14 @@ public:
     ioManager(ConfigManager *cfgM);
     ~ioManager();
 
-    void setRelay(int relay, int state);
-    int getRelay(int relay);
+    void setRelay(Relay relay, int state);
+    int getRelay(Relay relay);
 
 private:
     ConfigManager *configM;
 
 #ifdef HAS_GPIOD
     struct gpiod_chip *chip;
+    std::array<gpiod_line*, 8> relayLines;
 #endif
 };

@@ -1,6 +1,7 @@
 #include "fileexchange.hpp"
 
 #include <iostream>
+#include <cstddef>
 using namespace libconfig;
 using namespace std;
 
@@ -8,7 +9,7 @@ using namespace std;
 ConfigManager::ConfigManager(const string& filepath)
     : path(filepath)
 {
-    relayConfig = {0};
+    relayConfig = {RelayConfig::UNUSED};
 
     updateConfig();
 }
@@ -41,17 +42,20 @@ void ConfigManager::store()
     try
     {
         const Setting& r = cfg.lookup("relayConfig");
-        const size_t count = static_cast<size_t>(r.getLength());
 
-        if (count != relayConfig.size())
+        if (r.getLength() != static_cast<int>(relayConfig.size()))
         {
-            cerr << "Length of array relayConfig not " << relayConfig.size() << endl;
+            cerr << "Length of relayConfig is not "
+                      << relayConfig.size()
+                      << endl;
             return;
         }
 
         for (size_t i = 0; i < relayConfig.size(); ++i)
         {
-            relayConfig[i] = r[i];
+            relayConfig[i] = static_cast<RelayConfig>(
+                static_cast<int>(r[i])
+            );
         }
     }
     catch (const SettingNotFoundException&)
@@ -60,7 +64,7 @@ void ConfigManager::store()
     }
 }
 
-int ConfigManager::getRelayConfig(int relay)
+RelayConfig ConfigManager::getRelayConfig(Relay relay)
 {
-    return relayConfig[relay];
+    return relayConfig[relayIndex(relay)];
 }
