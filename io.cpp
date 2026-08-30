@@ -21,7 +21,7 @@ ioManager::ioManager(ConfigManager *cfgM)
 
 
     if (!initGpioOutputs(
-        toIntArray(RELAYS),
+        toUIntArray(RELAYS),
         RELAYS.size(),
         relayRequest))
     {
