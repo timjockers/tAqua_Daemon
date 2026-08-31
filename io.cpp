@@ -242,7 +242,10 @@ void ioManager::setRelay(Relay relay, int state)
         }
 
 #ifdef HAS_GPIOD
-        setGPIOs(relayRequest, relayGPIOs, states);
+        if (!setGPIOs(relayRequest, relayGPIOs, states);)
+        {
+            cerr << "Failed to set relay!" << endl;
+        }
 #else
         cout << "Set relays: " << bitset<8>(states) << endl;
 #endif
