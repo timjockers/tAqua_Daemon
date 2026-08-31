@@ -23,5 +23,18 @@ int main() {
 
     ioManager *ioM = new ioManager(manager);
 
+    int relay;
+    int state;
+    while (true)
+    {
+        std::cout << "\nRelay: ";
+        std::cin >> relay;
+
+        std::cout << "\nState: ";
+        std::cin >> state;
+
+        ioM->setRelay(RELAYS[relay], state);
+    }
+
     return 0;
 }

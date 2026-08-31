@@ -228,7 +228,6 @@ void ioManager::setRelay(Relay relay, int state)
 
         if (state >= 1)
         {
-
             // Deactivate permanent power
             for (size_t i = 0; i < relayGPIOs.size(); ++i)
             {
