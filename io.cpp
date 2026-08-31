@@ -226,17 +226,21 @@ void ioManager::setRelay(Relay relay, int state)
 
         unsigned int states = 0;
 
-        // Deactivate permanent power
-        for (size_t i = 0; i < relayGPIOs.size(); ++i)
+        if (state >= 1)
         {
-            if (configM->getRelayConfig(RELAYS[i]) == RelayConfig::PERMANENTPOWER)
-            {
-                states = states + (1 << i);
-            }
-        }
 
-        // Activate valve
-        states = states + (1 << static_cast<int>(relayIndex(relay)));
+            // Deactivate permanent power
+            for (size_t i = 0; i < relayGPIOs.size(); ++i)
+            {
+                if (configM->getRelayConfig(RELAYS[i]) == RelayConfig::PERMANENTPOWER)
+                {
+                    states = states + (1 << i);
+                }
+            }
+
+            // Activate valve
+            states = states + (1 << static_cast<int>(relayIndex(relay)));
+        }
 
 #ifdef HAS_GPIOD
         setGPIOs(relayRequest, relayGPIOs, states);
