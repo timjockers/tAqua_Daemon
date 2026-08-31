@@ -273,6 +273,11 @@ int ioManager::getRelay(Relay relay)
     {
         return 0;
     }
-
-    return 1;
+    else
+    {
+#ifdef HAS_GPIOD
+        return getGPIO(relayRequest, static_cast<int>(relay));
+#endif
+    }
+    return 0;
 }
