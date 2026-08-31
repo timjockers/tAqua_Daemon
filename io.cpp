@@ -253,7 +253,7 @@ void ioManager::setRelay(Relay relay, int state)
         {
 #ifdef HAS_GPIOD
             // Check if relay is on
-            if (getGPIO(relayRequest, relay))
+            if (getGPIO(relayRequest, static_cast<int>(relay)))
             {
                 if (!setGPIOs(relayRequest, relayGPIOs, 0);)
                 {
