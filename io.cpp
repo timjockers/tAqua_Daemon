@@ -241,7 +241,7 @@ void ioManager::setRelay(Relay relay, int state)
             states = states + (1 << static_cast<int>(relayIndex(relay)));
 
 #ifdef HAS_GPIOD
-            if (!setGPIOs(relayRequest, relayGPIOs, states);)
+            if (!setGPIOs(relayRequest, relayGPIOs, states))
             {
                 cerr << "Failed to set relay!" << endl;
             }
