@@ -202,9 +202,9 @@ bool ioManager::getGPIO(gpiod_line_request* request, unsigned int gpio)
 
 
 #ifdef HAS_GPIOD
-bool ioManager::setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8>* gpios, unsigned int states)
+bool ioManager::setGPIOs(gpiod_line_request* request, array<unsigned int, 8> gpios, unsigned int states)
 {   
-    for (size_t i = 0; i < gpios->size(); ++i)
+    for (size_t i = 0; i < gpios.size(); ++i)
     {
         if (!setGPIO(request, gpios[i], (1 & (states >> i)) == 1))
         {
@@ -233,7 +233,7 @@ void ioManager::setRelay(Relay relay, int state)
         
 
 #ifdef HAS_GPIOD
-        setGPIOs(relayRequest, &RELAYS, states);
+        setGPIOs(relayRequest, RELAYS, states);
 #else
         cout << "Set relays: " << endl;
 #endif

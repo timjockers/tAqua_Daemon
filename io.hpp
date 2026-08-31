@@ -33,7 +33,7 @@ private:
     bool setGPIO(gpiod_line_request* request, unsigned int gpio, bool state);
     bool getGPIO(gpiod_line_request* request, unsigned int gpio);
 
-    bool setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8>* gpios, unsigned int states);
+    bool setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8> gpios, unsigned int states);
 
     struct gpiod_chip* chip;
     gpiod_line_request* relayRequest;
