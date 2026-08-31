@@ -224,10 +224,10 @@ void ioManager::setRelay(Relay relay, int state)
     {
         auto relayGPIOs = toUIntArray(RELAYS);
 
-        unsigned int states = 0;
-
         if (state >= 1)
         {
+            unsigned int states = 0;
+
             // Deactivate permanent power
             for (size_t i = 0; i < relayGPIOs.size(); ++i)
             {
@@ -239,16 +239,31 @@ void ioManager::setRelay(Relay relay, int state)
 
             // Activate valve
             states = states + (1 << static_cast<int>(relayIndex(relay)));
-        }
 
 #ifdef HAS_GPIOD
-        if (!setGPIOs(relayRequest, relayGPIOs, states);)
-        {
-            cerr << "Failed to set relay!" << endl;
-        }
+            if (!setGPIOs(relayRequest, relayGPIOs, states);)
+            {
+                cerr << "Failed to set relay!" << endl;
+            }
 #else
-        cout << "Set relays: " << bitset<8>(states) << endl;
+            cout << "Set relays: " << bitset<8>(states) << endl;
 #endif
+        }
+        else
+        {
+#ifdef HAS_GPIOD
+            // Check if relay is on
+            if (getGPIO(relayRequest, relay))
+            {
+                if (!setGPIOs(relayRequest, relayGPIOs, 0);)
+                {
+                    cerr << "Failed to set relay!" << endl;
+                }
+            }
+#else
+            cout << "Set relays: 0" << endl;
+#endif
+        }
     }
 }
 
