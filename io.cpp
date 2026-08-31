@@ -202,9 +202,9 @@ bool ioManager::getGPIO(gpiod_line_request* request, unsigned int gpio)
 
 
 #ifdef HAS_GPIOD
-bool ioManager::setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8> gpios, unsigned int states)
+bool ioManager::setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8>* gpios, unsigned int states)
 {   
-    for (size_t i = 0; i < gpios.size(); ++i)
+    for (size_t i = 0; i < gpios->size(); ++i)
     {
         if (!setGPIO(request, gpios[i], (1 & (states >> i)) == 1))
         {
@@ -220,9 +220,23 @@ bool ioManager::setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8
 void ioManager::setRelay(Relay relay, int state)
 {
     if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
-    {   
+    {
         auto relayGPIOs = toUIntArray(RELAYS);
-        cout << "Setting valve" << endl;
+        const size_t count = relayGPIOs.size();
+
+        unsigned int states = 0;
+
+        for (size_t i = 0; i < count; ++i)
+        {
+            states = states + ((0) << i);
+        }
+        
+
+#ifdef HAS_GPIOD
+        setGPIOs(relayRequest, &RELAYS, states);
+#else
+        cout << "Set relays: " << endl;
+#endif
     }
 }
 
