@@ -20,9 +20,9 @@ ioManager::ioManager(ConfigManager *cfgM)
     }
 
     // Init relays
-    auto relayGpios = toUIntArray(RELAYS);
+    auto relayGPIOs = toUIntArray(RELAYS);
 
-    if (!initGpioOutputs(relayGpios.data(), relayGpios.size(), relayRequest))
+    if (!initGPIOOutputs(relayGPIOs.data(), relayGPIOs.size(), relayRequest))
     {
         cerr << "Failed to initialize relay GPIOs" << endl;
     }
@@ -43,7 +43,7 @@ ioManager::~ioManager()
 }
 
 #ifdef HAS_GPIOD
-bool ioManager::initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request)
+bool ioManager::initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request)
 {
     gpiod_line_settings* settings = gpiod_line_settings_new();
 
@@ -201,10 +201,27 @@ bool ioManager::getGPIO(gpiod_line_request* request, unsigned int gpio)
 #endif
 
 
+#ifdef HAS_GPIOD
+bool ioManager::setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8> gpios, unsigned int states)
+{   
+    for (size_t i = 0; i < gpios.size(); ++i)
+    {
+        if (!setGPIO(request, gpios[i], (1 & (states >> i)) == 1))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+#endif
+
+
 void ioManager::setRelay(Relay relay, int state)
 {
     if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
-    {
+    {   
+        auto relayGPIOs = toUIntArray(RELAYS);
         cout << "Setting valve" << endl;
     }
 }

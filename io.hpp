@@ -28,10 +28,12 @@ private:
     ConfigManager *configM;
 
 #ifdef HAS_GPIOD
-    bool initGpioOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
+    bool initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
 
     bool setGPIO(gpiod_line_request* request, unsigned int gpio, bool state);
     bool getGPIO(gpiod_line_request* request, unsigned int gpio);
+
+    bool setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8> gpios, unsigned int states);
 
     struct gpiod_chip *chip;
     gpiod_line_request* relayRequest;
