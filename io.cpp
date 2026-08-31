@@ -255,7 +255,7 @@ void ioManager::setRelay(Relay relay, int state)
             // Check if relay is on
             if (getGPIO(relayRequest, static_cast<int>(relay)))
             {
-                if (!setGPIOs(relayRequest, relayGPIOs, 0);)
+                if (!setGPIOs(relayRequest, relayGPIOs, 0))
                 {
                     cerr << "Failed to set relay!" << endl;
                 }
