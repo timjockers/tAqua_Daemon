@@ -1,6 +1,7 @@
 #include "io.hpp"
 
 #include <iostream>
+#include <bitset>
 using namespace std;
 
 
@@ -222,20 +223,25 @@ void ioManager::setRelay(Relay relay, int state)
     if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
     {
         auto relayGPIOs = toUIntArray(RELAYS);
-        const size_t count = relayGPIOs.size();
 
         unsigned int states = 0;
 
-        for (size_t i = 0; i < count; ++i)
+        // Deactivate permanent power
+        for (size_t i = 0; i < relayGPIOs.size(); ++i)
         {
-            states = states + ((0) << i);
+            if (configM->getRelayConfig(RELAYS[i]) == RelayConfig::PERMANENTPOWER)
+            {
+                states = states + (1 << i);
+            }
         }
-        
+
+        // Activate valve
+        states = states + (1 << static_cast<int>(relayIndex(relay)));
 
 #ifdef HAS_GPIOD
-        setGPIOs(relayRequest, RELAYS, states);
+        setGPIOs(relayRequest, relayGPIOs, states);
 #else
-        cout << "Set relays: " << endl;
+        cout << "Set relays: " << bitset<8>(states) << endl;
 #endif
     }
 }
