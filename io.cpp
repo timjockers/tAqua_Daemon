@@ -235,13 +235,13 @@ bool ioManager::setGPIOs(gpiod_line_request* request, array<unsigned int, 8> gpi
 #endif
 
 
-void ioManager::setRelay(Relay relay, int state)
+void ioManager::setRelay(Relay relay, bool state)
 {
     if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
     {
         auto relayGPIOs = toUIntArray(RELAYS);
 
-        if (state >= 1)
+        if (state)
         {
             unsigned int states = 0;
 
@@ -284,17 +284,32 @@ void ioManager::setRelay(Relay relay, int state)
     }
 }
 
-int ioManager::getRelay(Relay relay)
+bool ioManager::getRelay(Relay relay)
 {   
     if (configM->getRelayConfig(relay) == RelayConfig::UNUSED)
     {
-        return 0;
+        return false;
     }
     else
     {
 #ifdef HAS_GPIOD
-        return getGPIO(relayRequest, static_cast<int>(relay));
+        return (getGPIO(relayRequest, static_cast<int>(relay)) > 0);
 #endif
     }
-    return 0;
+    return false;
+}
+
+
+void ioManager::setYLED(YLED yled, bool state)
+{
+#ifdef HAS_GPIOD
+    setGPIO(yledRequest, static_cast<unsigned int>(yled), state);
+#else
+    cout << "Setting yellow LED" << endl;
+#endif
+}
+
+bool ioManager::getYLED(YLED yled)
+{
+    return false;
 }

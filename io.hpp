@@ -21,8 +21,11 @@ public:
     ioManager(ConfigManager *cfgM);
     ~ioManager();
 
-    void setRelay(Relay relay, int state);
-    int getRelay(Relay relay);
+    void setRelay(Relay relay, bool state);
+    bool getRelay(Relay relay);
+
+    void setYLED(YLED yled, bool state);
+    bool getYLED(YLED yled);
 
 private:
     ConfigManager *configM;
