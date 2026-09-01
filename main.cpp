@@ -33,7 +33,7 @@ int main() {
         std::cout << "\nState: ";
         std::cin >> state;
 
-        ioM->setRelay(RELAYS[relay], state);
+        ioM->setRelay(RELAYS[relay], state > 0);
     }
 
     return 0;
