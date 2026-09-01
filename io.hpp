@@ -37,5 +37,6 @@ private:
 
     struct gpiod_chip* chip;
     gpiod_line_request* relayRequest;
+    gpiod_line_request* yledRequest;
 #endif
 };

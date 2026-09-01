@@ -27,6 +27,14 @@ ioManager::ioManager(ConfigManager *cfgM)
     {
         cerr << "Failed to initialize relay GPIOs" << endl;
     }
+
+    // Init yellow LEDs
+    auto yledGPIOs = toUIntArray(YLEDS);
+
+    if (!initGPIOOutputs(yledGPIOs.data(), yledGPIOs.size(), yledRequest))
+    {
+        cerr << "Failed to initialize yellow LED GPIOs" << endl;
+    }
 #endif
 }
 
@@ -35,10 +43,19 @@ ioManager::~ioManager()
 #ifdef HAS_GPIOD
 
     if (relayRequest)
+    {
         gpiod_line_request_release(relayRequest);
+    }
+
+    if (yledRequest)
+    {
+        gpiod_line_request_release(yledRequest);
+    }
 
     if (chip)
+    {
         gpiod_chip_close(chip);
+    }
 
 #endif
 }
