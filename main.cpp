@@ -34,6 +34,7 @@ int main() {
         std::cin >> state;
 
         ioM->setRelay(RELAYS[relay], state > 0);
+        ioM->setYLED(YLEDS[relay], state > 0);
     }
 
     return 0;
