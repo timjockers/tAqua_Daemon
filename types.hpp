@@ -69,3 +69,43 @@ constexpr std::size_t relayIndex(Relay relay)
 
     return 0;
 }
+
+
+// Yellow LED pins
+enum class YLED {
+    L1 = 18,
+    L2 = 23,
+    L3 = 24,
+    L4 = 25,
+    L5 = 12,
+    L6 = 16,
+    L7 = 20,
+    L8 = 21
+};
+
+constexpr std::array<YLED, 8> YLEDS = {
+    YLED::L1,
+    YLED::L2,
+    YLED::L3,
+    YLED::L4,
+    YLED::L5,
+    YLED::L6,
+    YLED::L7,
+    YLED::L8
+};
+
+constexpr std::size_t YLEDIndex(YLED yled)
+{
+    switch (yled) {
+        case YLED::L1: return 0;
+        case YLED::L2: return 1;
+        case YLED::L3: return 2;
+        case YLED::L4: return 3;
+        case YLED::L5: return 4;
+        case YLED::L6: return 5;
+        case YLED::L7: return 6;
+        case YLED::L8: return 7;
+    }
+
+    return 0;
+}
