@@ -73,14 +73,14 @@ constexpr std::size_t relayIndex(Relay relay)
 
 // Yellow LED pins
 enum class YLED {
-    L1 = 18,
-    L2 = 23,
-    L3 = 24,
-    L4 = 25,
-    L5 = 12,
-    L6 = 16,
-    L7 = 20,
-    L8 = 21
+    L1 = 17,
+    L2 = 22,
+    L3 = 10,
+    L4 = 11,
+    L5 = 5,
+    L6 = 6,
+    L7 = 19,
+    L8 = 26
 };
 
 constexpr std::array<YLED, 8> YLEDS = {
