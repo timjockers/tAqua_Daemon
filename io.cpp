@@ -3,6 +3,8 @@
 #include <iostream>
 #include <bitset>
 #include <algorithm>
+#include <utility>
+#include <optional>
 using namespace std;
 
 
@@ -20,6 +22,16 @@ static bool hasPhysicalPullup(Button button)
     ) != PHYSICAL_PULLUP.end();
 }
 
+static std::optional<Button> buttonFromGPIO(unsigned int gpio)
+{
+    for (Button button : BUTTONS)
+    {
+        if (static_cast<unsigned int>(button) == gpio)
+            return button;
+    }
+
+    return std::nullopt;
+}
 
 
 ioManager::ioManager(ConfigManager *cfgM)
@@ -58,12 +70,23 @@ ioManager::ioManager(ConfigManager *cfgM)
     {
         cerr << "Failed to initialize button GPIOs" << endl;
     }
+    else
+    {
+        buttonThreadRunning = true;
+        buttonThread = std::thread(&ioManager::processButtonEvents, this);
+    }
 #endif
 }
 
 ioManager::~ioManager()
 {
 #ifdef HAS_GPIOD
+    buttonThreadRunning = false;
+    if (buttonThread.joinable())
+    {
+        buttonThread.join();
+    }
+
 
     if (relayRequest)
     {
@@ -243,8 +266,15 @@ bool ioManager::initGPIOInputs(const Button* buttons, size_t count, gpiod_line_r
             return false;
         }
 
-        const unsigned int gpio =
-            static_cast<unsigned int>(button);
+        if (gpiod_line_settings_set_debounce_period_us(settings, 50000) < 0) // 50ms
+        {
+            cerr << "Failed to set debounce period" << endl;
+            gpiod_line_settings_free(settings);
+            gpiod_line_config_free(lineConfig);
+            return false;
+        }
+
+        const unsigned int gpio = static_cast<unsigned int>(button);
 
         if (gpiod_line_config_add_line_settings(
                 lineConfig,
@@ -474,3 +504,82 @@ bool ioManager::isButtonPressed(Button button)
     return false;
 #endif
 }
+
+
+void ioManager::setButtonCallback(ButtonCallback callback)
+{
+    buttonCallback = std::move(callback);
+}
+
+
+#ifdef HAS_GPIOD
+void ioManager::processButtonEvents()
+{
+    gpiod_edge_event_buffer* buffer = gpiod_edge_event_buffer_new(16);
+
+    if (!buffer)
+    {
+        cerr << "Failed to create GPIO event buffer" << endl;
+        return;
+    }
+
+    while (buttonThreadRunning)
+    {
+        int ret = gpiod_line_request_wait_edge_events(buttonRequest, 100000000);
+
+        if (ret < 0)
+        {
+            if (buttonThreadRunning)
+            {
+                cerr << "Failed to wait for GPIO events" << endl;
+            }
+
+            break;
+        }
+
+        if (ret == 0)
+        {
+            continue;
+        }
+
+        int numEvents = gpiod_line_request_read_edge_events(buttonRequest, buffer, 16);
+
+        if (numEvents < 0)
+        {
+            cerr << "Failed to read GPIO events" << endl;
+            break;
+        }
+
+        for (int i = 0; i < numEvents; ++i)
+        {
+            gpiod_edge_event* event = gpiod_edge_event_buffer_get_event(buffer, i);
+
+            if (!event)
+            {
+                continue;
+            }
+
+            unsigned int gpio = gpiod_edge_event_get_line_offset(event);
+
+            auto button = buttonFromGPIO(gpio);
+
+            if (!button)
+            {
+                cerr << "Received event for unknown GPIO: " << gpio << endl;
+                continue;
+            }
+
+            auto eventType = gpiod_edge_event_get_event_type(event);
+
+            bool pressed = (eventType == GPIOD_EDGE_EVENT_FALLING_EDGE);
+
+            if (buttonCallback)
+            {
+                buttonCallback(*button, pressed);
+            }
+        }
+    }
+
+    gpiod_edge_event_buffer_free(buffer);
+}
+#endif

@@ -6,6 +6,9 @@
 #include <array>
 #include <cerrno>
 #include <cstring>
+#include <functional>
+#include <thread>
+#include <atomic>
 
 #ifdef HAS_GPIOD
 #include <gpiod.h>
@@ -18,6 +21,8 @@ static constexpr const char *GPIO_CHIP = "/dev/gpiochip0";
 
 class ioManager {
 public:
+    using ButtonCallback = std::function<void(Button, bool)>;
+
     ioManager(ConfigManager *cfgM);
     ~ioManager();
 
@@ -29,8 +34,11 @@ public:
 
     bool isButtonPressed(Button button);
 
+    void setButtonCallback(ButtonCallback callback);
 private:
     ConfigManager *configM;
+
+    ButtonCallback buttonCallback;
 
 #ifdef HAS_GPIOD
     bool initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
@@ -41,9 +49,13 @@ private:
 
     bool setGPIOs(gpiod_line_request* request, std::array<unsigned int, 8> gpios, unsigned int states);
 
-    struct gpiod_chip* chip;
-    gpiod_line_request* relayRequest;
-    gpiod_line_request* yledRequest;
-    gpiod_line_request* buttonRequest;
+    gpiod_chip* chip = nullptr;
+    gpiod_line_request* relayRequest = nullptr;
+    gpiod_line_request* yledRequest = nullptr;
+    gpiod_line_request* buttonRequest = nullptr;
+
+    std::thread buttonThread;
+    std::atomic<bool> buttonThreadRunning{false};
+    void processButtonEvents();
 #endif
 };
