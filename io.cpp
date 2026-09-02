@@ -230,12 +230,9 @@ bool ioManager::initGPIOInputs(const Button* buttons, size_t count, gpiod_line_r
             return false;
         }
 
-        if (gpiod_line_settings_set_direction(
-                settings,
-                GPIOD_LINE_DIRECTION_INPUT) < 0)
+        if (gpiod_line_settings_set_direction(settings, GPIOD_LINE_DIRECTION_INPUT) < 0)
         {
-            cerr << "Failed to set GPIO direction: "
-                 << strerror(errno) << endl;
+            cerr << "Failed to set GPIO direction: " << strerror(errno) << endl;
 
             gpiod_line_settings_free(settings);
             gpiod_line_config_free(lineConfig);
@@ -244,12 +241,9 @@ bool ioManager::initGPIOInputs(const Button* buttons, size_t count, gpiod_line_r
 
         if (!hasPhysicalPullup(button))
         {
-            if (gpiod_line_settings_set_bias(
-                    settings,
-                    GPIOD_LINE_BIAS_PULL_UP) < 0)
+            if (gpiod_line_settings_set_bias(settings, GPIOD_LINE_BIAS_PULL_UP) < 0)
             {
-                cerr << "Failed to set GPIO pull-up: "
-                     << strerror(errno) << endl;
+                cerr << "Failed to set GPIO pull-up: " << strerror(errno) << endl;
 
                 gpiod_line_settings_free(settings);
                 gpiod_line_config_free(lineConfig);
@@ -266,14 +260,9 @@ bool ioManager::initGPIOInputs(const Button* buttons, size_t count, gpiod_line_r
             return false;
         }
 
-        if (gpiod_line_settings_set_debounce_period_us(settings, 50000) < 0) // 50ms
-        {
-            cerr << "Failed to set debounce period" << endl;
-            gpiod_line_settings_free(settings);
-            gpiod_line_config_free(lineConfig);
-            return false;
-        }
-
+        gpiod_line_settings_set_debounce_period_us(settings, 50000); // 50ms
+        
+        
         const unsigned int gpio = static_cast<unsigned int>(button);
 
         if (gpiod_line_config_add_line_settings(
