@@ -234,6 +234,15 @@ bool ioManager::initGPIOInputs(const Button* buttons, size_t count, gpiod_line_r
             }
         }
 
+        if (gpiod_line_settings_set_edge_detection(settings, GPIOD_LINE_EDGE_BOTH) < 0)
+        {
+            cerr << "Failed to set edge detection: " << strerror(errno) << endl;
+
+            gpiod_line_settings_free(settings);
+            gpiod_line_config_free(lineConfig);
+            return false;
+        }
+
         const unsigned int gpio =
             static_cast<unsigned int>(button);
 
