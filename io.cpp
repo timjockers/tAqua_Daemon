@@ -35,6 +35,13 @@ ioManager::ioManager(ConfigManager *cfgM)
     {
         cerr << "Failed to initialize yellow LED GPIOs" << endl;
     }
+
+    auto buttonGPIOs = toUIntArray(BUTTONS);
+
+    if (!initGPIOInputs(buttonGPIOs.data(), buttonGPIOs.size(), buttonRequest))
+    {
+        cerr << "Failed to initialize button GPIOs" << endl;
+    }
 #endif
 }
 
@@ -50,6 +57,11 @@ ioManager::~ioManager()
     if (yledRequest)
     {
         gpiod_line_request_release(yledRequest);
+    }
+
+    if (buttonRequest)
+    {
+        gpiod_line_request_release(buttonRequest);
     }
 
     if (chip)
@@ -78,6 +90,100 @@ bool ioManager::initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_l
         gpiod_line_settings_free(settings);
         return false;
     }
+
+    if (gpiod_line_settings_set_output_value(settings, GPIOD_LINE_VALUE_INACTIVE) < 0)
+    {
+        cerr << "Failed to set GPIO initial value: " << strerror(errno) << endl;
+
+        gpiod_line_settings_free(settings);
+        return false;
+    }
+
+    gpiod_line_config* lineConfig = gpiod_line_config_new();
+
+    if (!lineConfig)
+    {
+        cerr << "Failed to create GPIO line config" << endl;
+
+        gpiod_line_settings_free(settings);
+        return false;
+    }
+
+    for (size_t i = 0; i < count; ++i)
+    {
+        if (gpiod_line_config_add_line_settings(
+                lineConfig,
+                &gpios[i],
+                1,
+                settings) < 0)
+        {
+            cerr << "Failed to configure GPIO "
+                 << gpios[i]
+                 << ": "
+                 << strerror(errno)
+                 << endl;
+
+            gpiod_line_config_free(lineConfig);
+            gpiod_line_settings_free(settings);
+            return false;
+        }
+    }
+
+    gpiod_request_config* requestConfig = gpiod_request_config_new();
+
+    if (!requestConfig)
+    {
+        cerr << "Failed to create request config" << endl;
+
+        gpiod_line_config_free(lineConfig);
+        gpiod_line_settings_free(settings);
+        return false;
+    }
+
+    gpiod_request_config_set_consumer(
+        requestConfig,
+        "tAqua_Daemon"
+    );
+
+    request = gpiod_chip_request_lines(
+        chip,
+        requestConfig,
+        lineConfig
+    );
+
+    if (!request)
+    {
+        cerr << "Failed to request GPIO lines: " << strerror(errno) << endl;
+    }
+
+    gpiod_request_config_free(requestConfig);
+    gpiod_line_config_free(lineConfig);
+    gpiod_line_settings_free(settings);
+
+    return request != nullptr;
+}
+#endif
+
+
+#ifdef HAS_GPIOD
+bool ioManager::initGPIOInputs( const unsigned int* gpios, std::size_t count, gpiod_line_request*& request)
+{
+    gpiod_line_settings* settings = gpiod_line_settings_new();
+
+    if (!settings)
+    {
+        cerr << "Failed to create GPIO line settings" << endl;
+        return false;
+    }
+
+    if (gpiod_line_settings_set_direction(settings, GPIOD_LINE_DIRECTION_INPUT) < 0)
+    {
+        cerr << "Failed to set GPIO direction: " << strerror(errno) << endl;
+
+        gpiod_line_settings_free(settings);
+        return false;
+    }
+
 
     if (gpiod_line_settings_set_output_value(settings, GPIOD_LINE_VALUE_INACTIVE) < 0)
     {
@@ -316,4 +422,10 @@ bool ioManager::getYLED(YLED yled)
 #else
     return false;
 #endif
+}
+
+
+bool ioManager::isButtonPressed(Button button)
+{
+    return false;
 }

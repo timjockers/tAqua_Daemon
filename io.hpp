@@ -34,6 +34,7 @@ private:
 
 #ifdef HAS_GPIOD
     bool initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
+    bool initGPIOInputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
 
     bool setGPIO(gpiod_line_request* request, unsigned int gpio, bool state);
     bool getGPIO(gpiod_line_request* request, unsigned int gpio);
@@ -43,5 +44,6 @@ private:
     struct gpiod_chip* chip;
     gpiod_line_request* relayRequest;
     gpiod_line_request* yledRequest;
+    gpiod_line_request* buttonRequest;
 #endif
 };
