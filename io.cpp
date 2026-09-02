@@ -311,5 +311,9 @@ void ioManager::setYLED(YLED yled, bool state)
 
 bool ioManager::getYLED(YLED yled)
 {
+#ifdef HAS_GPIOD
+    return getGPIO(yledRequest, static_cast<unsigned int>(yled));
+#else
     return false;
+#endif
 }
