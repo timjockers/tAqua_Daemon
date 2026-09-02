@@ -2,7 +2,24 @@
 
 #include <iostream>
 #include <bitset>
+#include <algorithm>
 using namespace std;
+
+
+static array<Button, 2> PHYSICAL_PULLUP = {
+    Button::B3,
+    Button::B4
+};
+
+static bool hasPhysicalPullup(Button button)
+{
+    return find(
+        PHYSICAL_PULLUP.begin(),
+        PHYSICAL_PULLUP.end(),
+        button
+    ) != PHYSICAL_PULLUP.end();
+}
+
 
 
 ioManager::ioManager(ConfigManager *cfgM)

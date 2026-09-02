@@ -149,17 +149,3 @@ constexpr std::size_t buttonIndex(Button button)
 
     return 0;
 }
-
-constexpr std::array<Button, 2> PHYSICAL_PULLUP = {
-    Button::B3,
-    Button::B4
-};
-
-inline bool hasPhysicalPullup(Button button)
-{
-    return std::find(
-        PHYSICAL_PULLUP.begin(),
-        PHYSICAL_PULLUP.end(),
-        button
-    ) != PHYSICAL_PULLUP.end();
-}
