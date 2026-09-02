@@ -155,7 +155,7 @@ constexpr std::array<Button, 2> PHYSICAL_PULLUP = {
     Button::B4
 };
 
-bool hasPhysicalPullup(Button button)
+constexpr bool hasPhysicalPullup(Button button)
 {
     return std::find(
         PHYSICAL_PULLUP.begin(),
