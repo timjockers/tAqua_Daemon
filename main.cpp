@@ -12,5 +12,23 @@ int main() {
 
     ioManager *ioM = new ioManager(manager);
 
+    ioM->setButtonCallback(
+        [](Button button, bool pressed)
+        {
+            std::cout
+                << "Button "
+                << static_cast<int>(button)
+                << (pressed ? " PRESSED" : " RELEASED")
+                << std::endl;
+        }
+    );
+    
+    while (true)
+    {
+        std::this_thread::sleep_for(
+            std::chrono::seconds(1)
+        );
+    }
+
     return 0;
 }
