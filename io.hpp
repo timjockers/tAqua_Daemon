@@ -34,7 +34,7 @@ private:
 
 #ifdef HAS_GPIOD
     bool initGPIOOutputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
-    bool initGPIOInputs(const unsigned int* gpios, size_t count, gpiod_line_request*& request);
+    bool initGPIOInputs(const Button* buttons, size_t count, gpiod_line_request*& request);
 
     bool setGPIO(gpiod_line_request* request, unsigned int gpio, bool state);
     bool getGPIO(gpiod_line_request* request, unsigned int gpio);
