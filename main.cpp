@@ -35,6 +35,13 @@ int main() {
 
         ioM->setRelay(RELAYS[relay], state > 0);
         ioM->setYLED(YLEDS[relay], state > 0);
+
+        std::cout << "YLED States:";
+        for (unsigned int i = 0; i < 8; i++)
+        {
+            std::cout << ioM->getYLED(YLEDS[i]) << " ";
+        }
+        std::cout << std::endl;
     }
 
     return 0;
