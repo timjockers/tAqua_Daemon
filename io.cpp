@@ -443,7 +443,7 @@ bool ioManager::getYLED(YLED yled)
 bool ioManager::isButtonPressed(Button button)
 {
 #ifdef HAS_GPIOD
-    return getGPIO(buttonRequest, static_cast<unsigned int>(button));
+    return !getGPIO(buttonRequest, static_cast<unsigned int>(button));
 #else
     return false;
 #endif
