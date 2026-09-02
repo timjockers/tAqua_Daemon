@@ -27,6 +27,8 @@ public:
     void setYLED(YLED yled, bool state);
     bool getYLED(YLED yled);
 
+    bool isButtonPressed(Button button);
+
 private:
     ConfigManager *configM;
 

@@ -112,7 +112,7 @@ constexpr std::size_t YLEDIndex(YLED yled)
 
 
 // Button Pins
-enum class BUTTON {
+enum class Button {
     B1 = 8,
     B2 = 7,
     B3 = 2,
@@ -123,28 +123,28 @@ enum class BUTTON {
     B8 = 13
 };
 
-constexpr std::array<BUTTON, 8> BUTTONS = {
-    BUTTON::B1,
-    BUTTON::B2,
-    BUTTON::B3,
-    BUTTON::B4,
-    BUTTON::B5,
-    BUTTON::B6,
-    BUTTON::B7,
-    BUTTON::B8
+constexpr std::array<Button, 8> BUTTONS = {
+    Button::B1,
+    Button::B2,
+    Button::B3,
+    Button::B4,
+    Button::B5,
+    Button::B6,
+    Button::B7,
+    Button::B8
 };
 
-constexpr std::size_t buttonIndex(BUTTON button)
+constexpr std::size_t buttonIndex(Button button)
 {
     switch (button) {
-        case BUTTON::B1: return 0;
-        case BUTTON::B2: return 1;
-        case BUTTON::B3: return 2;
-        case BUTTON::B4: return 3;
-        case BUTTON::B5: return 4;
-        case BUTTON::B6: return 5;
-        case BUTTON::B7: return 6;
-        case BUTTON::B8: return 7;
+        case Button::B1: return 0;
+        case Button::B2: return 1;
+        case Button::B3: return 2;
+        case Button::B4: return 3;
+        case Button::B5: return 4;
+        case Button::B6: return 5;
+        case Button::B7: return 6;
+        case Button::B8: return 7;
     }
 
     return 0;
