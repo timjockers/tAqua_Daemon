@@ -134,11 +134,6 @@ constexpr std::array<Button, 8> BUTTONS = {
     Button::B8
 };
 
-constexpr std::array<Button, 2> PHYSICAL_PULLUP = {
-    Button::B3,
-    Button::B4
-};
-
 constexpr std::size_t buttonIndex(Button button)
 {
     switch (button) {
@@ -153,4 +148,18 @@ constexpr std::size_t buttonIndex(Button button)
     }
 
     return 0;
+}
+
+constexpr std::array<Button, 2> PHYSICAL_PULLUP = {
+    Button::B3,
+    Button::B4
+};
+
+bool hasPhysicalPullup(Button button)
+{
+    return std::find(
+        PHYSICAL_PULLUP.begin(),
+        PHYSICAL_PULLUP.end(),
+        button
+    ) != PHYSICAL_PULLUP.end();
 }
