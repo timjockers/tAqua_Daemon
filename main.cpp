@@ -17,7 +17,7 @@ int main() {
         {
             std::cout
                 << "Button "
-                << static_cast<int>(button)
+                << buttonIndex(button)
                 << (pressed ? " PRESSED" : " RELEASED")
                 << std::endl;
         }
