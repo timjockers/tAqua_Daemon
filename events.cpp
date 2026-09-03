@@ -6,7 +6,7 @@ using namespace std;
 
 string irrigationEvent::getInfo()
 {
-    return "IrrigationEvent";
+    return "irrigationEvent";
 }
 
 void irrigationEvent::activate() {}
@@ -20,24 +20,24 @@ bool irrigationEvent::isActive()
 
 
 
-relayEvent::relayEvent(int r)
+relayEvent::relayEvent(Relay r)
     : relay(r)
 {}
 
 string relayEvent::getInfo()
 {
-    return "RelayEvent: R" + to_string(relay);
+    return irrigationEvent::getInfo() + " >> " + "relayEvent(R" + to_string(relayIndex(relay) + 1) + ")";
 }
 
 
 
-buttonEvent::buttonEvent(int r, chrono::seconds irrDuration)
+buttonEvent::buttonEvent(Relay r, chrono::seconds irrDuration)
     : relayEvent(r), duration(irrDuration)
 {}
 
 string buttonEvent::getInfo()
 {
-    return "ButtonEvent: R_" + to_string(relay) + "  D_" + to_string(duration.count()) + "s";
+    return relayEvent::getInfo() + " >> " + "buttonEvent(D" + to_string(duration.count()) + "s)";
 }
 
 void buttonEvent::activate()

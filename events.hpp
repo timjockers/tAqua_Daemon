@@ -2,6 +2,7 @@
 
 #include <string>
 #include <chrono>
+#include "types.hpp"
 
 class irrigationEvent {
 public:
@@ -15,18 +16,18 @@ public:
 
 class relayEvent : public irrigationEvent {
 public:
-    relayEvent(int r);
+    relayEvent(Relay r);
 
     std::string getInfo() override;
 
 protected:
-    int relay;
+    Relay relay;
 };
 
 
 class buttonEvent : public relayEvent {
 public:
-    buttonEvent(int r, std::chrono::seconds irrDuration);
+    buttonEvent(Relay r, std::chrono::seconds irrDuration);
 
     std::string getInfo() override;
     void activate() override;
