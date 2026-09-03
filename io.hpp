@@ -35,6 +35,7 @@ public:
     bool isButtonPressed(Button button);
 
     void setButtonCallback(ButtonCallback callback);
+    void startButtonThread();
 private:
     ConfigManager *configM;
 

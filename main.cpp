@@ -22,6 +22,8 @@ int main() {
                 << std::endl;
         }
     );
+
+    ioM->startButtonThread();
     
     while (true)
     {

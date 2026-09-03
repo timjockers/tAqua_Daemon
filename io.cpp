@@ -70,11 +70,6 @@ ioManager::ioManager(ConfigManager *cfgM)
     {
         cerr << "Failed to initialize button GPIOs" << endl;
     }
-    else
-    {
-        buttonThreadRunning = true;
-        buttonThread = std::thread(&ioManager::processButtonEvents, this);
-    }
 #endif
 }
 
@@ -500,6 +495,16 @@ void ioManager::setButtonCallback(ButtonCallback callback)
     buttonCallback = std::move(callback);
 }
 
+void ioManager::startButtonThread()
+{
+#ifdef HAS_GPIOD
+    if (buttonRequest)
+    {
+        buttonThreadRunning = true;
+        buttonThread = std::thread(&ioManager::processButtonEvents, this);
+    }
+#endif
+}
 
 #ifdef HAS_GPIOD
 void ioManager::processButtonEvents()
