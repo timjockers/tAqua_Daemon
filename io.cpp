@@ -498,11 +498,23 @@ void ioManager::setButtonCallback(ButtonCallback callback)
 void ioManager::startButtonThread()
 {
 #ifdef HAS_GPIOD
-    if (buttonRequest)
+    if (!buttonRequest)
     {
-        buttonThreadRunning = true;
-        buttonThread = std::thread(&ioManager::processButtonEvents, this);
+        cerr << "Cannot start button thread: "
+                "button GPIO is not initialized"
+             << endl;
+        return;
     }
+
+    if (buttonThread.joinable())
+    {
+        cerr << "Button thread is already running" << endl;
+        return;
+    }
+
+    buttonThreadRunning = true;
+
+    buttonThread = std::thread(&ioManager::processButtonEvents, this);
 #endif
 }
 
