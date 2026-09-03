@@ -8,9 +8,9 @@
 #include <thread>
 
 int main() {
-    ConfigManager *manager = new ConfigManager("taqua.cfg");
+    ConfigManager *confManager = new ConfigManager("taqua.cfg");
 
-    ioManager *ioM = new ioManager(manager);
+    ioManager *ioM = new ioManager(confManager);
 
     ioM->setButtonCallback(
         [](Button button, bool pressed)
