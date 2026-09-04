@@ -11,6 +11,9 @@ public:
     virtual void activate();
     virtual void deactivate();
     virtual bool isActive();
+
+private:
+    irrigationEvent* nextEvent = nullptr;
 };
 
 
