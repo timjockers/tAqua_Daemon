@@ -8,5 +8,5 @@ public:
     QueueManager();
     
 private:
-    irrigationEvent* firstEvent;
+    irrigationEvent* firstEvent = nullptr;
 };

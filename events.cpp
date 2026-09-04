@@ -5,14 +5,14 @@
 using namespace std;
 
 
-string irrigationEvent::getInfo()
-{
-    return "irrigationEvent";
-}
-
 void irrigationEvent::setNextEvent(irrigationEvent* nextIrrigationEvent)
 {
     nextEvent = nextIrrigationEvent;
+}
+
+string irrigationEvent::getInfo()
+{
+    return "irrigationEvent";
 }
 
 void irrigationEvent::activate() {}
