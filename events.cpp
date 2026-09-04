@@ -6,8 +6,15 @@ using namespace std;
 
 
 void irrigationEvent::setNextEvent(irrigationEvent* nextIrrigationEvent)
-{
-    nextEvent = nextIrrigationEvent;
+{   
+    if (nextEvent == nullptr)
+    {
+        nextEvent = nextIrrigationEvent;
+    }
+    else
+    {
+        nextEvent->setNextEvent(nextIrrigationEvent);
+    }
 }
 
 string irrigationEvent::getInfo()
