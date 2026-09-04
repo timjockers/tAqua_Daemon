@@ -7,6 +7,7 @@
 class irrigationEvent {
 public:
     void setNextEvent(irrigationEvent* nextIrrigationEvent);
+    irrigationEvent* getNextEvent();
 
     virtual std::string getInfo();
 

@@ -17,6 +17,11 @@ void irrigationEvent::setNextEvent(irrigationEvent* nextIrrigationEvent)
     }
 }
 
+irrigationEvent* irrigationEvent::getNextEvent()
+{
+    return nextEvent;
+}
+
 string irrigationEvent::getInfo()
 {
     return "irrigationEvent";
