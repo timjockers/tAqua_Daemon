@@ -6,4 +6,7 @@
 class QueueManager {
 public:
     QueueManager();
+    
+private:
+    irrigationEvent* firstEvent;
 };
