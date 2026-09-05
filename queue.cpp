@@ -6,14 +6,26 @@ QueueManager::QueueManager()
 
 }
 
-void QueueManager::addEvent(irrigationEvent* event)
+void QueueManager::addEvent(std::unique_ptr<irrigationEvent> event)
 {
+    if (!event)
+    {
+        return;
+    }
+
     if (firstEvent == nullptr)
     {
-        firstEvent = event;
+        firstEvent = std::move(event);
     }
     else
     {
-        firstEvent->setNextEvent(event);
+        irrigationEvent* lastEvent = firstEvent.get();
+
+        while (lastEvent->nextEvent != nullptr)
+        {
+            lastEvent = lastEvent->nextEvent.get();
+        }
+
+        lastEvent->nextEvent = std::move(event);
     }
 }

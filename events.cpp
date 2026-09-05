@@ -5,21 +5,14 @@
 using namespace std;
 
 
-void irrigationEvent::setNextEvent(irrigationEvent* nextIrrigationEvent)
-{   
-    if (nextEvent == nullptr)
-    {
-        nextEvent = nextIrrigationEvent;
-    }
-    else
-    {
-        nextEvent->setNextEvent(nextIrrigationEvent);
-    }
+irrigationEvent* irrigationEvent::getNextEvent() const
+{
+    return nextEvent.get();
 }
 
-irrigationEvent* irrigationEvent::getNextEvent()
+std::unique_ptr<irrigationEvent> irrigationEvent::takeNextEvent()
 {
-    return nextEvent;
+    return std::move(nextEvent);
 }
 
 string irrigationEvent::getInfo()

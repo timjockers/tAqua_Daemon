@@ -2,12 +2,15 @@
 
 #include <string>
 #include <chrono>
+#include <memory>
 #include "types.hpp"
 
 class irrigationEvent {
 public:
-    void setNextEvent(irrigationEvent* nextIrrigationEvent);
-    irrigationEvent* getNextEvent();
+    virtual ~irrigationEvent() = default;
+
+    irrigationEvent* getNextEvent() const;
+    std::unique_ptr<irrigationEvent> takeNextEvent();
 
     virtual std::string getInfo();
 
@@ -16,7 +19,9 @@ public:
     virtual bool isActive();
 
 private:
-    irrigationEvent* nextEvent = nullptr;
+    std::unique_ptr<irrigationEvent> nextEvent;
+
+    friend class QueueManager;
 };
 
 
