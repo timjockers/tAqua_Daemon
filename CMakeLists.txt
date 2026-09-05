@@ -14,6 +14,7 @@ add_executable(_daemon
     events.cpp
     io.cpp
     queue.cpp
+    daemon.cpp
 )
 
 target_link_libraries(_daemon PRIVATE ${LIBCONFIGPP_LIBRARIES})
