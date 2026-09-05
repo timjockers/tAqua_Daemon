@@ -5,16 +5,6 @@
 using namespace std;
 
 
-irrigationEvent* irrigationEvent::getNextEvent() const
-{
-    return nextEvent.get();
-}
-
-std::unique_ptr<irrigationEvent> irrigationEvent::takeNextEvent()
-{
-    return std::move(nextEvent);
-}
-
 string irrigationEvent::getInfo()
 {
     return "irrigationEvent";
@@ -38,6 +28,11 @@ relayEvent::relayEvent(Relay r)
 string relayEvent::getInfo()
 {
     return irrigationEvent::getInfo() + " >> " + "relayEvent(R" + to_string(relayIndex(relay) + 1) + ")";
+}
+
+Relay relayEvent::getRelay()
+{
+    return relay;
 }
 
 

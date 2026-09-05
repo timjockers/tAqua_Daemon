@@ -1,31 +1,22 @@
 #include "queue.hpp"
 
-
-QueueManager::QueueManager()
-{
-
-}
-
 void QueueManager::addEvent(std::unique_ptr<irrigationEvent> event)
 {
-    if (!event)
+    if (event)
     {
-        return;
+        events.push_back(std::move(event));
+    }
+}
+
+std::unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
+{
+    if (events.empty())
+    {
+        return nullptr;
     }
 
-    if (firstEvent == nullptr)
-    {
-        firstEvent = std::move(event);
-    }
-    else
-    {
-        irrigationEvent* lastEvent = firstEvent.get();
+    auto event = std::move(events.front());
+    events.pop_front();
 
-        while (lastEvent->nextEvent != nullptr)
-        {
-            lastEvent = lastEvent->nextEvent.get();
-        }
-
-        lastEvent->nextEvent = std::move(event);
-    }
+    return event;
 }

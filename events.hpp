@@ -9,19 +9,11 @@ class irrigationEvent {
 public:
     virtual ~irrigationEvent() = default;
 
-    irrigationEvent* getNextEvent() const;
-    std::unique_ptr<irrigationEvent> takeNextEvent();
-
     virtual std::string getInfo();
 
     virtual void activate();
     virtual void deactivate();
     virtual bool isActive();
-
-private:
-    std::unique_ptr<irrigationEvent> nextEvent;
-
-    friend class QueueManager;
 };
 
 
@@ -30,6 +22,7 @@ public:
     relayEvent(Relay r);
 
     std::string getInfo() override;
+    Relay getRelay();
 
 protected:
     Relay relay;

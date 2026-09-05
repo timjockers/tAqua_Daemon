@@ -1,15 +1,15 @@
 #pragma once
 
 #include "events.hpp"
-#include <memory>
 
+#include <deque>
+#include <memory>
 
 class QueueManager {
 public:
-    QueueManager();
-
     void addEvent(std::unique_ptr<irrigationEvent> event);
-    
+    std::unique_ptr<irrigationEvent> takeFirstEvent();
+
 private:
-    std::unique_ptr<irrigationEvent> firstEvent;
+    std::deque<std::unique_ptr<irrigationEvent>> events;
 };
