@@ -1,6 +1,8 @@
 #include "fileexchange.hpp"
 #include "events.hpp"
 #include "io.hpp"
+#include "queue.hpp"
+#include "types.hpp"
 
 #include <chrono>
 #include <unistd.h>
@@ -12,14 +14,27 @@ int main() {
 
     ioManager *ioM = new ioManager(confManager);
 
+    QueueManager *queueManager = new QueueManager();
+
+    
     ioM->setButtonCallback(
-        [](Button button, bool pressed)
+        [queueManager](Button button, bool pressed)
         {
             std::cout
                 << "Button "
                 << buttonIndex(button)
                 << (pressed ? " PRESSED" : " RELEASED")
                 << std::endl;
+            
+            if (!pressed)
+            {   
+                buttonEvent *e = new buttonEvent(
+                    RELAYS[buttonIndex(button)],
+                    std::chrono::seconds(5 * 60)
+                );
+
+                queueManager->addEvent(e);
+            }
         }
     );
 
