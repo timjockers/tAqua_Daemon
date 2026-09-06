@@ -59,7 +59,7 @@ void tAquaDaemon::handleButton(Button button, bool pressed)
     {   
         unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
             RELAYS[buttonIndex(button)],
-            chrono::seconds(5 * 60)
+            chrono::seconds(30)
         );
 
         queueM.addEvent(std::move(event));
