@@ -7,6 +7,7 @@
 #include <deque>
 #include <memory>
 #include <mutex>
+#include <string>
 
 
 class QueueManager {
@@ -16,6 +17,8 @@ public:
     void addEvent(std::unique_ptr<irrigationEvent> event);
     void work();
     void stop();
+
+    std::string getQueueInfo();
 
 private:
     ioManager& ioM;
