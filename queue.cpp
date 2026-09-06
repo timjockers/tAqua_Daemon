@@ -8,6 +8,30 @@ QueueManager::QueueManager(ioManager& io)
     : ioM(io)
 {}
 
+string QueueManager::getQueueInfo()
+{
+    lock_guard<mutex> lock(mtx);
+
+    if (events.empty())
+    {
+        return "Queue is empty";
+    }
+
+    string info = "Queue: {";
+
+    for (const auto& event : events)
+    {
+        if (event)
+        {
+            info += event->getInfo();
+            info += ", ";
+        }
+    }
+
+    info += "}";
+    return info;
+}
+
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
     if (!event)
