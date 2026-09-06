@@ -9,8 +9,11 @@
 class QueueManager {
 public:
     void addEvent(std::unique_ptr<irrigationEvent> event);
-    std::unique_ptr<irrigationEvent> takeFirstEvent();
+    void work();
 
 private:
+    std::unique_ptr<irrigationEvent> takeFirstEvent();
+    
     std::deque<std::unique_ptr<irrigationEvent>> events;
+    std::unique_ptr<irrigationEvent> activeEvent;
 };
