@@ -1,6 +1,7 @@
 #pragma once
 
 #include "events.hpp"
+#include "io.hpp"
 
 #include <condition_variable>
 #include <deque>
@@ -10,11 +11,15 @@
 
 class QueueManager {
 public:
+    explicit QueueManager(ioManager& io);
+
     void addEvent(std::unique_ptr<irrigationEvent> event);
     void work();
     void stop();
 
 private:
+    ioManager& ioM;
+
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;

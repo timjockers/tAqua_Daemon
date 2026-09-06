@@ -21,7 +21,7 @@ namespace
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       ioM(&configM),
-      queueM()
+      queueM(ioM)
 {}
 
 tAquaDaemon::~tAquaDaemon()

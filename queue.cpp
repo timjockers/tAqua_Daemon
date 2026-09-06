@@ -4,6 +4,10 @@
 
 using namespace std;
 
+QueueManager::QueueManager(ioManager& io)
+    : ioM(io)
+{}
+
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
     if (!event)
