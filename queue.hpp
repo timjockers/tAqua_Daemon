@@ -23,6 +23,7 @@ public:
 private:
     ioManager& ioM;
 
+    std::string getQueueInfoUnlocked();
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;

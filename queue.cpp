@@ -12,6 +12,11 @@ QueueManager::QueueManager(ioManager& io)
 string QueueManager::getQueueInfo()
 {
     lock_guard<mutex> lock(mtx);
+    return getQueueInfoUnlocked();
+}
+
+string QueueManager::getQueueInfoUnlocked()
+{
 
     string info = "Active event: ";
 
@@ -100,7 +105,7 @@ void QueueManager::work()
             activeEvent->activate(&ioM);
         }
 
-        cout << getQueueInfo() << endl;
+        cout << getQueueInfoUnlocked() << endl;
     }
 
     else if (activeEvent->isActive())
