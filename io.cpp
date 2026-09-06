@@ -564,6 +564,12 @@ void ioManager::processButtonEvents()
             {
                 continue;
             }
+            
+            // Check if relay of button is a valve
+            if (configM->getRelayConfig(RELAYS[i]) != RelayConfig::VALVE)
+            {
+                continue;
+            }
 
             unsigned int gpio = gpiod_edge_event_get_line_offset(event);
 
