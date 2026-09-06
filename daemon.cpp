@@ -35,7 +35,7 @@ void tAquaDaemon::handleButton(Button button, bool pressed)
             
     if (!pressed) // Add event when button is released
     {   
-        auto event = make_unique<buttonEvent>(
+        unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
             RELAYS[buttonIndex(button)],
             chrono::seconds(5 * 60)
         );
