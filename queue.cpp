@@ -12,6 +12,12 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
     }
 
     lock_guard<mutex> lock(mtx);
+
+    if (stopping)
+    {
+        return;
+    }
+
     events.push_back(std::move(event));
     condition.notify_one();
 }
@@ -35,10 +41,15 @@ void QueueManager::work()
 
     if (!activeEvent)
     {
-        condition.wait(lock, [this]
+        condition.wait_for(lock, chrono::milliseconds(100), [this]
         {
-            return !events.empty();
+            return stopping || !events.empty();
         });
+
+        if (stopping)
+        {
+            return;
+        }
 
         activeEvent = takeFirstEventUnlocked();
 
@@ -58,4 +69,11 @@ void QueueManager::work()
         activeEvent->deactivate();
         activeEvent.reset();
     }
+}
+
+void QueueManager::stop()
+{
+    lock_guard<mutex> lock(mtx);
+    stopping = true;
+    condition.notify_one();
 }

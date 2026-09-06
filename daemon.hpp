@@ -10,6 +10,7 @@
 class tAquaDaemon {
 public:
     tAquaDaemon();
+    ~tAquaDaemon();
     
     void run();
 

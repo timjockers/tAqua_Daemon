@@ -2,10 +2,21 @@
 
 #include <thread>
 #include <chrono>
+#include <csignal>
 #include <iostream>
 #include <memory>
 
 using namespace std;
+
+namespace
+{
+    volatile sig_atomic_t stopRequested = 0;
+
+    void requestStop(int)
+    {
+        stopRequested = 1;
+    }
+}
 
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
@@ -13,8 +24,16 @@ tAquaDaemon::tAquaDaemon()
       queueM()
 {}
 
+tAquaDaemon::~tAquaDaemon()
+{
+    queueM.stop();
+}
+
 void tAquaDaemon::run()
 {
+    signal(SIGINT, requestStop);
+    signal(SIGTERM, requestStop);
+
     ioM.setButtonCallback(
         [this](Button button, bool pressed)
         {
@@ -24,10 +43,12 @@ void tAquaDaemon::run()
 
     ioM.startButtonThread();
 
-    while (true)
+    while (!stopRequested)
     {
         queueM.work();
     }
+
+    queueM.stop();
 }
 
 void tAquaDaemon::handleButton(Button button, bool pressed)
