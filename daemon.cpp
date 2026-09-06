@@ -25,10 +25,8 @@ void tAquaDaemon::run()
     ioM.startButtonThread();
 
     while (true)
-    {   
+    {
         queueM.work();
-
-        this_thread::sleep_for(chrono::milliseconds(10));
     }
 }
 

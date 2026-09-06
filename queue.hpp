@@ -2,6 +2,7 @@
 
 #include "events.hpp"
 
+#include <condition_variable>
 #include <deque>
 #include <memory>
 #include <mutex>
@@ -19,4 +20,5 @@ private:
     std::unique_ptr<irrigationEvent> activeEvent;
 
     std::mutex mtx;
+    std::condition_variable condition;
 };
