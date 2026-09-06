@@ -1,6 +1,7 @@
 #include "queue.hpp"
 
 #include <chrono>
+#include <iostream>
 
 using namespace std;
 
@@ -98,6 +99,8 @@ void QueueManager::work()
         {
             activeEvent->activate(&ioM);
         }
+
+        cout << getQueueInfo() << endl;
     }
 
     else if (activeEvent->isActive())
