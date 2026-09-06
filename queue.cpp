@@ -12,23 +12,36 @@ string QueueManager::getQueueInfo()
 {
     lock_guard<mutex> lock(mtx);
 
-    if (events.empty())
+    string info = "Active event: ";
+
+    if (activeEvent)
     {
-        return "Queue is empty";
+        info += activeEvent->getInfo();
+    }
+    else
+    {
+        info += "none";
     }
 
-    string info = "Queue: {";
+    info += "\nQueued events: [";
+
+    bool firstEvent = true;
 
     for (const auto& event : events)
     {
         if (event)
         {
+            if (!firstEvent)
+            {
+                info += ", ";
+            }
+
             info += event->getInfo();
-            info += ", ";
+            firstEvent = false;
         }
     }
 
-    info += "}";
+    info += "]";
     return info;
 }
 
