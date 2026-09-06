@@ -13,7 +13,7 @@ public:
     void work();
 
 private:
-    std::unique_ptr<irrigationEvent> takeFirstEvent();
+    std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;
     std::unique_ptr<irrigationEvent> activeEvent;

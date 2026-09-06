@@ -13,7 +13,7 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
     events.push_back(std::move(event));
 }
 
-unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
+unique_ptr<irrigationEvent> QueueManager::takeFirstEventUnlocked()
 {
     if (events.empty())
     {
@@ -32,7 +32,7 @@ void QueueManager::work()
 
     if (!activeEvent)
     {
-        activeEvent = takeFirstEvent();
+        activeEvent = takeFirstEventUnlocked();
 
         if (activeEvent)
         {
