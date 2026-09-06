@@ -565,12 +565,6 @@ void ioManager::processButtonEvents()
                 continue;
             }
             
-            // Check if relay of button is a valve
-            if (configM->getRelayConfig(RELAYS[i]) != RelayConfig::VALVE)
-            {
-                continue;
-            }
-
             unsigned int gpio = gpiod_edge_event_get_line_offset(event);
 
             auto button = buttonFromGPIO(gpio);
@@ -578,6 +572,14 @@ void ioManager::processButtonEvents()
             if (!button)
             {
                 cerr << "Received event for unknown GPIO: " << gpio << endl;
+                continue;
+            }
+
+            // Check if the relay assigned to this button is a valve.
+            const size_t index = buttonIndex(*button);
+
+            if (configM->getRelayConfig(RELAYS[index]) != RelayConfig::VALVE)
+            {
                 continue;
             }
 
