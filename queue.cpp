@@ -1,6 +1,8 @@
 #include "queue.hpp"
 
-void QueueManager::addEvent(std::unique_ptr<irrigationEvent> event)
+using namespace std;
+
+void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
     if (event)
     {
@@ -8,7 +10,7 @@ void QueueManager::addEvent(std::unique_ptr<irrigationEvent> event)
     }
 }
 
-std::unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
+unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
 {
     if (events.empty())
     {
