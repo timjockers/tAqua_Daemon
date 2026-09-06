@@ -103,9 +103,8 @@ void QueueManager::work()
         if (activeEvent)
         {
             activeEvent->activate(&ioM);
+            cout << getQueueInfoUnlocked() << endl;
         }
-
-        cout << getQueueInfoUnlocked() << endl;
     }
 
     else if (activeEvent->isActive())
