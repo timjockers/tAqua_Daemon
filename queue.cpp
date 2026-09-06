@@ -4,10 +4,13 @@ using namespace std;
 
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
-    if (event)
+    if (!event)
     {
-        events.push_back(std::move(event));
+        return;
     }
+
+    lock_guard<mutex> lock(mtx);
+    events.push_back(std::move(event));
 }
 
 unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
@@ -24,7 +27,9 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
 }
 
 void QueueManager::work()
-{
+{   
+    lock_guard<mutex> lock(mtx);
+
     if (!activeEvent)
     {
         activeEvent = takeFirstEvent();

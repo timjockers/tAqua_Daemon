@@ -4,6 +4,7 @@
 
 #include <deque>
 #include <memory>
+#include <mutex>
 
 
 class QueueManager {
@@ -13,7 +14,9 @@ public:
 
 private:
     std::unique_ptr<irrigationEvent> takeFirstEvent();
-    
+
     std::deque<std::unique_ptr<irrigationEvent>> events;
     std::unique_ptr<irrigationEvent> activeEvent;
+
+    std::mutex mtx;
 };
