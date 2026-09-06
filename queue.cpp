@@ -59,13 +59,7 @@ void QueueManager::work()
 
         if (activeEvent)
         {
-            activeEvent->activate();
-            
-            auto* relayE = dynamic_cast<relayEvent*>(activeEvent.get());
-            if (relayE)
-            {
-                ioM.setRelay(relayE->getRelay(), true);
-            }
+            activeEvent->activate(&ioM);
         }
     }
 
@@ -75,14 +69,8 @@ void QueueManager::work()
     }
 
     if (activeEvent && !activeEvent->isActive())
-    {   
-        auto* relayE = dynamic_cast<relayEvent*>(activeEvent.get());
-        if (relayE)
-        {
-            ioM.setRelay(relayE->getRelay(), false);
-        }
-
-        activeEvent->deactivate();
+    {
+        activeEvent->deactivate(&ioM);
         activeEvent.reset();
     }
 }

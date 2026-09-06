@@ -10,9 +10,9 @@ string irrigationEvent::getInfo()
     return "irrigationEvent";
 }
 
-void irrigationEvent::activate() {}
+void irrigationEvent::activate(ioManager* io) {}
 
-void irrigationEvent::deactivate() {}
+void irrigationEvent::deactivate(ioManager* io) {}
 
 bool irrigationEvent::isActive()
 {
@@ -35,6 +35,16 @@ Relay relayEvent::getRelay()
     return relay;
 }
 
+void relayEvent::activate(ioManager* io)
+{
+    io->setRelay(getRelay(), true);
+}
+
+void relayEvent::deactivate(ioManager* io)
+{
+    io->setRelay(getRelay(), false);
+}
+
 
 
 buttonEvent::buttonEvent(Relay r, chrono::seconds irrDuration)
@@ -46,16 +56,11 @@ string buttonEvent::getInfo()
     return relayEvent::getInfo() + " >> " + "buttonEvent(D" + to_string(duration.count()) + "s)";
 }
 
-void buttonEvent::activate()
+void buttonEvent::activate(ioManager* io)
 {
-    relayEvent::activate();
+    relayEvent::activate(io);
 
     startTime = chrono::system_clock::now();
-}
-
-void buttonEvent::deactivate()
-{
-    relayEvent::deactivate();
 }
 
 bool buttonEvent::isActive()

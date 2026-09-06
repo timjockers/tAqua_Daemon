@@ -4,6 +4,7 @@
 #include <chrono>
 #include <memory>
 #include "types.hpp"
+#include "io.hpp"
 
 class irrigationEvent {
 public:
@@ -11,8 +12,8 @@ public:
 
     virtual std::string getInfo();
 
-    virtual void activate();
-    virtual void deactivate();
+    virtual void activate(ioManager* io);
+    virtual void deactivate(ioManager *io);
     virtual bool isActive();
 };
 
@@ -24,6 +25,9 @@ public:
     std::string getInfo() override;
     Relay getRelay();
 
+    void activate(ioManager* io) override;
+    void deactivate(ioManager* io) override;
+
 protected:
     Relay relay;
 };
@@ -34,8 +38,7 @@ public:
     buttonEvent(Relay r, std::chrono::seconds irrDuration);
 
     std::string getInfo() override;
-    void activate() override;
-    void deactivate() override;
+    void activate(ioManager* io) override;
     bool isActive() override;
 
 private:
