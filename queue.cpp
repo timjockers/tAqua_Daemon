@@ -22,3 +22,22 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEvent()
 
     return event;
 }
+
+void QueueManager::work()
+{
+    if (!activeEvent)
+    {
+        activeEvent = takeFirstEvent();
+
+        if (activeEvent)
+        {
+            activeEvent->activate();
+        }
+    }
+
+    if (activeEvent && !activeEvent->isActive())
+    {
+        activeEvent->deactivate();
+        activeEvent.reset();
+    }
+}
