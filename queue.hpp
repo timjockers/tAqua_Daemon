@@ -15,6 +15,7 @@ public:
     explicit QueueManager(ioManager& io);
 
     void addEvent(std::unique_ptr<irrigationEvent> event);
+    bool containsButtonEvent(Relay relay) const;
     void work();
     void stop();
 
@@ -24,12 +25,13 @@ private:
     ioManager& ioM;
 
     std::string getQueueInfoUnlocked();
+    bool containsButtonEventUnlocked(Relay relay) const;
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;
     std::unique_ptr<irrigationEvent> activeEvent;
 
-    std::mutex mtx;
+    mutable std::mutex mtx;
     std::condition_variable condition;
     bool stopping = false;
 };

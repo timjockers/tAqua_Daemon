@@ -25,9 +25,16 @@ void ButtonController::handleButton(Button button, bool pressed)
     cout << "Button " << buttonIndex(button) << (pressed ? " PRESSED" : " RELEASED") << endl;
 
     if (!pressed) // Add event when button is released
-    {   
+    {
+        const Relay relay = RELAYS[buttonIndex(button)];
+
+        if (queueM->containsButtonEvent(relay))
+        {
+            return;
+        }
+
         unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
-            RELAYS[buttonIndex(button)],
+            relay,
             chrono::seconds(30)
         );
 

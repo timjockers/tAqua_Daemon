@@ -51,6 +51,27 @@ string QueueManager::getQueueInfoUnlocked()
     return info;
 }
 
+bool QueueManager::containsButtonEvent(Relay relay) const
+{
+    lock_guard<mutex> lock(mtx);
+    return containsButtonEventUnlocked(relay);
+}
+
+bool QueueManager::containsButtonEventUnlocked(Relay relay) const
+{
+    for (const auto& event : events)
+    {
+        const auto* buttonEvent = dynamic_cast<const class buttonEvent*>(event.get());
+
+        if (buttonEvent && buttonEvent->getRelay() == relay)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
     if (!event)

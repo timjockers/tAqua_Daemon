@@ -30,7 +30,7 @@ string relayEvent::getInfo()
     return irrigationEvent::getInfo() + " >> " + "relayEvent(R" + to_string(relayIndex(relay) + 1) + ")";
 }
 
-Relay relayEvent::getRelay()
+Relay relayEvent::getRelay() const
 {
     return relay;
 }

@@ -23,7 +23,7 @@ public:
     relayEvent(Relay r);
 
     std::string getInfo() override;
-    Relay getRelay();
+    Relay getRelay() const;
 
     void activate(ioManager* io) override;
     void deactivate(ioManager* io) override;
