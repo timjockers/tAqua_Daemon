@@ -5,6 +5,7 @@
 #include "events.hpp"
 #include "io.hpp"
 #include "queue.hpp"
+#include "button_controller.hpp"
 
 
 class tAquaDaemon {
@@ -20,5 +21,6 @@ private:
     ConfigManager configM;
     ioManager ioM;
     QueueManager queueM;
+    ButtonController buttonC;
 };
 
