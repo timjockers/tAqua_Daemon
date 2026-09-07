@@ -29,7 +29,8 @@ void ButtonController::handleButton(Button button, bool pressed)
         const Relay relay = RELAYS[buttonIndex(button)];
 
         if (queueM->containsButtonEvent(relay))
-        {
+        {   
+            cout << "BUTTON ALREADY IN QUEUE!!!" << endl;
             return;
         }
 
