@@ -16,8 +16,6 @@ public:
     void run();
 
 private:
-    void handleButton(Button button, bool pressed);
-
     ConfigManager configM;
     ioManager ioM;
     QueueManager queueM;
