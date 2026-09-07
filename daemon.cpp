@@ -22,7 +22,7 @@ tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       ioM(&configM),
       queueM(ioM),
-      buttonC(&configM, &queueM)
+      buttonC(&configM, &ioM, &queueM)
 {}
 
 tAquaDaemon::~tAquaDaemon()
