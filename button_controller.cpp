@@ -28,6 +28,11 @@ void ButtonController::handleButton(Button button, bool pressed)
     {
         const Relay relay = RELAYS[buttonIndex(button)];
 
+        if (ioM->getRelay(relay) == true)
+        {
+            cout << "Cancel irrigation event" << endl;
+        }
+
         if (queueM->containsButtonEvent(relay))
         {   
             cout << "BUTTON ALREADY IN QUEUE!!!" << endl;
