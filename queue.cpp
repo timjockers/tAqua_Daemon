@@ -72,6 +72,19 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
     return false;
 }
 
+void QueueManager::cancelActiveEvent()
+{
+    lock_guard<mutex> lock(mtx);
+
+    if (activeEvent)
+    {
+        activeEvent->deactivate(&ioM);
+        activeEvent.reset();
+    }
+
+    condition.notify_one();
+}
+
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 {
     if (!event)

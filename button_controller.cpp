@@ -30,20 +30,21 @@ void ButtonController::handleButton(Button button, bool pressed)
 
         if (ioM->getRelay(relay) == true)
         {
-            cout << "Cancel irrigation event" << endl;
+            queueM->cancelActiveEvent();
         }
 
         if (queueM->containsButtonEvent(relay))
-        {   
-            cout << "BUTTON ALREADY IN QUEUE!!!" << endl;
+        {
             return;
         }
+        else
+        {
+            unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
+                relay,
+                chrono::seconds(30) // Read time from configManager
+            );
 
-        unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
-            relay,
-            chrono::seconds(30)
-        );
-
-        queueM->addEvent(std::move(event));
+            queueM->addEvent(std::move(event));
+        }
     }
 }
