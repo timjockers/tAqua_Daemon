@@ -2,6 +2,7 @@
 
 #include <string>
 #include <array>
+#include <chrono>
 #include <libconfig.h++>
 #include "types.hpp"
 
@@ -12,6 +13,7 @@ public:
 
     void updateConfig();
     RelayConfig getRelayConfig(Relay relay);
+    std::chrono::seconds getButtonIrrTime();
     
 private:
     void read();
@@ -22,4 +24,5 @@ private:
     libconfig::Config cfg;
 
     std::array<RelayConfig, 8> relayConfig;
+    std::chrono::seconds buttonIrrTime;
 };

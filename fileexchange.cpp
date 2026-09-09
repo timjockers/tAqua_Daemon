@@ -62,9 +62,25 @@ void ConfigManager::store()
     {
         cerr << "Error: relayConfig could not be found." << endl;
     }
+
+    try {
+        buttonIrrTime = static_cast<chrono::seconds>(cfg.lookup("buttonIrrigationTime"));
+    }
+    catch (const SettingNotFoundException&) {
+        cerr << "Error: buttonIrrigationTime could not be found." << endl;
+    }
+    catch (const SettingTypeException&) {
+        cerr << "Error: buttonIrrigationTime is not an integer." << endl;
+    }
 }
+
 
 RelayConfig ConfigManager::getRelayConfig(Relay relay)
 {
     return relayConfig[relayIndex(relay)];
+}
+
+chrono::seconds ConfigManager::getButtonIrrTime()
+{
+    return buttonIrrTime;
 }
