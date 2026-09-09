@@ -24,27 +24,27 @@ void ButtonController::handleButton(Button button, bool pressed)
 {
     cout << "Button " << buttonIndex(button) << (pressed ? " PRESSED" : " RELEASED") << endl;
 
-    if (!pressed) // Add event when button is released
+    if (!pressed) // Always handle button when released
     {
         const Relay relay = RELAYS[buttonIndex(button)];
 
-        if (ioM->getRelay(relay) == true)
+        if (ioM->getRelay(relay))
         {
             queueM->cancelActiveEvent();
+            return;
         }
 
         if (queueM->containsButtonEvent(relay))
-        {
+        {   
+            // Add logic to pop event from queue
             return;
         }
-        else
-        {
-            unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
-                relay,
-                chrono::seconds(30) // Read time from configManager
-            );
 
-            queueM->addEvent(std::move(event));
-        }
+        unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
+            relay,
+            chrono::seconds(30) // Read time from configManager
+        );
+
+        queueM->addEvent(std::move(event));
     }
 }
