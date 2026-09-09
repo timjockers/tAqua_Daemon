@@ -35,8 +35,8 @@ void ButtonController::handleButton(Button button, bool pressed)
         }
 
         if (queueM->containsButtonEvent(relay))
-        {   
-            // Add logic to pop event from queue
+        {
+            queueM->removeQueuedButtonEvent(relay);
             return;
         }
 

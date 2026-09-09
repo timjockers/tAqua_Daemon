@@ -72,6 +72,27 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
     return false;
 }
 
+void QueueManager::removeQueuedButtonEvent(Relay relay)
+{
+    lock_guard<mutex> lock(mtx);
+
+    auto it = events.begin();
+    while (it != events.end())
+    {
+        const auto* queuedButton = dynamic_cast<const class buttonEvent*>(it->get());
+        if (queuedButton && queuedButton->getRelay() == relay)
+        {
+            it = events.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    condition.notify_one();
+}
+
 void QueueManager::cancelActiveEvent()
 {
     lock_guard<mutex> lock(mtx);

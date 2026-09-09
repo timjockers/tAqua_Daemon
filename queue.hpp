@@ -16,6 +16,7 @@ public:
 
     void addEvent(std::unique_ptr<irrigationEvent> event);
     bool containsButtonEvent(Relay relay) const;
+    void removeQueuedButtonEvent(Relay relay);
     void cancelActiveEvent();
     void work();
     void stop();
