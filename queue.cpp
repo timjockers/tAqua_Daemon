@@ -172,6 +172,14 @@ void QueueManager::work()
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
     }
+
+
+    for (size_t i = 0; i < YLEDS.size(); ++i)
+    {
+        ioM.setYLED(YLEDS[i],
+            containsButtonEventUnlocked(RELAYS[i])
+        );
+    }
 }
 
 void QueueManager::stop()
