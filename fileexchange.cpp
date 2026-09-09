@@ -64,7 +64,9 @@ void ConfigManager::store()
     }
 
     try {
-        buttonIrrTime = static_cast<chrono::seconds>(cfg.lookup("buttonIrrigationTime"));
+        int value = 0;
+        cfg.lookupValue("buttonIrrigationTime", value);
+        buttonIrrTime = chrono::seconds(value);
     }
     catch (const SettingNotFoundException&) {
         cerr << "Error: buttonIrrigationTime could not be found." << endl;
