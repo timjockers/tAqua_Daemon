@@ -28,6 +28,7 @@ private:
 
     std::string getQueueInfoUnlocked();
     bool containsButtonEventUnlocked(Relay relay) const;
+    void refreshYLEDsUnlocked();
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;

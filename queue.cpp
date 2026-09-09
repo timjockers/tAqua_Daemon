@@ -72,6 +72,14 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
     return false;
 }
 
+void QueueManager::refreshYLEDsUnlocked()
+{
+    for (size_t i = 0; i < YLEDS.size(); ++i)
+    {
+        ioM.setYLED(YLEDS[i], containsButtonEventUnlocked(RELAYS[i]));
+    }
+}
+
 void QueueManager::removeQueuedButtonEvent(Relay relay)
 {
     lock_guard<mutex> lock(mtx);
@@ -90,6 +98,7 @@ void QueueManager::removeQueuedButtonEvent(Relay relay)
         }
     }
 
+    refreshYLEDsUnlocked();
     condition.notify_one();
 }
 
@@ -101,6 +110,7 @@ void QueueManager::cancelActiveEvent()
     {
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
+        refreshYLEDsUnlocked();
     }
 
     condition.notify_one();
@@ -121,6 +131,7 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
     }
 
     events.push_back(std::move(event));
+    refreshYLEDsUnlocked();
     condition.notify_one();
 }
 
@@ -134,6 +145,7 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEventUnlocked()
     auto event = std::move(events.front());
     events.pop_front();
 
+    refreshYLEDsUnlocked();
     return event;
 }
 
@@ -159,6 +171,7 @@ void QueueManager::work()
         {
             activeEvent->activate(&ioM);
             cout << getQueueInfoUnlocked() << endl;
+            refreshYLEDsUnlocked();
         }
     }
 
@@ -171,14 +184,7 @@ void QueueManager::work()
     {
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
-    }
-
-
-    for (size_t i = 0; i < YLEDS.size(); ++i)
-    {
-        ioM.setYLED(YLEDS[i],
-            containsButtonEventUnlocked(RELAYS[i])
-        );
+        refreshYLEDsUnlocked();
     }
 }
 

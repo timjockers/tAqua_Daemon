@@ -42,7 +42,7 @@ void ButtonController::handleButton(Button button, bool pressed)
 
         unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
             relay,
-            chrono::seconds(30) // Read time from configManager
+            configM->getButtonIrrTime()
         );
 
         queueM->addEvent(std::move(event));
