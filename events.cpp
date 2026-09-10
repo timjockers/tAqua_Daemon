@@ -67,3 +67,14 @@ bool buttonEvent::isActive()
 {
     return (chrono::system_clock::now() - startTime) < duration;
 }
+
+
+scheduledEvent::scheduledEvent(Relay r)
+    : relayEvent(r)
+{
+}
+
+string scheduledEvent::getInfo()
+{
+    return relayEvent::getInfo() + " >> " + "scheduledEvent(weekday, starttime, duration)";
+}

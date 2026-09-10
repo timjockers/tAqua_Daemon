@@ -45,3 +45,11 @@ private:
     std::chrono::seconds duration;
     std::chrono::system_clock::time_point startTime;
 };
+
+
+class scheduledEvent : public relayEvent {
+public:
+    scheduledEvent(Relay r);
+
+    std::string getInfo() override;
+};
