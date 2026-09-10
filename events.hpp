@@ -49,9 +49,11 @@ private:
 
 class scheduledEvent : public durationEvent {
 public:
-    scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday);
+    scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday, std::chrono::minutes startTime);
 
     std::string getInfo() override;
 private:
     Weekday wday;
+    std::chrono::minutes starttime; // Minutes past midnight
+    int lastQueuedDayKey = -1; // Verifies that an event can only be added once per day
 };
