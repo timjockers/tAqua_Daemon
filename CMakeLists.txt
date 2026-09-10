@@ -16,6 +16,7 @@ add_executable(_daemon
     queue.cpp
     daemon.cpp
     button_controller.cpp
+    scheduler.cpp
 )
 
 target_link_libraries(_daemon PRIVATE ${LIBCONFIGPP_LIBRARIES})
