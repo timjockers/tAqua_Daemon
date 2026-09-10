@@ -49,7 +49,9 @@ private:
 
 class scheduledEvent : public durationEvent {
 public:
-    scheduledEvent(Relay r, std::chrono::seconds irrDuration);
+    scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday);
 
     std::string getInfo() override;
+private:
+    Weekday wday;
 };

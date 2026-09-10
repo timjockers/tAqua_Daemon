@@ -69,11 +69,11 @@ bool durationEvent::isActive()
 }
 
 
-scheduledEvent::scheduledEvent(Relay r, chrono::seconds irrDuration)
-    : durationEvent(r, irrDuration)
+scheduledEvent::scheduledEvent(Relay r, chrono::seconds irrDuration, Weekday weekday)
+    : durationEvent(r, irrDuration), wday(weekday)
 {}
 
 string scheduledEvent::getInfo()
 {
-    return relayEvent::getInfo() + " >> " + "scheduledEvent(weekday, starttime)";
+    return relayEvent::getInfo() + " >> " + "scheduledEvent(W" + to_string(static_cast<int>(wday)) + ", starttime)";
 }
