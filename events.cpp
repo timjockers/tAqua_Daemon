@@ -47,23 +47,23 @@ void relayEvent::deactivate(ioManager* io)
 
 
 
-buttonEvent::buttonEvent(Relay r, chrono::seconds irrDuration)
+durationEvent::durationEvent(Relay r, chrono::seconds irrDuration)
     : relayEvent(r), duration(irrDuration)
 {}
 
-string buttonEvent::getInfo()
+string durationEvent::getInfo()
 {
-    return relayEvent::getInfo() + " >> " + "buttonEvent(D" + to_string(duration.count()) + "s)";
+    return relayEvent::getInfo() + " >> " + "durationEvent(D" + to_string(duration.count()) + "s)";
 }
 
-void buttonEvent::activate(ioManager* io)
+void durationEvent::activate(ioManager* io)
 {
     relayEvent::activate(io);
 
     startTime = chrono::system_clock::now();
 }
 
-bool buttonEvent::isActive()
+bool durationEvent::isActive()
 {
     return (chrono::system_clock::now() - startTime) < duration;
 }

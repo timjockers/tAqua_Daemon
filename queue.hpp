@@ -15,8 +15,8 @@ public:
     explicit QueueManager(ioManager& io);
 
     void addEvent(std::unique_ptr<irrigationEvent> event);
-    bool containsButtonEvent(Relay relay) const;
-    void removeQueuedButtonEvent(Relay relay);
+    bool containsDurationEvent(Relay relay) const;
+    void removeQueuedDurationEvent(Relay relay);
     void cancelActiveEvent();
     void work();
     void stop();
@@ -27,7 +27,7 @@ private:
     ioManager& ioM;
 
     std::string getQueueInfoUnlocked();
-    bool containsButtonEventUnlocked(Relay relay) const;
+    bool containsDurationEventUnlocked(Relay relay) const;
     void refreshYLEDsUnlocked();
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 

@@ -33,9 +33,9 @@ protected:
 };
 
 
-class buttonEvent : public relayEvent {
+class durationEvent : public relayEvent {
 public:
-    buttonEvent(Relay r, std::chrono::seconds irrDuration);
+    durationEvent(Relay r, std::chrono::seconds irrDuration);
 
     std::string getInfo() override;
     void activate(ioManager* io) override;

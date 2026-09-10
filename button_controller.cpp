@@ -34,13 +34,13 @@ void ButtonController::handleButton(Button button, bool pressed)
             return;
         }
 
-        if (queueM->containsButtonEvent(relay))
+        if (queueM->containsDurationEvent(relay))
         {
-            queueM->removeQueuedButtonEvent(relay);
+            queueM->removeQueuedDurationEvent(relay);
             return;
         }
 
-        unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
+        unique_ptr<durationEvent> event = make_unique<durationEvent>(
             relay,
             configM->getButtonIrrTime()
         );
