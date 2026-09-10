@@ -3,6 +3,32 @@
 #include <cstddef>
 #include <array>
 #include <algorithm>
+#include <chrono>
+#include <ctime>
+
+// Weekdays
+enum class Weekday {
+    Sunday = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6
+};
+
+inline Weekday get_current_weekday() {
+    auto now = std::chrono::system_clock::now();
+    const std::time_t time = std::chrono::system_clock::to_time_t(now);
+
+    const std::tm* local_time = std::localtime(&time);
+    if (!local_time)
+    {
+        return Weekday::Sunday;
+    }
+
+    return static_cast<Weekday>(local_time->tm_wday);
+}
 
 
 // The 3 possible relay configurations
