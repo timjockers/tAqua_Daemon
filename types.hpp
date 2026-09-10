@@ -17,11 +17,7 @@ enum class Weekday {
     Saturday = 6
 };
 
-inline Weekday get_current_weekday() {
-    auto now = std::chrono::system_clock::now();
-    const std::time_t time = std::chrono::system_clock::to_time_t(now);
-
-    const std::tm* local_time = std::localtime(&time);
+inline Weekday get_current_weekday(const std::tm* local_time) {
     if (!local_time)
     {
         return Weekday::Sunday;

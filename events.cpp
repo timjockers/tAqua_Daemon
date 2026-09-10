@@ -81,3 +81,22 @@ string scheduledEvent::getInfo()
 
     return relayEvent::getInfo() + " >> " + "scheduledEvent(W" + to_string(static_cast<int>(wday)) + ", ST" + to_string(hour) + ":" + to_string(minute) + ")";
 }
+
+bool scheduledEvent::matchesSchedule()
+{
+    auto now = std::chrono::system_clock::now();
+    const std::time_t time = std::chrono::system_clock::to_time_t(now);
+
+    const std::tm* local_time = std::localtime(&time);
+
+    const Weekday currentWeekday = get_current_weekday(local_time);
+
+    if (currentWeekday != wday) {
+        return false;
+    }
+
+    const int currentMinuteOfDay = local_time->tm_hour * 60 + local_time->tm_min;
+    const int startMinuteOfDay = static_cast<int>(starttime.count());
+
+    return currentMinuteOfDay == startMinuteOfDay;
+}

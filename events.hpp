@@ -52,6 +52,8 @@ public:
     scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday, std::chrono::minutes startTime);
 
     std::string getInfo() override;
+
+    bool matchesSchedule();
 private:
     Weekday wday;
     std::chrono::minutes starttime; // Minutes past midnight
