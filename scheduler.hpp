@@ -10,5 +10,5 @@ public:
 private:
     QueueManager *queueM;
 
-    // std::vector<> scheduledEvents;
+    std::vector<scheduledEvent> scheduledEvents;
 };
