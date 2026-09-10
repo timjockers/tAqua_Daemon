@@ -1,5 +1,6 @@
 #include "events.hpp"
 
+#include <ctime>
 #include <iostream>
 
 using namespace std;
@@ -74,7 +75,7 @@ scheduledEvent::scheduledEvent(Relay r, chrono::seconds irrDuration, Weekday wee
 {}
 
 string scheduledEvent::getInfo()
-{   
+{
     const int total = static_cast<int>(starttime.count());
     const int hour = total / 60;
     const int minute = total % 60;
@@ -82,16 +83,18 @@ string scheduledEvent::getInfo()
     return relayEvent::getInfo() + " >> " + "scheduledEvent(W" + to_string(static_cast<int>(wday)) + ", ST" + to_string(hour) + ":" + to_string(minute) + ")";
 }
 
-bool scheduledEvent::matchesSchedule()
+bool scheduledEvent::matchesSchedule(chrono::system_clock::time_point now)
 {
-    auto now = std::chrono::system_clock::now();
-    const std::time_t time = std::chrono::system_clock::to_time_t(now);
+    const auto tt = chrono::system_clock::to_time_t(now);
+    const auto* local_time = std::localtime(&tt);
 
-    const std::tm* local_time = std::localtime(&time);
+    if (!local_time)
+    {
+        return false;
+    }
 
-    const Weekday currentWeekday = get_current_weekday(local_time);
-
-    if (currentWeekday != wday) {
+    if (static_cast<Weekday>(local_time->tm_wday) != wday)
+    {
         return false;
     }
 
@@ -99,4 +102,34 @@ bool scheduledEvent::matchesSchedule()
     const int startMinuteOfDay = static_cast<int>(starttime.count());
 
     return currentMinuteOfDay == startMinuteOfDay;
+}
+
+bool scheduledEvent::shouldEnqueueNow()
+{   
+    auto now = chrono::system_clock::now();
+
+    const auto tt = chrono::system_clock::to_time_t(now);
+    const auto* local_time = std::localtime(&tt);
+
+    if (!local_time)
+    {
+        return false;
+    }
+
+    const int todayKey = (local_time->tm_year + 1900) * 10000 + (local_time->tm_mon + 1) * 100 + local_time->tm_mday;
+
+    if (lastQueuedDayKey == todayKey)
+    {
+        return false;
+    }
+
+    if (matchesSchedule(now))
+    {
+        lastQueuedDayKey = todayKey;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

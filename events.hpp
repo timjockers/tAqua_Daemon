@@ -41,7 +41,7 @@ public:
     void activate(ioManager* io) override;
     bool isActive() override;
 
-private:
+protected:
     std::chrono::seconds duration;
     std::chrono::system_clock::time_point startTime;
 };
@@ -53,8 +53,11 @@ public:
 
     std::string getInfo() override;
 
-    bool matchesSchedule();
+    bool shouldEnqueueNow();
+
 private:
+    bool matchesSchedule(std::chrono::system_clock::time_point now);
+
     Weekday wday;
     std::chrono::minutes starttime; // Minutes past midnight
     int lastQueuedDayKey = -1; // Verifies that an event can only be added once per day
