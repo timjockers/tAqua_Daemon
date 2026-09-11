@@ -133,3 +133,7 @@ bool scheduledEvent::shouldEnqueueNow()
         return false;
     }
 }
+
+unique_ptr<durationEvent> scheduledEvent::toDurationEvent() {
+    return make_unique<durationEvent>(relay, duration);
+}

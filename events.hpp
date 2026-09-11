@@ -55,6 +55,8 @@ public:
 
     bool shouldEnqueueNow();
 
+    std::unique_ptr<durationEvent> toDurationEvent();
+
 private:
     bool matchesSchedule(std::chrono::system_clock::time_point now);
 
