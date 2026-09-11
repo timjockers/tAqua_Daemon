@@ -6,6 +6,7 @@
 #include "io.hpp"
 #include "queue.hpp"
 #include "button_controller.hpp"
+#include "scheduler.hpp"
 
 
 class tAquaDaemon {
@@ -20,5 +21,6 @@ private:
     ioManager ioM;
     QueueManager queueM;
     ButtonController buttonC;
+    Scheduler scheduler;
 };
 

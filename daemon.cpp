@@ -22,7 +22,8 @@ tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       ioM(&configM),
       queueM(ioM),
-      buttonC(&configM, &ioM, &queueM)
+      buttonC(&configM, &ioM, &queueM),
+      scheduler(&queueM)
 {}
 
 tAquaDaemon::~tAquaDaemon()
@@ -38,7 +39,8 @@ void tAquaDaemon::run()
     buttonC.startButtonCallback();
 
     while (!stopRequested)
-    {
+    {   
+        scheduler.work();
         queueM.work();
     }
 
