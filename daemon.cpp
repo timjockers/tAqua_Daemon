@@ -24,7 +24,9 @@ tAquaDaemon::tAquaDaemon()
       queueM(ioM),
       buttonC(&configM, &ioM, &queueM),
       scheduler(&queueM)
-{}
+{
+    scheduler.setEventVector(configM.getScheduledEvents());
+}
 
 tAquaDaemon::~tAquaDaemon()
 {
