@@ -7,6 +7,7 @@ class Scheduler {
 public:
     explicit Scheduler(QueueManager *queueManager);
 
+    void setEventVector(const std::vector<scheduledEvent>& events);
     void work();
 
 private:
