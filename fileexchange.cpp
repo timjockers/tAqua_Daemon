@@ -63,16 +63,52 @@ void ConfigManager::store()
         cerr << "Error: relayConfig could not be found." << endl;
     }
 
-    try {
+    try
+    {
         int value = 0;
         cfg.lookupValue("buttonIrrigationTime", value);
         buttonIrrTime = chrono::seconds(value);
     }
-    catch (const SettingNotFoundException&) {
+    catch (const SettingNotFoundException&)
+    {
         cerr << "Error: buttonIrrigationTime could not be found." << endl;
     }
-    catch (const SettingTypeException&) {
+    catch (const SettingTypeException&)
+    {
         cerr << "Error: buttonIrrigationTime is not an integer." << endl;
+    }
+
+    try
+    {   
+        scheduledEvents.clear();
+
+        const Setting& scheduled = cfg.lookup("scheduled");
+
+        for (size_t i = 0; i < scheduled.getLength(); ++i)
+        {
+            const Setting& item = scheduled[i];
+
+            int relay = 0;
+            int duration = 0;
+
+            item.lookupValue("relay", relay);
+            item.lookupValue("duration", duration);
+
+            const Setting& start = item.lookup("start");
+            int weekday = start[0];
+            int minutes = start[1];
+
+            scheduledEvents.emplace_back(
+                RELAYS[relay],
+                std::chrono::seconds(duration),
+                static_cast<Weekday>(weekday),
+                std::chrono::minutes(minutes)
+            );
+        }
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error reading schedule" << endl;
     }
 }
 
