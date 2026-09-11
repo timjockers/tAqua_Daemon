@@ -1,5 +1,6 @@
 #include "events.hpp"
 
+#include "io.hpp"
 #include <ctime>
 #include <iostream>
 

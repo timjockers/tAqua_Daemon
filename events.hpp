@@ -4,7 +4,8 @@
 #include <chrono>
 #include <memory>
 #include "types.hpp"
-#include "io.hpp"
+
+class ioManager;
 
 class irrigationEvent {
 public:
