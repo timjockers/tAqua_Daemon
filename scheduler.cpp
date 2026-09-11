@@ -16,10 +16,8 @@ void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
 
 void Scheduler::work()
 {
-    cout << "LOG: Scheduler::work() scan " << scheduledEvents.size() << " scheduled events" << endl; // LOG
     for (scheduledEvent ev: scheduledEvents)
     {
-        cout << "LOG: Scheduler::work() checking " << ev.getInfo() << endl; // LOG
         if (ev.shouldEnqueueNow())
         {
             cout << "LOG: scheduled event hinzugefügt " << ev.getInfo() << endl; // LOG

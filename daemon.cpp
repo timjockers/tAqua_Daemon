@@ -46,9 +46,7 @@ void tAquaDaemon::run()
 
     while (!stopRequested)
     {   
-        cout << "LOG: tAquaDaemon::run() scheduler step" << endl; // LOG
         scheduler.work();
-        cout << "LOG: tAquaDaemon::run() queue step" << endl; // LOG
         queueM.work();
     }
 
