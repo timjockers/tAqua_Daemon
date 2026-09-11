@@ -87,7 +87,7 @@ chrono::seconds ConfigManager::getButtonIrrTime()
     return buttonIrrTime;
 }
 
-vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
+const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
 }

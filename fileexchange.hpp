@@ -16,7 +16,7 @@ public:
     void updateConfig();
     RelayConfig getRelayConfig(Relay relay);
     std::chrono::seconds getButtonIrrTime();
-    std::vector<scheduledEvent>& getScheduledEvents() const;
+    const std::vector<scheduledEvent>& getScheduledEvents() const;
     
 private:
     void read();
