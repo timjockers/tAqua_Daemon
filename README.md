@@ -226,7 +226,7 @@ sudo apt install libgpiod-dev gpiod
 
 ### 2. Copy the repository to the Raspberry Pi
 
-Create the folder `~/tadmin/` by running the following commands
+Create the folder `~/taqua/` by running the following commands
 ```bash
 cd
 mkdir taqua
