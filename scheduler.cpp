@@ -11,7 +11,7 @@ void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
 
 void Scheduler::work()
 {
-    for (scheduledEvent ev: scheduledEvents)
+    for (scheduledEvent& ev: scheduledEvents)
     {
         if (ev.shouldEnqueueNow())
         {
