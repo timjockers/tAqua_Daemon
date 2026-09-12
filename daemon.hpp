@@ -8,7 +8,8 @@
 #include "button_controller.hpp"
 #include "scheduler.hpp"
 
-#include <atomic>
+
+#include <fstream>
 
 
 class tAquaDaemon {
@@ -19,6 +20,10 @@ public:
     void run();
 
 private:
+    void writePID();
+    void deletePID();
+    const std::filesystem::path pidPath = "taqua.pid";
+
     void reloadConfig();
 
     ConfigManager configM;

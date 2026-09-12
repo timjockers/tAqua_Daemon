@@ -5,7 +5,6 @@
 #include <csignal>
 #include <iostream>
 #include <unistd.h>
-#include <fstream>
 
 using namespace std;
 
@@ -40,16 +39,9 @@ tAquaDaemon::~tAquaDaemon()
     queueM.stop();
 }
 
-void tAquaDaemon::run()
+void tAquaDaemon::writePID()
 {
-    signal(SIGINT, requestStop);
-    signal(SIGTERM, requestStop);
-    
-    signal(SIGUSR1, requestConfigReload);
-
     pid_t pid = getpid();
-
-    filesystem::path pidPath = "taqua.pid";
 
     ofstream pidFile(pidPath);
     if (!pidFile)
@@ -65,7 +57,21 @@ void tAquaDaemon::run()
     }
 
     pidFile.close();
+}
 
+void tAquaDaemon::deletePID()
+{
+    filesystem::remove(pidPath);
+}
+
+void tAquaDaemon::run()
+{
+    signal(SIGINT, requestStop);
+    signal(SIGTERM, requestStop);
+    
+    signal(SIGUSR1, requestConfigReload);
+
+    writePID();
     
     buttonC.startButtonCallback();
 
@@ -82,7 +88,7 @@ void tAquaDaemon::run()
     }
 
     queueM.stop();
-    filesystem::remove(pidPath);
+    deletePID();
 }
 
 void tAquaDaemon::reloadConfig()
