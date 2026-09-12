@@ -1,6 +1,6 @@
 # tAqua_Daemon
 
-`tAqua_Daemon` is a component of the **tAqua** project, an automated irrigation controller.
+`tAqua_Daemon` is a component of the [**tAqua** project](https://timjockers.github.io/tAqua/), an automated irrigation controller.
 
 The overall project consists of several components. While **tAqua_Web** is responsible for configuration and operation through a web interface, **tAqua_Daemon** handles the actual hardware control and execution of the irrigation logic.
 
