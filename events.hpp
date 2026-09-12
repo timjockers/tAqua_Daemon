@@ -48,6 +48,12 @@ protected:
 };
 
 
+class buttonEvent : public durationEvent {
+public:
+    using durationEvent::durationEvent;
+};
+
+
 class scheduledEvent : public durationEvent {
 public:
     scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday, std::chrono::minutes startTime);
