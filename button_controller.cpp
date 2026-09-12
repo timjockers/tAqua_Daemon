@@ -13,7 +13,6 @@ void ButtonController::startButtonCallback()
     ioM->setButtonCallback(
         [this](Button button, bool pressed)
         {
-            cout << "LOG: ButtonController callback invoked for button " << buttonIndex(button) << " pressed=" << pressed << endl; // LOG
             handleButton(button, pressed);
         }
     );

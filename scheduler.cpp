@@ -1,24 +1,12 @@
 #include "scheduler.hpp"
 
-#include <iostream>
-
-using namespace std;
-
 Scheduler::Scheduler(QueueManager *queueManager)
     : queueM(queueManager)
 {}
 
 void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
 {
-    cout << "LOG: Scheduler::setEventVector loaded " << events.size() << " scheduled events" << endl; // LOG
-
-    scheduledEvents.clear();
-    scheduledEvents.reserve(events.size());
-
-    for (const auto& event : events)
-    {
-        scheduledEvents.push_back(event);
-    }
+    scheduledEvents = events;
 }
 
 void Scheduler::work()
@@ -27,7 +15,6 @@ void Scheduler::work()
     {
         if (ev.shouldEnqueueNow())
         {
-            cout << "LOG: scheduled event hinzugefügt " << ev.getInfo() << endl; // LOG
             queueM->addEvent(ev.toDurationEvent());
         }
     }

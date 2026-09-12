@@ -130,7 +130,6 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
     }
 
     events.push_back(std::move(event));
-    cout << "LOG: QueueManager::addEvent() queued " << getQueueInfoUnlocked() << endl; // LOG
     refreshYLEDsUnlocked();
     condition.notify_one();
 }
