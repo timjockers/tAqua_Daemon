@@ -88,3 +88,4 @@ CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
 _daemon
+taqua.pid

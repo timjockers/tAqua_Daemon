@@ -8,6 +8,8 @@
 #include "button_controller.hpp"
 #include "scheduler.hpp"
 
+#include <atomic>
+
 
 class tAquaDaemon {
 public:
@@ -17,6 +19,8 @@ public:
     void run();
 
 private:
+    void reloadConfig();
+
     ConfigManager configM;
     ioManager ioM;
     QueueManager queueM;
