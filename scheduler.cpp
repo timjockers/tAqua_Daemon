@@ -11,7 +11,14 @@ Scheduler::Scheduler(QueueManager *queueManager)
 void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
 {
     cout << "LOG: Scheduler::setEventVector loaded " << events.size() << " scheduled events" << endl; // LOG
-    scheduledEvents = events;
+
+    scheduledEvents.clear();
+    scheduledEvents.reserve(events.size());
+
+    for (const auto& event : events)
+    {
+        scheduledEvents.push_back(event);
+    }
 }
 
 void Scheduler::work()
