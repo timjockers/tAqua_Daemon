@@ -50,19 +50,19 @@ string QueueManager::getQueueInfoUnlocked()
     return info;
 }
 
-bool QueueManager::containsDurationEvent(Relay relay) const
+bool QueueManager::containsButtonEvent(Relay relay) const
 {
     lock_guard<mutex> lock(mtx);
-    return containsDurationEventUnlocked(relay);
+    return containsButtonEventUnlocked(relay);
 }
 
-bool QueueManager::containsDurationEventUnlocked(Relay relay) const
+bool QueueManager::containsButtonEventUnlocked(Relay relay) const
 {
     for (const auto& event : events)
     {
-        const auto* durationEvent = dynamic_cast<const class durationEvent*>(event.get());
+        const auto* buttonE = dynamic_cast<const class buttonEvent*>(event.get());
 
-        if (durationEvent && durationEvent->getRelay() == relay)
+        if (buttonE && buttonE->getRelay() == relay)
         {
             return true;
         }
@@ -75,18 +75,18 @@ void QueueManager::refreshYLEDsUnlocked()
 {
     for (size_t i = 0; i < YLEDS.size(); ++i)
     {
-        ioM.setYLED(YLEDS[i], containsDurationEventUnlocked(RELAYS[i]));
+        ioM.setYLED(YLEDS[i], containsButtonEventUnlocked(RELAYS[i]));
     }
 }
 
-void QueueManager::removeQueuedDurationEvent(Relay relay)
+void QueueManager::removeQueuedButtonEvent(Relay relay)
 {
     lock_guard<mutex> lock(mtx);
 
     auto it = events.begin();
     while (it != events.end())
     {
-        const auto* queuedButton = dynamic_cast<const class durationEvent*>(it->get());
+        const auto* queuedButton = dynamic_cast<const class buttonEvent*>(it->get());
         if (queuedButton && queuedButton->getRelay() == relay)
         {
             it = events.erase(it);

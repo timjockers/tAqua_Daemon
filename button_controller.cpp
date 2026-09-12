@@ -10,7 +10,6 @@ ButtonController::ButtonController(ConfigManager *configManager, ioManager *io_m
 
 void ButtonController::startButtonCallback()
 {
-    cout << "LOG: ButtonController::startButtonCallback() register GPIO callback" << endl; // LOG
     ioM->setButtonCallback(
         [this](Button button, bool pressed)
         {
@@ -19,41 +18,32 @@ void ButtonController::startButtonCallback()
         }
     );
 
-    cout << "LOG: ButtonController::startButtonCallback() start button thread" << endl; // LOG
     ioM->startButtonThread();
 }
 
 void ButtonController::handleButton(Button button, bool pressed)
 {
-    cout << "Button " << buttonIndex(button) << (pressed ? " PRESSED" : " RELEASED") << endl;
-    cout << "LOG: ButtonController::handleButton() button " << buttonIndex(button) << " pressed=" << pressed << endl; // LOG
-
     if (!pressed) // Always handle button when released
     {
-        cout << "LOG: ButtonController::handleButton() release event for button " << buttonIndex(button) << endl; // LOG
         const Relay relay = RELAYS[buttonIndex(button)];
 
         if (ioM->getRelay(relay))
         {
-            cout << "LOG: ButtonController::handleButton() cancel active event on relay " << relayIndex(relay) << endl; // LOG
             queueM->cancelActiveEvent();
             return;
         }
 
-        if (queueM->containsDurationEvent(relay))
+        if (queueM->containsButtonEvent(relay))
         {
-            cout << "LOG: ButtonController::handleButton() remove queued duration event for relay " << relayIndex(relay) << endl; // LOG
-            queueM->removeQueuedDurationEvent(relay);
+            queueM->removeQueuedButtonEvent(relay);
             return;
         }
 
-        cout << "LOG: ButtonController::handleButton() create button duration event for relay " << relayIndex(relay) << endl; // LOG
-        unique_ptr<durationEvent> event = make_unique<durationEvent>(
+        unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
             relay,
             configM->getButtonIrrTime()
         );
 
-        cout << "LOG: ButtonController::handleButton() queue button event " << event->getInfo() << endl; // LOG
         queueM->addEvent(std::move(event));
     }
 }
