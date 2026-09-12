@@ -224,7 +224,7 @@ sudo apt install libconfig++-dev
 sudo apt install libgpiod-dev gpiod
 ```
 
-### 2. Copy the repository to the Raspberry Pi
+### 2. Clone the repository
 
 Create the folder `~/taqua/` by running the following commands
 ```bash
