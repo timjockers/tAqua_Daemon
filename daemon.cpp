@@ -93,5 +93,6 @@ void tAquaDaemon::run()
 
 void tAquaDaemon::reloadConfig()
 {
-    cout << "reload" << endl;
+    configM.updateConfig();
+    scheduler.setEventVector(configM.getScheduledEvents());
 }
