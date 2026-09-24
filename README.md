@@ -265,8 +265,7 @@ After successful compilation, the daemon can be started manually with:
 ./_daemon
 ```
 
-It is recommended to start the `tAqua_Daemon` (as well as tAqua_Web) automatically when the Raspberry Pi boots.
-Run the following commands to set this up:
+It is recommended to start the `tAqua_Daemon` (as well as tAqua_Web) automatically when the Raspberry Pi boots. We use a systemd service for this purpose. Run the following commands to set this up:
 
 ```bash
 Add instructions here
