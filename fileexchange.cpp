@@ -91,17 +91,54 @@ void ConfigManager::store()
             int relay = 0;
             int duration = 0;
 
-            item.lookupValue("relay", relay);
-            item.lookupValue("duration", duration);
+            if (!item.lookupValue("relay", relay) || !item.lookupValue("duration", duration)
+                || relay < 0 || relay >= static_cast<int>(RELAYS.size()))
+            {
+                cerr << "Invalid scheduled event relay or duration" << endl;
+                continue;
+            }
 
-            const Setting& start = item.lookup("start");
-            int weekday = start[0];
-            int minutes = start[1];
+            int minutes = 0;
+            WeekdayMask weekdays = 0;
+
+            if (item.exists("weekdays"))
+            {
+                int weekdayMask = 0;
+                if (!item.lookupValue("weekdays", weekdayMask)
+                    || weekdayMask < 0 || weekdayMask > 0x7f
+                    || !item.lookupValue("start", minutes))
+                {
+                    cerr << "Invalid scheduled event weekday mask or start time" << endl;
+                    continue;
+                }
+
+                weekdays = static_cast<WeekdayMask>(weekdayMask);
+            }
+            else
+            {
+                const Setting& start = item.lookup("start");
+                const int weekday = start[0];
+                minutes = start[1];
+
+                if (weekday < 0 || weekday > 6)
+                {
+                    cerr << "Invalid legacy scheduled event weekday" << endl;
+                    continue;
+                }
+
+                weekdays = weekdayBit(static_cast<Weekday>(weekday));
+            }
+
+            if (minutes < 0 || minutes >= 24 * 60)
+            {
+                cerr << "Invalid scheduled event start time" << endl;
+                continue;
+            }
 
             scheduledEvents.emplace_back(
                 RELAYS[relay],
                 std::chrono::seconds(duration),
-                static_cast<Weekday>(weekday),
+                weekdays,
                 std::chrono::minutes(minutes)
             );
         }
@@ -109,6 +146,10 @@ void ConfigManager::store()
     catch (const SettingNotFoundException&)
     {
         cerr << "Error reading schedule" << endl;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Invalid setting type in schedule" << endl;
     }
 }
 
