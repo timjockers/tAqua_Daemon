@@ -207,6 +207,7 @@ taqua.cfg
 ```
 
 Among other things, the configuration file defines the function of each relay and the scheduled irrigation times.
+Each scheduled event uses a `weekdays` bitmask and a `start` time in minutes past midnight. Bit 0 represents Sunday, bit 1 Monday, through bit 6 Saturday; bit 7 is reserved. Add the selected bit values to form the mask. For example, Sunday, Tuesday, Thursday, and Saturday use mask `85` (`0b1010101`). The daemon also accepts the legacy `start = [ weekday, minutes ]` form and converts its single weekday to a mask.
 
 ## Installation
 
