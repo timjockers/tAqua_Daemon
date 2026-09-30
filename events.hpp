@@ -56,7 +56,7 @@ public:
 
 class scheduledEvent : public durationEvent {
 public:
-    scheduledEvent(Relay r, std::chrono::seconds irrDuration, Weekday weekday, std::chrono::minutes startTime);
+    scheduledEvent(Relay r, std::chrono::seconds irrDuration, WeekdayMask weekdays, std::chrono::minutes startTime);
 
     std::string getInfo() override;
 
@@ -67,7 +67,7 @@ public:
 private:
     bool matchesSchedule(std::chrono::system_clock::time_point now);
 
-    Weekday wday;
+    WeekdayMask weekdays;
     std::chrono::minutes starttime; // Minutes past midnight
     int lastQueuedDayKey = -1; // Verifies that an event can only be added once per day
 };

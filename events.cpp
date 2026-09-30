@@ -71,8 +71,8 @@ bool durationEvent::isActive()
 }
 
 
-scheduledEvent::scheduledEvent(Relay r, chrono::seconds irrDuration, Weekday weekday, chrono::minutes startTime)
-    : durationEvent(r, irrDuration), wday(weekday), starttime(startTime)
+scheduledEvent::scheduledEvent(Relay r, chrono::seconds irrDuration, WeekdayMask scheduledWeekdays, chrono::minutes startTime)
+    : durationEvent(r, irrDuration), weekdays(scheduledWeekdays), starttime(startTime)
 {}
 
 string scheduledEvent::getInfo()
@@ -81,7 +81,7 @@ string scheduledEvent::getInfo()
     const int hour = total / 60;
     const int minute = total % 60;
 
-    return relayEvent::getInfo() + " >> " + "scheduledEvent(W" + to_string(static_cast<int>(wday)) + ", ST" + to_string(hour) + ":" + to_string(minute) + ")";
+    return relayEvent::getInfo() + " >> " + "scheduledEvent(WD" + to_string(static_cast<unsigned int>(weekdays)) + ", ST" + to_string(hour) + ":" + to_string(minute) + ")";
 }
 
 bool scheduledEvent::matchesSchedule(chrono::system_clock::time_point now)
@@ -94,7 +94,7 @@ bool scheduledEvent::matchesSchedule(chrono::system_clock::time_point now)
         return false;
     }
 
-    if (static_cast<Weekday>(local_time->tm_wday) != wday)
+    if (!includesWeekday(weekdays, static_cast<Weekday>(local_time->tm_wday)))
     {
         return false;
     }
