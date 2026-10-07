@@ -88,6 +88,15 @@ void ConfigManager::store()
         {
             const Setting& item = scheduled[i];
 
+            if (item.exists("valid"))
+            {
+                bool valid = false;
+                if (!item.lookupValue("valid", valid) || !valid) {
+                    // Skips the event if "valid" is found and is false
+                    continue;
+                }
+            }
+
             int relay = 0;
             int duration = 0;
 
