@@ -119,7 +119,7 @@ The irrigation controller can also be operated directly using the buttons withou
 
 When the button corresponding to a relay configured as a **valve** is pressed, a manual irrigation event is created for that valve.
 
-The valve is then activated for **5 minutes**.
+The valve is then activated for a duration configured on the web interface, e.g., 5 minutes.
 
 The manual activation is processed through the same event queue as an automatically scheduled irrigation event.
 
