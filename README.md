@@ -117,7 +117,8 @@ This prevents, for example, a pond filling system from drawing water during an i
 
 The irrigation controller can also be operated directly using the buttons without requiring the web interface.
 
-When the button corresponding to a relay configured as a **valve** is pressed, a manual irrigation event is created for that valve.
+When the button corresponding to a relay configured as a **valve** is pressed, a manual irrigation event is created for that valve. If a button event is already pending, it is cancelled.
+If the valve is currently active, irrigation for that valve is skipped.
 
 The valve is then activated for a duration configured on the web interface, e.g., 5 minutes.
 
@@ -137,9 +138,11 @@ Green ON
   └──> Relay is currently active
 ```
 
+That can mean that the valve is turned on or the permanent power valve is turned off.
+
 ### Yellow LED
 
-The **yellow LED** indicates that an irrigation cycle for the corresponding valve is scheduled to start soon.
+The **yellow LED** indicates that an irrigation cycle for the corresponding valve, triggered by a button, is scheduled to start soon.
 
 ```text
 Yellow ON
