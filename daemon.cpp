@@ -6,6 +6,10 @@
 #include <iostream>
 #include <unistd.h>
 
+#ifdef HAS_GPIOD
+#include <systemd/sd-daemon.h>
+#endif
+
 using namespace std;
 
 namespace
@@ -72,6 +76,10 @@ void tAquaDaemon::run()
     signal(SIGUSR1, requestConfigReload);
 
     writePID();
+
+    #ifdef HAS_GPIOD
+    sd_notify(0, "READY=1");
+    #endif
     
     buttonC.startButtonCallback();
 
