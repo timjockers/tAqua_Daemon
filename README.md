@@ -319,7 +319,7 @@ Add instructions here
 
 * Raspberry Pi 1 Model B+
 * Raspberry Pi OS
-* Connected tAqua hardware (see [timjockers.github.io/tAqua](timjockers.github.io/tAqua))
+* Connected tAqua hardware (see [timjockers.github.io/tAqua](https://timjockers.github.io/tAqua))
 
 
 ## Development Status
