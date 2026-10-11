@@ -326,7 +326,7 @@ Add instructions here
 
 `tAqua_Daemon` is currently **under development**.
 
-The basic architecture and planned features are still being developed. In particular, the configuration format, event queue, and hardware control may change during development.
+The first version is already available.
 
 ## Planned Features
 
@@ -352,7 +352,7 @@ The exact implementation of the weather integration has not yet been decided.
 
 The web interface writes the settings to the `taqua.cfg` file used by the daemon.
 
-Development of `tAqua_Web` has not yet begun, but the repository is already available at:
+The repository is available at:
 
 [https://github.com/timjockers/tAqua_Web](https://github.com/timjockers/tAqua_Web)
 
