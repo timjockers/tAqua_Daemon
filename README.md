@@ -206,7 +206,7 @@ taqua.cfg
 The exact syntax and structure of the configuration file can be found in the **example configuration file** included in the repository.
 
 ```text
-taqua.cfg
+examples/taqua.example.cfg
 ```
 
 Among other things, the configuration file defines the function of each relay and the scheduled irrigation times.
