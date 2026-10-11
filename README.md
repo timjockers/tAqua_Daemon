@@ -158,14 +158,14 @@ Relay control is based on an **event queue**.
 
 Different types of events can therefore be processed independently of their source.
 
-Examples of events include:
+A standard scheduled event contains the following data:
 
-* scheduled irrigation times
-* manual button presses
-* future weather-related events
-* other automatically generated control commands
+* valve number
+* weekdays
+* start time
+* irrigation duration
 
-For example, a manually triggered 5-minute irrigation event is added to the queue in the same way as a previously scheduled time-based event.
+For example, a manually triggered 5-minute irrigation event is added to the queue in the same way as a previously scheduled time-based event. This event then contains only the valve number and the duration (configured in the web interface).
 
 Simplified:
 
@@ -179,7 +179,7 @@ Simplified:
                        │         │
 Button ───────────────►│ Event   │
                        │ Queue   │
-Future events ────────►│         │
+                       │         │
                        └────┬────┘
                             │
                             ▼
