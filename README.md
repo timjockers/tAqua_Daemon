@@ -310,22 +310,19 @@ After successful compilation, the daemon can be started manually with:
 ./_daemon
 ```
 
-It is recommended to start the `tAqua_Daemon` (as well as tAqua_Web) automatically when the Raspberry Pi boots. We use a systemd service for this purpose. Run the following commands to set this up:
+It is recommended to start the `tAqua_Daemon` (as well as tAqua_Web) automatically when the Raspberry Pi boots. We use a **systemd service** for this purpose.
 
+Run the following command to navigate to the systemd directory:
 ```bash
-cd /usr/lib/systemd/system/
+cd /etc/systemd/system/
 ```
 
-Create a service file that starts `tAqua_Daemon`:
-```bash
-sudo vi taqua_d.service
-```
-or
+Create a new service file for `tAqua_Daemon`:
 ```bash
 sudo nano taqua_d.service
 ```
 
-Write the following lines in the file `taqua_d.service`:
+Paste the following lines into the file:
 ```text
 [Unit]
 Description=tAqua Daemon
@@ -333,8 +330,8 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart=/home/USERNAME/taqua/tAqua_Daemon/_daemon
-WorkingDirectory=/home/USERNAME/taqua/tAqua_Daemon/
+ExecStart=/home/YOUR_USERNAME/taqua/tAqua_Daemon/_daemon
+WorkingDirectory=/home/YOUR_USERNAME/taqua/tAqua_Daemon/
 User=root
 Restart=on-failure
 RestartSec=5
@@ -342,9 +339,17 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 ```
-Important: Replace `USER` in the file `taqua_d.service` with your username, so that the path to the program is correct.
+**Important:** Replace `YOUR_USERNAME` in the file with your actual Raspberry Pi username so the paths are correct.
 
-Then write and save the file `taqua_d.service`.
+Save and close the file (in nano, press `Ctrl+O`, `Enter`, then `Ctrl+X`).
+
+Finally, run the following commands to reload systemd, enable the autostart, and start the service immediately:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable taqua_d.service
+sudo systemctl start taqua_d.service
+```
+
 
 ## Requirements
 
