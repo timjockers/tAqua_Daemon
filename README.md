@@ -280,7 +280,7 @@ cd taqua
 
 Clone the `tAqua_Daemon` git repository:
 ```bash
-git clone https://github.com/timjockers/tAqua_Daemon
+git clone --branch v1.0 --depth 1 https://github.com/timjockers/tAqua_Daemon
 ```
 
 The folder `tAqua_Daemon/` should have been created automatically.
