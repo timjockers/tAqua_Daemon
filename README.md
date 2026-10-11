@@ -158,13 +158,6 @@ Relay control is based on an **event queue**.
 
 Different types of events can therefore be processed independently of their source.
 
-A standard scheduled event contains the following data:
-
-* valve number
-* weekdays
-* start time
-* irrigation duration
-
 For example, a manually triggered 5-minute irrigation event is added to the queue in the same way as a previously scheduled time-based event. This event then contains only the valve number and the duration (configured in the web interface).
 
 Simplified:
@@ -209,8 +202,55 @@ The exact syntax and structure of the configuration file can be found in the **e
 examples/taqua.example.cfg
 ```
 
-Among other things, the configuration file defines the function of each relay and the scheduled irrigation times.
-Each scheduled event uses a `weekdays` bitmask and a `start` time in minutes past midnight. Bit 0 represents Sunday, bit 1 Monday, through bit 6 Saturday; bit 7 is reserved. Add the selected bit values to form the mask. For example, Sunday, Tuesday, Thursday, and Saturday use mask `85` (`0b1010101`). The daemon also accepts the legacy `start = [ weekday, minutes ]` form and converts its single weekday to a mask.
+### Relay configuration
+The configuration file `taqua.cfg` defines the type of each relay. 0 stands for "unused," 1 for a valve, and 2 for a permanent power relay.
+```text
+relayConfig = ( 1, 1, 1, 0, 0, 0, 0, 2 );
+```
+
+### Button irrigation time configuration
+The irrigation duration (in seconds) when a button is pressed is also specified in the configuration file.
+```text
+buttonIrrigationTime = 300;
+```
+
+### Scheduled event configuration
+All scheduled events are configured as a list in the configuration file. Every item in the list is a scheduled event containing the following data:
+
+* validity (if false, the daemon ignores the event)
+* valve number (0-7)
+* weekdays (bitmask, e.g., Sunday, Tuesday, Thursday, and Saturday -> bits 0, 2, 4, 6 -> 0b1010101 -> 85)
+* start time (minutes past midnight)
+* irrigation duration (seconds)
+
+```text
+scheduled = (
+  {
+    valid = true;
+    relay = 0;
+    weekdays = 85;
+    start = 300;
+    duration = 60;
+    condition = {};
+  },
+  {
+    valid = true;
+    relay = 1;
+    weekdays = 64;
+    start = 300;
+    duration = 120;
+    condition = {};
+  },
+  {   
+    valid = true;
+    relay = 2;
+    weekdays = 64;
+    start = 300;
+    duration = 90;
+    condition = {};
+  }
+);
+```
 
 ## Installation
 
