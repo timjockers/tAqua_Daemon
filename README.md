@@ -266,6 +266,7 @@ sudo apt install git
 sudo apt install cmake
 sudo apt install libconfig++-dev
 sudo apt install libgpiod-dev gpiod
+sudo apt install libsystemd-dev
 ```
 
 ### 2. Clone the repository
