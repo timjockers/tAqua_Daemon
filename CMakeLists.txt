@@ -25,6 +25,8 @@ target_include_directories(_daemon PRIVATE ${LIBCONFIGPP_INCLUDE_DIRS})
 
 # Linux / Raspberry Pi
 if(UNIX AND NOT APPLE)
+    # Require libsystemd
+    pkg_check_modules(SYSTEMD REQUIRED IMPORTED_TARGET libsystemd)
 
     # Require libgpiod >= 2.0
     pkg_check_modules(GPIOD REQUIRED IMPORTED_TARGET
@@ -34,11 +36,13 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(_daemon
         PRIVATE
             PkgConfig::GPIOD
+            PkgConfig::SYSTEMD
     )
 
     target_compile_definitions(_daemon
         PRIVATE
             HAS_GPIOD
+            HAS_LIBSYSTEMD
     )
 
 endif()

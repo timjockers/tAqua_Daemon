@@ -6,7 +6,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#ifdef HAS_GPIOD
+#ifdef HAS_LIBSYSTEMD
 #include <systemd/sd-daemon.h>
 #endif
 
@@ -77,7 +77,7 @@ void tAquaDaemon::run()
 
     writePID();
 
-    #ifdef HAS_GPIOD
+    #ifdef HAS_LIBSYSTEMD
     sd_notify(0, "READY=1");
     #endif
     
