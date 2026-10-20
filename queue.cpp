@@ -5,8 +5,9 @@
 
 using namespace std;
 
-QueueManager::QueueManager(ioManager& io)
-    : ioM(io)
+QueueManager::QueueManager(ioManager& io, LogManager& l)
+    : ioM(io),
+      logM(l)
 {}
 
 string QueueManager::getQueueInfo()
@@ -170,6 +171,8 @@ void QueueManager::work()
         {
             activeEvent->activate(&ioM);
             refreshYLEDsUnlocked();
+
+            logM.addLine("Start irrigation: " + activeEvent->getInfo());
         }
     }
 
@@ -183,6 +186,8 @@ void QueueManager::work()
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
         refreshYLEDsUnlocked();
+
+        logM.addLine("Stop irrigation.");
     }
 }
 

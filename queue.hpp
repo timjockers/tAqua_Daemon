@@ -2,6 +2,7 @@
 
 #include "events.hpp"
 #include "io.hpp"
+#include "fileexchange.hpp"
 
 #include <condition_variable>
 #include <deque>
@@ -12,7 +13,7 @@
 
 class QueueManager {
 public:
-    explicit QueueManager(ioManager& io);
+    explicit QueueManager(ioManager& io, LogManager& l);
 
     void addEvent(std::unique_ptr<irrigationEvent> event);
     bool containsButtonEvent(Relay relay) const;
@@ -25,6 +26,7 @@ public:
 
 private:
     ioManager& ioM;
+    LogManager& logM;
 
     std::string getQueueInfoUnlocked();
     bool containsButtonEventUnlocked(Relay relay) const;
