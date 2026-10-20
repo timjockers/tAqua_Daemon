@@ -28,6 +28,7 @@ private:
     void reloadConfig();
 
     ConfigManager configM;
+    LogManager logM;
     ioManager ioM;
     QueueManager queueM;
     ButtonController buttonC;

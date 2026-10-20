@@ -30,6 +30,7 @@ namespace
 
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
+      logM("taqua.log"),
       ioM(&configM),
       queueM(ioM),
       buttonC(&configM, &ioM, &queueM),
@@ -83,6 +84,8 @@ void tAquaDaemon::run()
     
     buttonC.startButtonCallback();
 
+    logM.addLine("System started.");
+
     while (!stopRequested)
     {   
         scheduler.work();
@@ -97,6 +100,8 @@ void tAquaDaemon::run()
 
     queueM.stop();
     deletePID();
+
+    logM.addLine("System stopped.");
 }
 
 void tAquaDaemon::reloadConfig()
