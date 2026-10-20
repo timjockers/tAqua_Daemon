@@ -3,6 +3,7 @@
 #include <string>
 #include <array>
 #include <vector>
+#include <deque>
 #include <chrono>
 #include <libconfig.h++>
 #include "types.hpp"
@@ -29,4 +30,16 @@ private:
     std::array<RelayConfig, 8> relayConfig;
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;
+};
+
+
+class LogManager {
+public:
+    LogManager(const std::string& filepath);
+
+    void addLine(const std::string& message);
+private:
+    std::string getTimestamp();
+    const std::string path;
+    std::deque<std::string> logLines;
 };

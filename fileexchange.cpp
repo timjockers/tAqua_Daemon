@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <cstddef>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
 using namespace libconfig;
 using namespace std;
 
@@ -176,4 +179,70 @@ chrono::seconds ConfigManager::getButtonIrrTime()
 const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
+}
+
+
+LogManager::LogManager(const string& filepath)
+    : path(filepath)
+{
+    ifstream inFile(path);
+    string line;
+
+    while (getline(inFile, line)) {
+        if (line.empty()) {
+            continue;
+        }
+
+        logLines.push_back(line);
+        if (logLines.size() > 500) {
+            logLines.pop_front();
+        }
+    }
+}
+
+string LogManager::getTimestamp()
+{
+    auto now = chrono::system_clock::now();
+    auto in_time_t = chrono::system_clock::to_time_t(now);
+    stringstream ss;
+    ss << put_time(localtime(&in_time_t), "%Y-%m-%d %H:%M:%S");
+    return ss.str();
+}
+
+void LogManager::addLine(const string& message)
+{
+    const string newLog = "[" + getTimestamp() + "] " + message;
+    ofstream appendFile(path, ios::app);
+    if (!appendFile.is_open()) {
+        cerr << "Error writing log file!" << endl;
+        return;
+    }
+
+    appendFile << newLog << '\n';
+    appendFile.close();
+    if (!appendFile) {
+        cerr << "Error writing log file!" << endl;
+        return;
+    }
+
+    logLines.push_back(newLog);
+    if (logLines.size() <= 500) {
+        return;
+    }
+
+    logLines.pop_front();
+
+    ofstream outFile(path, ios::trunc);
+    if (!outFile.is_open()) {
+        cerr << "Error writing log file!" << endl;
+        return;
+    }
+
+    for (const auto& logLine : logLines) {
+        outFile << logLine << '\n';
+    }
+    outFile.close();
+    if (!outFile) {
+        cerr << "Error writing log file!" << endl;
+    }
 }
