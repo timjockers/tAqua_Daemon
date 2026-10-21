@@ -184,3 +184,11 @@ constexpr std::size_t buttonIndex(Button button)
 
     return 0;
 }
+
+
+// Status Indicator
+enum class StatusIndicator {
+    None,
+    Scheduled,
+    Active
+};
