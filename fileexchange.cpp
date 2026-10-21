@@ -251,5 +251,40 @@ void LogManager::addLine(const string& message)
 StatusManager::StatusManager(const string& filepath)
     : path(filepath)
 {
-    
+    irrigationStatus = {StatusIndicator::None};
+}
+
+bool StatusManager::write()
+{
+    Config cfg;
+    Setting &root = cfg.getRoot();
+
+    Setting &arraySetting = root.add("messwerte", Setting::TypeArray);
+
+    for (StatusIndicator i : irrigationStatus)
+    {
+        Setting &element = arraySetting.add(Setting::TypeInt);
+        element = static_cast<int>(i);
+    }
+
+    try
+    {
+        cfg.writeFile(path.c_str());
+        return true;
+    }
+    catch(const FileIOException &fioex)
+    {
+        cerr << "I/O error while writing file: " << path << endl;
+        return false;
+    }
+}
+
+void StatusManager::setIrrigationStatus(array<StatusIndicator, 8> irrStatus)
+{
+    irrigationStatus = irrStatus;
+
+    if (!write())
+    {
+        cerr << "Error saving file after setting irrigation status" << endl;
+    }
 }

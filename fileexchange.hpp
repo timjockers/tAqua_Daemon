@@ -49,6 +49,12 @@ class StatusManager {
 public:
     StatusManager(const std::string& filepath);
 
+    void setIrrigationStatus(std::array<StatusIndicator, 8> irrStatus);
+
 private:
     const std::string path;
+
+    bool write();
+
+    std::array<StatusIndicator, 8> irrigationStatus;
 };
