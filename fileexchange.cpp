@@ -279,9 +279,9 @@ bool StatusManager::write()
     }
 }
 
-void StatusManager::setIrrigationStatus(array<StatusIndicator, 8> irrStatus)
+void StatusManager::setIrrigationStatus(const uint r, StatusIndicator irrStatus)
 {
-    irrigationStatus = irrStatus;
+    irrigationStatus[r] = irrStatus;
 
     if (!write())
     {
