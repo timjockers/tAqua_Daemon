@@ -43,3 +43,12 @@ private:
     const std::string path;
     std::deque<std::string> logLines;
 };
+
+
+class StatusManager {
+public:
+    StatusManager(const std::string& filepath);
+
+private:
+    const std::string path;
+};

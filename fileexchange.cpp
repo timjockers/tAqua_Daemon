@@ -246,3 +246,10 @@ void LogManager::addLine(const string& message)
         cerr << "Error writing log file!" << endl;
     }
 }
+
+
+StatusManager::StatusManager(const string& filepath)
+    : path(filepath)
+{
+    
+}
