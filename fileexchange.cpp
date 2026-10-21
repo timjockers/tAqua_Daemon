@@ -283,3 +283,8 @@ void StatusManager::setIrrigationStatus(const Relay r, StatusIndicator irrStatus
 {
     irrigationStatus[relayIndex(r)] = irrStatus;
 }
+
+const StatusIndicator StatusManager::getIrrigationStatus(const Relay r)
+{
+    return irrigationStatus[relayIndex(r)];
+}

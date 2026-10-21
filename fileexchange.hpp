@@ -50,6 +50,7 @@ public:
     StatusManager(const std::string& filepath);
 
     void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
+    const StatusIndicator getIrrigationStatus(const Relay r);
     bool write();
 
 private:
