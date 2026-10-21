@@ -5,9 +5,10 @@
 
 using namespace std;
 
-QueueManager::QueueManager(ioManager& io, LogManager& l)
+QueueManager::QueueManager(ioManager& io, LogManager& l, StatusManager& s)
     : ioM(io),
-      logM(l)
+      logM(l),
+      statusM(s)
 {}
 
 string QueueManager::getQueueInfo()

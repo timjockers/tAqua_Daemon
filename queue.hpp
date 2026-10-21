@@ -13,7 +13,7 @@
 
 class QueueManager {
 public:
-    explicit QueueManager(ioManager& io, LogManager& l);
+    explicit QueueManager(ioManager& io, LogManager& l, StatusManager& s);
 
     void addEvent(std::unique_ptr<irrigationEvent> event);
     bool containsButtonEvent(Relay relay) const;
@@ -27,6 +27,7 @@ public:
 private:
     ioManager& ioM;
     LogManager& logM;
+    StatusManager& statusM;
 
     std::string getQueueInfoUnlocked();
     bool containsButtonEventUnlocked(Relay relay) const;
