@@ -31,6 +31,7 @@ namespace
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       logM("taqua.log"),
+      statusM("status.cfg"),
       ioM(&configM),
       queueM(ioM, logM),
       buttonC(&configM, &ioM, &queueM),

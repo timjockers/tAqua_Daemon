@@ -29,6 +29,7 @@ private:
 
     ConfigManager configM;
     LogManager logM;
+    StatusManager statusM;
     ioManager ioM;
     QueueManager queueM;
     ButtonController buttonC;
