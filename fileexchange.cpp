@@ -282,9 +282,4 @@ bool StatusManager::write()
 void StatusManager::setIrrigationStatus(const uint r, StatusIndicator irrStatus)
 {
     irrigationStatus[r] = irrStatus;
-
-    if (!write())
-    {
-        cerr << "Error saving file after setting irrigation status" << endl;
-    }
 }
