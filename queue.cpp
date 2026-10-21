@@ -75,10 +75,32 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
 
 void QueueManager::refreshYLEDsUnlocked()
 {
+    bool statusChanged = false;
+    const auto* activeRelayEvent = dynamic_cast<const relayEvent*>(activeEvent.get());
+
     for (size_t i = 0; i < YLEDS.size(); ++i)
     {
-        ioM.setYLED(YLEDS[i], containsButtonEventUnlocked(RELAYS[i]));
+        const Relay relay = RELAYS[i];
+        const bool isQueued = containsButtonEventUnlocked(relay);
+        ioM.setYLED(YLEDS[i], isQueued);
+
+        const bool isActive = activeRelayEvent && activeRelayEvent->getRelay() == relay;
+        const StatusIndicator newStatus = isActive
+            ? StatusIndicator::Active
+            : isQueued ? StatusIndicator::Scheduled : StatusIndicator::None;
+        const StatusIndicator currentStatus = statusM.getIrrigationStatus(relay);
+        if (currentStatus != newStatus)
+        {
+            statusM.setIrrigationStatus(
+                relay,
+                newStatus
+            );
+            statusChanged = true;
+        }
     }
+
+    if (statusChanged)
+        statusM.write();
 }
 
 void QueueManager::removeQueuedButtonEvent(Relay relay)
@@ -146,7 +168,6 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEventUnlocked()
     auto event = std::move(events.front());
     events.pop_front();
 
-    refreshYLEDsUnlocked();
     return event;
 }
 
@@ -186,9 +207,9 @@ void QueueManager::work()
     {
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
-        refreshYLEDsUnlocked();
 
         logM.addLine("Stop irrigation.");
+        refreshYLEDsUnlocked();
     }
 }
 
