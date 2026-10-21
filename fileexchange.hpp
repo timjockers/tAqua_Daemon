@@ -49,7 +49,7 @@ class StatusManager {
 public:
     StatusManager(const std::string& filepath);
 
-    void setIrrigationStatus(const uint r, StatusIndicator irrStatus);
+    void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
     bool write();
 
 private:

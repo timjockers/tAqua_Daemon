@@ -279,7 +279,7 @@ bool StatusManager::write()
     }
 }
 
-void StatusManager::setIrrigationStatus(const uint r, StatusIndicator irrStatus)
+void StatusManager::setIrrigationStatus(const Relay r, StatusIndicator irrStatus)
 {
-    irrigationStatus[r] = irrStatus;
+    irrigationStatus[relayIndex(r)] = irrStatus;
 }
