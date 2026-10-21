@@ -259,7 +259,7 @@ bool StatusManager::write()
     Config cfg;
     Setting &root = cfg.getRoot();
 
-    Setting &arraySetting = root.add("messwerte", Setting::TypeArray);
+    Setting &arraySetting = root.add("irrigationStatus", Setting::TypeArray);
 
     for (StatusIndicator i : irrigationStatus)
     {
