@@ -27,6 +27,8 @@ private:
 
     void reloadConfig();
 
+    bool web_pid_loaded;
+
     ConfigManager configM;
     LogManager logM;
     StatusManager statusM;

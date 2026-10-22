@@ -31,13 +31,14 @@ namespace
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       logM("taqua.log"),
-      statusM("status.cfg"),
+      statusM("status.cfg", "../tAqua_Web/taqua.pid"),
       ioM(&configM),
       queueM(ioM, logM, statusM),
       buttonC(&configM, &ioM, &queueM),
       scheduler(&queueM)
 {
     scheduler.setEventVector(configM.getScheduledEvents());
+    web_pid_loaded = false;
 }
 
 tAquaDaemon::~tAquaDaemon()
@@ -106,7 +107,19 @@ void tAquaDaemon::run()
 }
 
 void tAquaDaemon::reloadConfig()
-{
+{   
+    if (!web_pid_loaded)
+    {
+        if (!statusM.readWebPID())
+        {
+            cerr << "Error reading web PID!" << endl;
+        }
+        else
+        {
+            web_pid_loaded = true;
+        }
+    }
+    
     configM.updateConfig();
     scheduler.setEventVector(configM.getScheduledEvents());
 }
