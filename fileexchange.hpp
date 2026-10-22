@@ -8,6 +8,7 @@
 #include <libconfig.h++>
 #include "types.hpp"
 #include "events.hpp"
+#include <sys/types.h>
 
 
 class ConfigManager {
@@ -47,14 +48,21 @@ private:
 
 class StatusManager {
 public:
-    StatusManager(const std::string& filepath);
+    StatusManager(const std::string& filepath, const std::string& taqua_pid_path);
 
     void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
     const StatusIndicator getIrrigationStatus(const Relay r);
     bool write();
 
+    bool readWebPID();
+
 private:
     const std::string path;
+    const std::string pid_path;
+
+    bool notifyWebStatusChanged();
+    pid_t web_pid;
+    bool web_pid_loaded;
 
     std::array<StatusIndicator, 8> irrigationStatus;
 };

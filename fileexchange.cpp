@@ -5,6 +5,9 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
+#include <csignal>
+#include <fstream>
 using namespace libconfig;
 using namespace std;
 
@@ -248,10 +251,14 @@ void LogManager::addLine(const string& message)
 }
 
 
-StatusManager::StatusManager(const string& filepath)
-    : path(filepath)
+StatusManager::StatusManager(const string& filepath, const string& taqua_pid_path)
+    : path(filepath),
+      pid_path(taqua_pid_path)
+
 {
     irrigationStatus = {StatusIndicator::None};
+
+    web_pid_loaded = false;
 }
 
 bool StatusManager::write()
@@ -278,6 +285,60 @@ bool StatusManager::write()
         return false;
     }
 }
+
+
+bool StatusManager::readWebPID()
+{
+    ifstream pidFile(pid_path);
+
+    if (!pidFile)
+    {
+        cerr << "Could not open taqua.pid" << endl;
+        return false;
+    }
+
+    pidFile >> web_pid;
+
+    if (!web_pid)
+    {
+        cerr << "Could not read PID from taqua.pid" << endl;
+        return false;
+    }
+
+    if (web_pid <= 0)
+    {
+        cerr << "Invalid daemon PID: " << web_pid << endl;
+        return false;
+    }
+
+    web_pid_loaded = true;
+
+    return true;
+}
+
+bool StatusManager::notifyWebStatusChanged()
+{
+    if (!web_pid_loaded)
+    {   
+        cout << "WARNING: Could not notify web: web pid not loaded!" << endl;
+        return false;
+    }
+
+    if (kill(web_pid, 0) != 0)
+    {
+        perror("Web is not running");
+        return false;
+    }
+
+    if (kill(web_pid, SIGUSR1) != 0)
+    {
+        perror("Could not send SIGUSR1");
+        return false;
+    }
+
+    return true;
+}
+
 
 void StatusManager::setIrrigationStatus(const Relay r, StatusIndicator irrStatus)
 {
