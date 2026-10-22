@@ -261,32 +261,6 @@ StatusManager::StatusManager(const string& filepath, const string& taqua_pid_pat
     web_pid_loaded = false;
 }
 
-bool StatusManager::write()
-{
-    Config cfg;
-    Setting &root = cfg.getRoot();
-
-    Setting &arraySetting = root.add("irrigationStatus", Setting::TypeArray);
-
-    for (StatusIndicator i : irrigationStatus)
-    {
-        Setting &element = arraySetting.add(Setting::TypeInt);
-        element = static_cast<int>(i);
-    }
-
-    try
-    {
-        cfg.writeFile(path.c_str());
-        return true;
-    }
-    catch(const FileIOException &fioex)
-    {
-        cerr << "I/O error while writing file: " << path << endl;
-        return false;
-    }
-}
-
-
 bool StatusManager::readWebPID()
 {
     ifstream pidFile(pid_path);
@@ -337,6 +311,38 @@ bool StatusManager::notifyWebStatusChanged()
     }
 
     return true;
+}
+
+bool StatusManager::write()
+{
+    Config cfg;
+    Setting &root = cfg.getRoot();
+
+    Setting &arraySetting = root.add("irrigationStatus", Setting::TypeArray);
+
+    for (StatusIndicator i : irrigationStatus)
+    {
+        Setting &element = arraySetting.add(Setting::TypeInt);
+        element = static_cast<int>(i);
+    }
+
+    try
+    {
+        cfg.writeFile(path.c_str());
+        
+        if (!notifyWebStatusChanged())
+        {
+            cerr << "Could not notify web" << endl;
+            return false;
+        }
+
+        return true;
+    }
+    catch(const FileIOException &fioex)
+    {
+        cerr << "I/O error while writing file: " << path << endl;
+        return false;
+    }
 }
 
 
