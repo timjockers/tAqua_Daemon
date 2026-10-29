@@ -12,6 +12,11 @@ string irrigationEvent::getInfo()
     return "irrigationEvent";
 }
 
+json irrigationEvent::getJSON()
+{
+    return json::array();
+}
+
 void irrigationEvent::activate(ioManager* io) {}
 
 void irrigationEvent::deactivate(ioManager* io) {}

@@ -14,6 +14,7 @@ public:
     virtual ~irrigationEvent() = default;
 
     virtual std::string getInfo();
+    virtual json getJSON();
 
     virtual void activate(ioManager* io);
     virtual void deactivate(ioManager *io);
