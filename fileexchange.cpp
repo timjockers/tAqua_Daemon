@@ -355,3 +355,14 @@ const StatusIndicator StatusManager::getIrrigationStatus(const Relay r)
 {
     return irrigationStatus[relayIndex(r)];
 }
+
+
+void StatusManager::setQueueInformation(const vector<json> information)
+{
+    queueInformation = information;
+}
+
+const vector<json> StatusManager::getQueueInformation()
+{
+    return queueInformation;
+}

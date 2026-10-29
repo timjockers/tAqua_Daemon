@@ -10,6 +10,9 @@
 #include "events.hpp"
 #include <sys/types.h>
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 
 class ConfigManager {
 public:
@@ -52,6 +55,10 @@ public:
 
     void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
     const StatusIndicator getIrrigationStatus(const Relay r);
+
+    void setQueueInformation(const std::vector<json> information);
+    const std::vector<json> getQueueInformation();
+
     bool write();
 
     bool readWebPID();
@@ -65,4 +72,5 @@ private:
     bool web_pid_loaded;
 
     std::array<StatusIndicator, 8> irrigationStatus;
+    std::vector<json> queueInformation;
 };
