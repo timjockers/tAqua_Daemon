@@ -27,6 +27,7 @@ public:
     relayEvent(Relay r);
 
     std::string getInfo() override;
+    json getJSON() override;
     Relay getRelay() const;
 
     void activate(ioManager* io) override;
@@ -42,6 +43,7 @@ public:
     durationEvent(Relay r, std::chrono::seconds irrDuration);
 
     std::string getInfo() override;
+    json getJSON() override;
     void activate(ioManager* io) override;
     bool isActive() override;
 
@@ -62,6 +64,7 @@ public:
     scheduledEvent(Relay r, std::chrono::seconds irrDuration, WeekdayMask weekdays, std::chrono::minutes startTime);
 
     std::string getInfo() override;
+    json getJSON() override;
 
     bool shouldEnqueueNow();
 

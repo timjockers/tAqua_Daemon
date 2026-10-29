@@ -37,6 +37,14 @@ string relayEvent::getInfo()
     return irrigationEvent::getInfo() + " >> " + "relayEvent(R" + to_string(relayIndex(relay) + 1) + ")";
 }
 
+json relayEvent::getJSON()
+{
+    json ret = irrigationEvent::getJSON();
+    ret["relay"] = relayIndex(getRelay());
+
+    return ret;
+}
+
 Relay relayEvent::getRelay() const
 {
     return relay;
@@ -63,6 +71,14 @@ string durationEvent::getInfo()
     return relayEvent::getInfo() + " >> " + "durationEvent(D" + to_string(duration.count()) + "s)";
 }
 
+json durationEvent::getJSON()
+{
+    json ret = relayEvent::getJSON();
+    ret["duration"] = duration.count();
+
+    return ret;
+}
+
 void durationEvent::activate(ioManager* io)
 {
     relayEvent::activate(io);
@@ -87,6 +103,15 @@ string scheduledEvent::getInfo()
     const int minute = total % 60;
 
     return relayEvent::getInfo() + " >> " + "scheduledEvent(WD" + to_string(static_cast<unsigned int>(weekdays)) + ", ST" + to_string(hour) + ":" + to_string(minute) + ")";
+}
+
+json scheduledEvent::getJSON()
+{
+    json ret = durationEvent::getJSON();
+    ret["start"] = starttime.count();
+    ret["weekdays"] = weekdays;
+
+    return ret;
 }
 
 bool scheduledEvent::matchesSchedule(chrono::system_clock::time_point now)
