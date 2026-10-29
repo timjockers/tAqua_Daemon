@@ -4,6 +4,8 @@
 #include <chrono>
 #include <memory>
 #include "types.hpp"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class ioManager;
 
