@@ -95,18 +95,6 @@ void QueueManager::refreshYLEDsUnlocked()
                 relay,
                 newStatus
             );
-
-            vector<json> evData;
-
-            for (const auto& ev : events)
-            {
-                if (ev)
-                {
-                    evData.emplace_back(ev->getJSON());
-                }
-            }
-
-            statusM.setQueueInformation(&evData);
             statusChanged = true;
         }
     }
@@ -167,6 +155,20 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 
     events.push_back(std::move(event));
     refreshYLEDsUnlocked();
+
+    vector<json> evData;
+
+    for (const auto& ev : events)
+    {
+        if (ev)
+        {
+            evData.emplace_back(ev->getJSON());
+        }
+    }
+
+    statusM.setQueueInformation(&evData);
+    statusM.write();
+
     condition.notify_one();
 }
 
