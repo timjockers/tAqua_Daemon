@@ -326,6 +326,9 @@ bool StatusManager::write()
         element = static_cast<int>(i);
     }
 
+    Setting &queueSetting = root.add("queueInformation", Setting::TypeString);
+    queueSetting = json(queueInformation).dump();
+
     try
     {
         cfg.writeFile(path.c_str());
