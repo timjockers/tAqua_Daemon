@@ -95,6 +95,18 @@ void QueueManager::refreshYLEDsUnlocked()
                 relay,
                 newStatus
             );
+
+            vector<json> evData;
+
+            for (const auto& ev : events)
+            {
+                if (ev)
+                {
+                    evData.emplace_back(ev->getJSON());
+                }
+            }
+
+            statusM.setQueueInformation(&evData);
             statusChanged = true;
         }
     }
