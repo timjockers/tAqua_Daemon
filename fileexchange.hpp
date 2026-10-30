@@ -56,7 +56,7 @@ public:
     void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
     const StatusIndicator getIrrigationStatus(const Relay r);
 
-    void setQueueInformation(const std::vector<json> information);
+    void setQueueInformation(const std::vector<json>* information);
     const std::vector<json> getQueueInformation();
 
     bool write();

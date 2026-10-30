@@ -360,9 +360,9 @@ const StatusIndicator StatusManager::getIrrigationStatus(const Relay r)
 }
 
 
-void StatusManager::setQueueInformation(const vector<json> information)
+void StatusManager::setQueueInformation(const vector<json>* information)
 {
-    queueInformation = information;
+    queueInformation = *information;
 }
 
 const vector<json> StatusManager::getQueueInformation()
