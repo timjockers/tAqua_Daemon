@@ -14,7 +14,7 @@ string irrigationEvent::getInfo()
 
 json irrigationEvent::getJSON()
 {
-    return json::array();
+    return json::object();
 }
 
 void irrigationEvent::activate(ioManager* io) {}
