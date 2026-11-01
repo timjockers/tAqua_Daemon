@@ -103,10 +103,27 @@ void QueueManager::refreshYLEDsUnlocked()
         statusM.write();
 }
 
+void QueueManager::updateQueueInformationUnlocked()
+{
+    vector<json> evData;
+
+    for (const auto& event : events)
+    {
+        if (event)
+        {
+            evData.emplace_back(event->getJSON());
+        }
+    }
+
+    statusM.setQueueInformation(&evData);
+    statusM.write();
+}
+
 void QueueManager::removeQueuedButtonEvent(Relay relay)
 {
     lock_guard<mutex> lock(mtx);
 
+    bool queueChanged = false;
     auto it = events.begin();
     while (it != events.end())
     {
@@ -114,11 +131,17 @@ void QueueManager::removeQueuedButtonEvent(Relay relay)
         if (queuedButton && queuedButton->getRelay() == relay)
         {
             it = events.erase(it);
+            queueChanged = true;
         }
         else
         {
             ++it;
         }
+    }
+
+    if (queueChanged)
+    {
+        updateQueueInformationUnlocked();
     }
 
     refreshYLEDsUnlocked();
@@ -155,19 +178,7 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
 
     events.push_back(std::move(event));
     refreshYLEDsUnlocked();
-
-    vector<json> evData;
-
-    for (const auto& ev : events)
-    {
-        if (ev)
-        {
-            evData.emplace_back(ev->getJSON());
-        }
-    }
-
-    statusM.setQueueInformation(&evData);
-    statusM.write();
+    updateQueueInformationUnlocked();
 
     condition.notify_one();
 }
@@ -181,6 +192,7 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEventUnlocked()
 
     auto event = std::move(events.front());
     events.pop_front();
+    updateQueueInformationUnlocked();
 
     return event;
 }
