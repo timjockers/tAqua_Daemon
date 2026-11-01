@@ -333,7 +333,7 @@ bool StatusManager::write()
     {
         cfg.writeFile(path.c_str());
         
-        if (!notifyWebStatusChanged())
+        if (web_pid_loaded && !notifyWebStatusChanged())
         {
             cerr << "Could not notify web" << endl;
             return false;
@@ -360,9 +360,9 @@ const StatusIndicator StatusManager::getIrrigationStatus(const Relay r)
 }
 
 
-void StatusManager::setQueueInformation(const vector<json>* information)
+void StatusManager::setQueueInformation(const vector<json>& information)
 {
-    queueInformation = *information;
+    queueInformation = information;
 }
 
 const vector<json> StatusManager::getQueueInformation()

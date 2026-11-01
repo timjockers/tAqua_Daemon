@@ -9,7 +9,10 @@ QueueManager::QueueManager(ioManager& io, LogManager& l, StatusManager& s)
     : ioM(io),
       logM(l),
       statusM(s)
-{}
+{
+    lock_guard<mutex> lock(mtx);
+    synchronizeStatusUnlocked();
+}
 
 string QueueManager::getQueueInfo()
 {
@@ -73,49 +76,50 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
     return false;
 }
 
-void QueueManager::refreshYLEDsUnlocked()
+void QueueManager::synchronizeStatusUnlocked()
 {
-    bool statusChanged = false;
+    vector<json> queuedEvents;
+    array<bool, RELAYS.size()> queuedRelays{};
+    array<bool, RELAYS.size()> queuedButtons{};
+
+    for (const auto& event : events)
+    {
+        if (!event)
+        {
+            continue;
+        }
+
+        queuedEvents.emplace_back(event->getJSON());
+
+        const auto* relayEvent = dynamic_cast<const class relayEvent*>(event.get());
+        if (!relayEvent)
+        {
+            continue;
+        }
+
+        const size_t index = relayIndex(relayEvent->getRelay());
+        queuedRelays[index] = true;
+        if (dynamic_cast<const class buttonEvent*>(event.get()))
+        {
+            queuedButtons[index] = true;
+        }
+    }
+
     const auto* activeRelayEvent = dynamic_cast<const relayEvent*>(activeEvent.get());
+    statusM.setQueueInformation(queuedEvents);
 
     for (size_t i = 0; i < YLEDS.size(); ++i)
     {
         const Relay relay = RELAYS[i];
-        const bool isQueued = containsButtonEventUnlocked(relay);
-        ioM.setYLED(YLEDS[i], isQueued);
+        ioM.setYLED(YLEDS[i], queuedButtons[i]);
 
         const bool isActive = activeRelayEvent && activeRelayEvent->getRelay() == relay;
         const StatusIndicator newStatus = isActive
             ? StatusIndicator::Active
-            : isQueued ? StatusIndicator::Scheduled : StatusIndicator::None;
-        const StatusIndicator currentStatus = statusM.getIrrigationStatus(relay);
-        if (currentStatus != newStatus)
-        {
-            statusM.setIrrigationStatus(
-                relay,
-                newStatus
-            );
-            statusChanged = true;
-        }
+            : queuedRelays[i] ? StatusIndicator::Scheduled : StatusIndicator::None;
+        statusM.setIrrigationStatus(relay, newStatus);
     }
 
-    if (statusChanged)
-        statusM.write();
-}
-
-void QueueManager::updateQueueInformationUnlocked()
-{
-    vector<json> evData;
-
-    for (const auto& event : events)
-    {
-        if (event)
-        {
-            evData.emplace_back(event->getJSON());
-        }
-    }
-
-    statusM.setQueueInformation(&evData);
     statusM.write();
 }
 
@@ -140,11 +144,7 @@ void QueueManager::removeQueuedButtonEvent(Relay relay)
     }
 
     if (queueChanged)
-    {
-        updateQueueInformationUnlocked();
-    }
-
-    refreshYLEDsUnlocked();
+        synchronizeStatusUnlocked();
     condition.notify_one();
 }
 
@@ -156,10 +156,16 @@ void QueueManager::cancelActiveEvent()
     {
         activeEvent->deactivate(&ioM);
         activeEvent.reset();
-        refreshYLEDsUnlocked();
+        synchronizeStatusUnlocked();
     }
 
     condition.notify_one();
+}
+
+void QueueManager::refreshStatus()
+{
+    lock_guard<mutex> lock(mtx);
+    synchronizeStatusUnlocked();
 }
 
 void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
@@ -177,8 +183,7 @@ void QueueManager::addEvent(unique_ptr<irrigationEvent> event)
     }
 
     events.push_back(std::move(event));
-    refreshYLEDsUnlocked();
-    updateQueueInformationUnlocked();
+    synchronizeStatusUnlocked();
 
     condition.notify_one();
 }
@@ -192,7 +197,6 @@ unique_ptr<irrigationEvent> QueueManager::takeFirstEventUnlocked()
 
     auto event = std::move(events.front());
     events.pop_front();
-    updateQueueInformationUnlocked();
 
     return event;
 }
@@ -218,7 +222,7 @@ void QueueManager::work()
         if (activeEvent)
         {
             activeEvent->activate(&ioM);
-            refreshYLEDsUnlocked();
+            synchronizeStatusUnlocked();
 
             logM.addLine("Start irrigation: " + activeEvent->getInfo());
         }
@@ -235,7 +239,7 @@ void QueueManager::work()
         activeEvent.reset();
 
         logM.addLine("Stop irrigation.");
-        refreshYLEDsUnlocked();
+        synchronizeStatusUnlocked();
     }
 }
 

@@ -19,6 +19,7 @@ public:
     bool containsButtonEvent(Relay relay) const;
     void removeQueuedButtonEvent(Relay relay);
     void cancelActiveEvent();
+    void refreshStatus();
     void work();
     void stop();
 
@@ -31,8 +32,7 @@ private:
 
     std::string getQueueInfoUnlocked();
     bool containsButtonEventUnlocked(Relay relay) const;
-    void refreshYLEDsUnlocked();
-    void updateQueueInformationUnlocked();
+    void synchronizeStatusUnlocked();
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;

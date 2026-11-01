@@ -117,6 +117,7 @@ void tAquaDaemon::reloadConfig()
         else
         {
             web_pid_loaded = true;
+            queueM.refreshStatus();
         }
     }
     
