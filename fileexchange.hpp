@@ -59,6 +59,9 @@ public:
     void setQueueInformation(const std::vector<json>& information);
     const std::vector<json> getQueueInformation();
 
+    void setScheduledInformation(const std::vector<json>& information);
+    const std::vector<json> getScheduledInformation();
+
     bool write();
 
     bool readWebPID();
@@ -73,4 +76,5 @@ private:
 
     std::array<StatusIndicator, 8> irrigationStatus;
     std::vector<json> queueInformation;
+    std::vector<json> scheduledInformation;
 };
