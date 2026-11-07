@@ -369,3 +369,14 @@ const vector<json> StatusManager::getQueueInformation()
 {
     return queueInformation;
 }
+
+
+void StatusManager::setScheduledInformation(const vector<json>& information)
+{
+    scheduledInformation = information;
+}
+
+const vector<json> StatusManager::getScheduledInformation()
+{
+    return scheduledInformation;
+}
