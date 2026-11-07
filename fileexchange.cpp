@@ -329,6 +329,9 @@ bool StatusManager::write()
     Setting &queueSetting = root.add("queueInformation", Setting::TypeString);
     queueSetting = json(queueInformation).dump();
 
+    Setting &scheduledSetting = root.add("scheduledInformation", Setting::TypeString);
+    scheduledSetting = json(scheduledInformation).dump();
+
     try
     {
         cfg.writeFile(path.c_str());
