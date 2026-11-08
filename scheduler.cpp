@@ -1,6 +1,6 @@
 #include "scheduler.hpp"
 
-Scheduler::Scheduler(QueueManager *queueManager, StatusManager *statusManager)
+Scheduler::Scheduler(QueueManager& queueManager, StatusManager& statusManager)
     : queueM(queueManager),
       statusM(statusManager)
 {}
@@ -22,7 +22,7 @@ void Scheduler::work()
     {
         if (ev.shouldEnqueueNow())
         {
-            queueM->addEvent(ev.toDurationEvent());
+            queueM.addEvent(ev.toDurationEvent());
         }
     }
 }
