@@ -34,10 +34,9 @@ static std::optional<Button> buttonFromGPIO(unsigned int gpio)
 }
 
 
-ioManager::ioManager(ConfigManager *cfgM)
+ioManager::ioManager(ConfigManager& cfgM)
+    : configM(cfgM)
 {
-    configM = cfgM;
-
 #ifdef HAS_GPIOD
     chip = gpiod_chip_open(GPIO_CHIP);
 
@@ -398,7 +397,7 @@ bool ioManager::setGPIOs(gpiod_line_request* request, array<unsigned int, 8> gpi
 
 void ioManager::setRelay(Relay relay, bool state)
 {
-    if (configM->getRelayConfig(relay) == RelayConfig::VALVE)
+    if (configM.getRelayConfig(relay) == RelayConfig::VALVE)
     {
         auto relayGPIOs = toUIntArray(RELAYS);
 
@@ -409,7 +408,7 @@ void ioManager::setRelay(Relay relay, bool state)
             // Deactivate permanent power
             for (size_t i = 0; i < relayGPIOs.size(); ++i)
             {
-                if (configM->getRelayConfig(RELAYS[i]) == RelayConfig::PERMANENTPOWER)
+                if (configM.getRelayConfig(RELAYS[i]) == RelayConfig::PERMANENTPOWER)
                 {
                     states = states + (1 << i);
                 }
@@ -447,7 +446,7 @@ void ioManager::setRelay(Relay relay, bool state)
 
 bool ioManager::getRelay(Relay relay)
 {   
-    if (configM->getRelayConfig(relay) == RelayConfig::UNUSED)
+    if (configM.getRelayConfig(relay) == RelayConfig::UNUSED)
     {
         return false;
     }
@@ -578,7 +577,7 @@ void ioManager::processButtonEvents()
             // Check if the relay assigned to this button is a valve.
             const size_t index = buttonIndex(*button);
 
-            if (configM->getRelayConfig(RELAYS[index]) != RelayConfig::VALVE)
+            if (configM.getRelayConfig(RELAYS[index]) != RelayConfig::VALVE)
             {
                 continue;
             }

@@ -23,7 +23,7 @@ class ioManager {
 public:
     using ButtonCallback = std::function<void(Button, bool)>;
 
-    ioManager(ConfigManager *cfgM);
+    ioManager(ConfigManager& cfgM);
     ~ioManager();
 
     void setRelay(Relay relay, bool state);
@@ -37,7 +37,7 @@ public:
     void setButtonCallback(ButtonCallback callback);
     void startButtonThread();
 private:
-    ConfigManager *configM;
+    ConfigManager &configM;
 
     ButtonCallback buttonCallback;
 
