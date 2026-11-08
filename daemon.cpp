@@ -32,7 +32,7 @@ tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       logM("taqua.log"),
       statusM("status.cfg", "../tAqua_Web/taqua.pid"),
-      ioM(&configM),
+      ioM(configM),
       queueM(ioM, logM, statusM),
       buttonC(configM, ioM, queueM),
       scheduler(queueM, statusM)
