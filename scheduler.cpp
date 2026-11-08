@@ -34,17 +34,11 @@ void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
 
 void Scheduler::work()
 {
-    bool vectorChanged = false;
     for (scheduledEvent& ev: scheduledEvents)
     {
         if (ev.shouldEnqueueNow())
         {
             queueM.addEvent(ev.toDurationEvent());
-            vectorChanged = true;
         }
-    }
-
-    if (vectorChanged) {
-        updateStatus();
     }
 }
