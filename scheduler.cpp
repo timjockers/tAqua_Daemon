@@ -1,7 +1,8 @@
 #include "scheduler.hpp"
 
-Scheduler::Scheduler(QueueManager *queueManager)
-    : queueM(queueManager)
+Scheduler::Scheduler(QueueManager *queueManager, StatusManager *statusManager)
+    : queueM(queueManager),
+      statusM(statusManager)
 {}
 
 void Scheduler::setEventVector(const std::vector<scheduledEvent>& events)
