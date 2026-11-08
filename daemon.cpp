@@ -35,7 +35,7 @@ tAquaDaemon::tAquaDaemon()
       ioM(&configM),
       queueM(ioM, logM, statusM),
       buttonC(&configM, &ioM, &queueM),
-      scheduler(&queueM)
+      scheduler(&queueM, &statusM)
 {
     scheduler.setEventVector(configM.getScheduledEvents());
     web_pid_loaded = false;
