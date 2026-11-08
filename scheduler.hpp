@@ -16,4 +16,6 @@ private:
     StatusManager& statusM;
 
     std::vector<scheduledEvent> scheduledEvents;
+
+    void updateStatus();
 };
