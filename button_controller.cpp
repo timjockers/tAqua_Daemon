@@ -4,20 +4,20 @@
 using namespace std;
 
 
-ButtonController::ButtonController(ConfigManager *configManager, ioManager *io_manager, QueueManager *queueManager)
+ButtonController::ButtonController(ConfigManager& configManager, ioManager& io_manager, QueueManager& queueManager)
     : configM(configManager), ioM(io_manager), queueM(queueManager)
 {}
 
 void ButtonController::startButtonCallback()
 {
-    ioM->setButtonCallback(
+    ioM.setButtonCallback(
         [this](Button button, bool pressed)
         {
             handleButton(button, pressed);
         }
     );
 
-    ioM->startButtonThread();
+    ioM.startButtonThread();
 }
 
 void ButtonController::handleButton(Button button, bool pressed)
@@ -26,23 +26,23 @@ void ButtonController::handleButton(Button button, bool pressed)
     {
         const Relay relay = RELAYS[buttonIndex(button)];
 
-        if (ioM->getRelay(relay))
+        if (ioM.getRelay(relay))
         {
-            queueM->cancelActiveEvent();
+            queueM.cancelActiveEvent();
             return;
         }
 
-        if (queueM->containsButtonEvent(relay))
+        if (queueM.containsButtonEvent(relay))
         {
-            queueM->removeQueuedButtonEvent(relay);
+            queueM.removeQueuedButtonEvent(relay);
             return;
         }
 
         unique_ptr<buttonEvent> event = make_unique<buttonEvent>(
             relay,
-            configM->getButtonIrrTime()
+            configM.getButtonIrrTime()
         );
 
-        queueM->addEvent(std::move(event));
+        queueM.addEvent(std::move(event));
     }
 }
