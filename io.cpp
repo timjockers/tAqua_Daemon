@@ -423,7 +423,12 @@ void ioManager::setRelay(Relay relay, bool state)
                 cerr << "Failed to set relay!" << endl;
             }
 #else
-            cout << "Set relays: " << bitset<8>(states) << endl;
+            cout << "Set relay R"
+                 << relayIndex(relay) + 1
+                 << " ON (relay states: "
+                 << bitset<8>(states)
+                 << ")"
+                 << endl;
 #endif
         }
         else
@@ -438,7 +443,12 @@ void ioManager::setRelay(Relay relay, bool state)
                 }
             }
 #else
-            cout << "Set relays: 0" << endl;
+            cout << "Set relay R"
+                 << relayIndex(relay) + 1
+                 << " OFF (relay states: "
+                 << bitset<8>(0)
+                 << ")"
+                 << endl;
 #endif
         }
     }
@@ -465,7 +475,7 @@ void ioManager::setYLED(YLED yled, bool state)
 #ifdef HAS_GPIOD
     setGPIO(yledRequest, static_cast<unsigned int>(yled), state);
 #else
-    cout << "Setting yellow LED" << endl;
+    cout << "Yellow LED " << YLEDIndex(yled) << (state ? " ON" : " OFF") << endl;
 #endif
 }
 
