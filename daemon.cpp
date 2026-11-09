@@ -28,6 +28,8 @@ namespace
     }
 }
 
+// Sent signal to web surface, when scheduledInformation changes.
+
 tAquaDaemon::tAquaDaemon()
     : configM("taqua.cfg"),
       logM("taqua.log"),
