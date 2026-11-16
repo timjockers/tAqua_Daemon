@@ -18,4 +18,7 @@ private:
     std::vector<scheduledEvent> scheduledEvents;
 
     void updateStatus();
+
+    bool minute_passed; // An event can't be added to queue when it's scheduled in the same minute (avoiding multiple scheduling)
+    int last_minute;
 };
