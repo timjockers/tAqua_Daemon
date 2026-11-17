@@ -125,4 +125,12 @@ void tAquaDaemon::reloadConfig()
     
     configM.updateConfig();
     scheduler.setEventVector(configM.getScheduledEvents());
+
+    if (configM.getButtonPress() > -1) {
+        const Button btnPressAction = BUTTONS[configM.getButtonPress()];
+
+        cout << "BUTTON PRESSED: INDEX" << buttonIndex(btnPressAction) << endl;
+
+        statusM.notifyWebStatusChanged(); // Notify web that button press has been processed
+    }
 }
