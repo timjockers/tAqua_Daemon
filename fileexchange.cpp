@@ -166,6 +166,22 @@ void ConfigManager::store()
     {
         cerr << "Invalid setting type in schedule" << endl;
     }
+
+    try
+    {
+        cfg.lookupValue("buttonPressAction", buttonPressAction);
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: buttonPressAction could not be found." << endl;
+        buttonPressAction = -1;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: buttonPressAction is not an integer." << endl;
+        buttonPressAction = -1;
+    }
+
 }
 
 
@@ -182,6 +198,11 @@ chrono::seconds ConfigManager::getButtonIrrTime()
 const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 {
     return scheduledEvents;
+}
+
+const int& ConfigManager::getButtonPress() const
+{
+    return buttonPressAction;
 }
 
 
