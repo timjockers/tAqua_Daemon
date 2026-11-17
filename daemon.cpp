@@ -97,6 +97,8 @@ void tAquaDaemon::run()
         {
             configReloadRequested = 0;
             reloadConfig();
+
+            cout << "Config file reload requested by web" << endl;
         }
     }
 
