@@ -79,7 +79,6 @@ bool QueueManager::containsButtonEventUnlocked(Relay relay) const
 void QueueManager::synchronizeStatusUnlocked()
 {
     vector<json> queuedEvents;
-    array<bool, RELAYS.size()> queuedRelays{};
     array<bool, RELAYS.size()> queuedButtons{};
 
     for (const auto& event : events)
@@ -98,7 +97,6 @@ void QueueManager::synchronizeStatusUnlocked()
         }
 
         const size_t index = relayIndex(relayEvent->getRelay());
-        queuedRelays[index] = true;
         if (dynamic_cast<const class buttonEvent*>(event.get()))
         {
             queuedButtons[index] = true;
@@ -116,7 +114,7 @@ void QueueManager::synchronizeStatusUnlocked()
         const bool isActive = activeRelayEvent && activeRelayEvent->getRelay() == relay;
         const StatusIndicator newStatus = isActive
             ? StatusIndicator::Active
-            : queuedRelays[i] ? StatusIndicator::Scheduled : StatusIndicator::None;
+            : queuedButtons[i] ? StatusIndicator::Scheduled : StatusIndicator::None;
         statusM.setIrrigationStatus(relay, newStatus);
     }
 
