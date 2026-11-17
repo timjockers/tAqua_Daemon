@@ -67,12 +67,13 @@ public:
     bool write();
 
     bool readWebPID();
+    
+    bool notifyWebStatusChanged();
 
 private:
     const std::string path;
     const std::string pid_path;
 
-    bool notifyWebStatusChanged();
     pid_t web_pid;
     bool web_pid_loaded;
 
