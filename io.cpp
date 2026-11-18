@@ -429,6 +429,7 @@ void ioManager::setRelay(Relay relay, bool state)
                  << bitset<8>(states)
                  << ")"
                  << endl;
+            debugRelayStates = states;
 #endif
         }
         else
@@ -449,6 +450,7 @@ void ioManager::setRelay(Relay relay, bool state)
                  << bitset<8>(0)
                  << ")"
                  << endl;
+            debugRelayStates = 0;
 #endif
         }
     }
@@ -464,6 +466,8 @@ bool ioManager::getRelay(Relay relay)
     {
 #ifdef HAS_GPIOD
         return (getGPIO(relayRequest, static_cast<int>(relay)) > 0);
+#else
+        return bool((debugRelayStates >> relayIndex(relay)) & 1);
 #endif
     }
     return false;
@@ -475,7 +479,17 @@ void ioManager::setYLED(YLED yled, bool state)
 #ifdef HAS_GPIOD
     setGPIO(yledRequest, static_cast<unsigned int>(yled), state);
 #else
-    cout << "Yellow LED " << YLEDIndex(yled) << (state ? " ON" : " OFF") << endl;
+    unsigned int idx = YLEDIndex(yled);
+    cout << "Yellow LED " << idx << (state ? " ON" : " OFF") << endl;
+
+    if (state)
+    {
+        debugYLEDStates |= (1U << idx);
+    }
+    else
+    {
+        debugYLEDStates &= ~(1U << idx);
+    }
 #endif
 }
 
@@ -484,7 +498,7 @@ bool ioManager::getYLED(YLED yled)
 #ifdef HAS_GPIOD
     return getGPIO(yledRequest, static_cast<unsigned int>(yled));
 #else
-    return false;
+    return bool((debugYLEDStates >> YLEDIndex(yled)) & 1);
 #endif
 }
 

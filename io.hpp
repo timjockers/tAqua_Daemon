@@ -58,5 +58,8 @@ private:
     std::thread buttonThread;
     std::atomic<bool> buttonThreadRunning{false};
     void processButtonEvents();
+#else
+    unsigned int debugRelayStates = 0;
+    unsigned int debugYLEDStates = 0;
 #endif
 };
