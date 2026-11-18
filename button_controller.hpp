@@ -12,6 +12,8 @@ public:
 
     void startButtonCallback();
 
+    void manualButtonEvent(Button button);
+
 private:
     void handleButton(Button button, bool pressed);
     

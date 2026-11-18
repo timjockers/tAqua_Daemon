@@ -46,3 +46,8 @@ void ButtonController::handleButton(Button button, bool pressed)
         queueM.addEvent(std::move(event));
     }
 }
+
+void ButtonController::manualButtonEvent(Button button)
+{
+    handleButton(button, false);
+}
