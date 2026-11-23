@@ -347,6 +347,13 @@ bool StatusManager::write()
         element = static_cast<int>(i);
     }
 
+    Setting &progressSetting = root.add("irrigationProgress", Setting::TypeArray);
+    for (unsigned int progress : irrigationProgress)
+    {
+        Setting &element = progressSetting.add(Setting::TypeInt);
+        element = static_cast<int>(progress);
+    }
+
     Setting &queueSetting = root.add("queueInformation", Setting::TypeString);
     queueSetting = json(queueInformation).dump();
 
@@ -381,6 +388,18 @@ void StatusManager::setIrrigationStatus(const Relay r, StatusIndicator irrStatus
 const StatusIndicator StatusManager::getIrrigationStatus(const Relay r)
 {
     return irrigationStatus[relayIndex(r)];
+}
+
+bool StatusManager::setIrrigationProgress(const Relay r, unsigned int progress)
+{
+    unsigned int& currentProgress = irrigationProgress[relayIndex(r)];
+    if (currentProgress == progress)
+    {
+        return false;
+    }
+
+    currentProgress = progress;
+    return true;
 }
 
 

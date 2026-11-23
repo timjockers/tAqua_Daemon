@@ -57,6 +57,7 @@ public:
 
     void setIrrigationStatus(const Relay r, StatusIndicator irrStatus);
     const StatusIndicator getIrrigationStatus(const Relay r);
+    bool setIrrigationProgress(const Relay r, unsigned int progress);
 
     void setQueueInformation(const std::vector<json>& information);
     const std::vector<json> getQueueInformation();
@@ -78,6 +79,7 @@ private:
     bool web_pid_loaded;
 
     std::array<StatusIndicator, 8> irrigationStatus;
+    std::array<unsigned int, 8> irrigationProgress{};
     std::vector<json> queueInformation;
     std::vector<json> scheduledInformation;
 };
