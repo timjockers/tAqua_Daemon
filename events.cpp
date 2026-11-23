@@ -1,6 +1,7 @@
 #include "events.hpp"
 
 #include "io.hpp"
+#include <algorithm>
 #include <ctime>
 #include <iostream>
 
@@ -83,12 +84,27 @@ void durationEvent::activate(ioManager* io)
 {
     relayEvent::activate(io);
 
-    startTime = chrono::system_clock::now();
+    startTime = chrono::steady_clock::now();
 }
 
 bool durationEvent::isActive()
 {
-    return (chrono::system_clock::now() - startTime) < duration;
+    return (chrono::steady_clock::now() - startTime) < duration;
+}
+
+int durationEvent::getProgressPercent() const
+{
+    if (duration.count() <= 0)
+    {
+        return 0;
+    }
+
+    const double elapsedSeconds = chrono::duration<double>(
+        chrono::steady_clock::now() - startTime
+    ).count();
+    const double progress = elapsedSeconds * 100.0 / duration.count();
+
+    return static_cast<int>(clamp(progress, 0.0, 100.0));
 }
 
 

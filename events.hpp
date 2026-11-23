@@ -46,10 +46,11 @@ public:
     json getJSON() override;
     void activate(ioManager* io) override;
     bool isActive() override;
+    int getProgressPercent() const;
 
 protected:
     std::chrono::seconds duration;
-    std::chrono::system_clock::time_point startTime;
+    std::chrono::steady_clock::time_point startTime;
 };
 
 
