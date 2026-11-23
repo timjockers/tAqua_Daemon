@@ -5,6 +5,7 @@
 #include "fileexchange.hpp"
 
 #include <condition_variable>
+#include <chrono>
 #include <deque>
 #include <memory>
 #include <mutex>
@@ -33,6 +34,7 @@ private:
     std::string getQueueInfoUnlocked();
     bool containsButtonEventUnlocked(Relay relay) const;
     void synchronizeStatusUnlocked();
+    void updateProgressStatusUnlocked();
     std::unique_ptr<irrigationEvent> takeFirstEventUnlocked();
 
     std::deque<std::unique_ptr<irrigationEvent>> events;
@@ -41,4 +43,5 @@ private:
     mutable std::mutex mtx;
     std::condition_variable condition;
     bool stopping = false;
+    std::chrono::steady_clock::time_point lastProgressUpdate{};
 };

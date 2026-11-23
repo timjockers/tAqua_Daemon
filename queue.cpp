@@ -80,6 +80,7 @@ void QueueManager::synchronizeStatusUnlocked()
 {
     vector<json> queuedEvents;
     array<bool, RELAYS.size()> queuedButtons{};
+    array<unsigned int, RELAYS.size()> progress{};
 
     for (const auto& event : events)
     {
@@ -104,6 +105,13 @@ void QueueManager::synchronizeStatusUnlocked()
     }
 
     const auto* activeRelayEvent = dynamic_cast<const relayEvent*>(activeEvent.get());
+    const auto* activeDurationEvent = dynamic_cast<const durationEvent*>(activeEvent.get());
+    if (activeRelayEvent && activeDurationEvent)
+    {
+        progress[relayIndex(activeRelayEvent->getRelay())] =
+            static_cast<unsigned int>(activeDurationEvent->getProgressPercent());
+    }
+
     statusM.setQueueInformation(queuedEvents);
 
     for (size_t i = 0; i < YLEDS.size(); ++i)
@@ -116,9 +124,34 @@ void QueueManager::synchronizeStatusUnlocked()
             ? StatusIndicator::Active
             : queuedButtons[i] ? StatusIndicator::Scheduled : StatusIndicator::None;
         statusM.setIrrigationStatus(relay, newStatus);
+        statusM.setIrrigationProgress(relay, progress[i]);
     }
 
     statusM.write();
+}
+
+void QueueManager::updateProgressStatusUnlocked()
+{
+    const auto* activeEventWithDuration = dynamic_cast<const durationEvent*>(activeEvent.get());
+    const auto* activeRelayEvent = dynamic_cast<const relayEvent*>(activeEvent.get());
+    if (!activeEventWithDuration || !activeRelayEvent)
+    {
+        return;
+    }
+
+    const auto now = chrono::steady_clock::now();
+    if (now - lastProgressUpdate < chrono::seconds(1))
+    {
+        return;
+    }
+    lastProgressUpdate = now;
+
+    const Relay relay = activeRelayEvent->getRelay();
+    const auto progress = static_cast<unsigned int>(activeEventWithDuration->getProgressPercent());
+    if (statusM.setIrrigationProgress(relay, progress))
+    {
+        statusM.write();
+    }
 }
 
 void QueueManager::removeQueuedButtonEvent(Relay relay)
@@ -220,6 +253,7 @@ void QueueManager::work()
         if (activeEvent)
         {
             activeEvent->activate(&ioM);
+            lastProgressUpdate = chrono::steady_clock::now();
             synchronizeStatusUnlocked();
 
             logM.addLine("Start irrigation: " + activeEvent->getInfo());
@@ -238,6 +272,10 @@ void QueueManager::work()
 
         logM.addLine("Stop irrigation.");
         synchronizeStatusUnlocked();
+    }
+    else if (activeEvent)
+    {
+        updateProgressStatusUnlocked();
     }
 }
 
