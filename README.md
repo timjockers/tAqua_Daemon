@@ -124,6 +124,14 @@ The valve is then activated for a duration configured on the web interface, e.g.
 
 The manual activation is processed through the same event queue as an automatically scheduled irrigation event.
 
+## Quick Control
+
+The controller also provides a **Quick control** mode for operating relays manually from the web interface. Unlike standard mode, which runs scheduled irrigation and handles manual button events, Quick control lets you switch each relay directly.
+
+This mode is useful during maintenance, for example to vent the irrigation system or test individual circuits. Select **Quick control** in the web interface to use it; the current mode is represented by the `mode` setting in `taqua.cfg` (`0` for standard mode and `1` for Quick control).
+
+Return to standard mode when you have finished manual testing so normal scheduled irrigation can resume.
+
 ## LEDs
 
 Status information for each relay is displayed using LEDs.
