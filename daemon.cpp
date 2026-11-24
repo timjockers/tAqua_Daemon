@@ -90,8 +90,13 @@ void tAquaDaemon::run()
 
     while (!stopRequested)
     {   
-        scheduler.work();
-        queueM.work();
+        const Mode m = configM.getMode();
+        if (m == Mode::Standard) {
+            scheduler.work();
+            queueM.work();
+        } else if (m == Mode::QuickControl) {
+            
+        }
 
         if (configReloadRequested)
         {
