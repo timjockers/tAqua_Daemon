@@ -1,5 +1,20 @@
 #include "quickcontrol.hpp"
 
-QuickControl::QuickControl(ConfigManager& m)
-    : configM(m)
-{}
+using namespace std;
+
+QuickControl::QuickControl(ConfigManager& m, ioManager& io)
+    : configM(m),
+      ioM(io)
+{
+    oldStates = 0;
+}
+
+void QuickControl::work()
+{
+    const uint8_t newStates = configM.getQCStates();
+
+    if (newStates != oldStates) {
+        oldStates = newStates;
+
+    }
+}
