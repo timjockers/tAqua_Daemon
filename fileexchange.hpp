@@ -19,6 +19,7 @@ public:
     ConfigManager(const std::string& filepath);
 
     void updateConfig();
+    Mode getMode();
     RelayConfig getRelayConfig(Relay relay);
     std::chrono::seconds getButtonIrrTime();
     const std::vector<scheduledEvent>& getScheduledEvents() const;
@@ -32,6 +33,7 @@ private:
 
     libconfig::Config cfg;
 
+    Mode mode;
     std::array<RelayConfig, 8> relayConfig;
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;

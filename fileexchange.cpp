@@ -46,6 +46,24 @@ void ConfigManager::read()
 void ConfigManager::store()
 {
     try
+    {   
+        int m;
+        cfg.lookupValue("mode", m);
+
+        mode = static_cast<Mode>(m);
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: mode could not be found." << endl;
+        mode = Mode::Standard;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: mode is not an integer." << endl;
+        mode = Mode::Standard;
+    }
+
+    try
     {
         const Setting& r = cfg.lookup("relayConfig");
 
@@ -181,9 +199,13 @@ void ConfigManager::store()
         cerr << "Error: buttonPressAction is not an integer." << endl;
         buttonPressAction = -1;
     }
-
 }
 
+
+Mode ConfigManager::getMode()
+{
+    return mode;
+}
 
 RelayConfig ConfigManager::getRelayConfig(Relay relay)
 {
