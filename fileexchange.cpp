@@ -199,6 +199,24 @@ void ConfigManager::store()
         cerr << "Error: buttonPressAction is not an integer." << endl;
         buttonPressAction = -1;
     }
+
+    try
+    {   
+        int s;
+        cfg.lookupValue("qc_states", s);
+
+        qc_states = static_cast<uint8_t>(s);
+    }
+    catch (const SettingNotFoundException&)
+    {
+        cerr << "Error: qc_states could not be found." << endl;
+        qc_states = 0;
+    }
+    catch (const SettingTypeException&)
+    {
+        cerr << "Error: qc_states is not an integer." << endl;
+        qc_states = 0;
+    }
 }
 
 
@@ -225,6 +243,11 @@ const vector<scheduledEvent>& ConfigManager::getScheduledEvents() const
 const int& ConfigManager::getButtonPress() const
 {
     return buttonPressAction;
+}
+
+const uint8_t& ConfigManager::getQCStates() const
+{
+    return qc_states;
 }
 
 

@@ -24,6 +24,7 @@ public:
     std::chrono::seconds getButtonIrrTime();
     const std::vector<scheduledEvent>& getScheduledEvents() const;
     const int& getButtonPress() const;
+    const std::uint8_t& getQCStates() const;
     
 private:
     void read();
@@ -38,6 +39,7 @@ private:
     std::chrono::seconds buttonIrrTime;
     std::vector<scheduledEvent> scheduledEvents;
     int buttonPressAction;
+    std::uint8_t qc_states;
 };
 
 
