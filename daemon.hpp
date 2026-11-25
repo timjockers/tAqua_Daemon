@@ -7,6 +7,7 @@
 #include "queue.hpp"
 #include "button_controller.hpp"
 #include "scheduler.hpp"
+#include "quickcontrol.hpp"
 
 
 #include <fstream>
@@ -33,6 +34,7 @@ private:
     LogManager logM;
     StatusManager statusM;
     ioManager ioM;
+    QuickControl quickC;
     QueueManager queueM;
     ButtonController buttonC;
     Scheduler scheduler;

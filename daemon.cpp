@@ -33,6 +33,7 @@ tAquaDaemon::tAquaDaemon()
       logM("taqua.log"),
       statusM("status.cfg", "../tAqua_Web/taqua.pid"),
       ioM(configM),
+      quickC(configM, ioM),
       queueM(ioM, logM, statusM),
       buttonC(configM, ioM, queueM),
       scheduler(queueM, statusM)
@@ -95,7 +96,7 @@ void tAquaDaemon::run()
             scheduler.work();
             queueM.work();
         } else if (m == Mode::QuickControl) {
-            
+            quickC.work();
         }
 
         if (configReloadRequested)
