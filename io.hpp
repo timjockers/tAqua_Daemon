@@ -29,6 +29,8 @@ public:
     void setRelay(Relay relay, bool state);
     bool getRelay(Relay relay);
 
+    void setRelaysManual(std::uint8_t states);
+
     void setYLED(YLED yled, bool state);
     bool getYLED(YLED yled);
 

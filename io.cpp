@@ -473,6 +473,21 @@ bool ioManager::getRelay(Relay relay)
     return false;
 }
 
+void ioManager::setRelaysManual(uint8_t states)
+{
+#ifdef HAS_GPIOD
+    if (!setGPIOs(relayRequest, relayGPIOs, static_cast<unsigned int>(states)))
+    {
+        cerr << "Failed to manually set relays!" << endl;
+    }
+#else
+    cout << "Manually set relays:"
+         << bitset<8>(states)
+         << endl;
+    debugRelayStates = states;
+#endif
+}
+
 
 void ioManager::setYLED(YLED yled, bool state)
 {
