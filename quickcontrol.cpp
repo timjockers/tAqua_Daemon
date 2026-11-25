@@ -16,5 +16,6 @@ void QuickControl::work()
     if (newStates != oldStates) {
         oldStates = newStates;
 
+        ioM.setRelaysManual(newStates);
     }
 }
