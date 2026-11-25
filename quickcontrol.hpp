@@ -8,10 +8,12 @@ public:
     QuickControl(ConfigManager& m, ioManager& io);
 
     void work();
+    void refresh();
 
 private:
     ConfigManager& configM;
     ioManager& ioM;
 
-    std::uint8_t oldStates;
+    std::uint8_t states;
+    bool updated;
 };

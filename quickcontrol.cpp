@@ -6,16 +6,20 @@ QuickControl::QuickControl(ConfigManager& m, ioManager& io)
     : configM(m),
       ioM(io)
 {
-    oldStates = 0;
+    refresh();
+}
+
+void QuickControl::refresh()
+{
+    states = configM.getQCStates();
+    updated = true;
 }
 
 void QuickControl::work()
 {
-    const uint8_t newStates = configM.getQCStates();
+    if (updated) {
+        updated = false;
 
-    if (newStates != oldStates) {
-        oldStates = newStates;
-
-        ioM.setRelaysManual(newStates);
+        ioM.setRelaysManual(states);
     }
 }
