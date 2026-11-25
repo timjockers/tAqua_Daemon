@@ -131,6 +131,7 @@ void tAquaDaemon::reloadConfig()
     
     configM.updateConfig();
     scheduler.setEventVector(configM.getScheduledEvents());
+    quickC.refresh();
 
     if (configM.getButtonPress() > -1) {
         const Button btnPressAction = BUTTONS[configM.getButtonPress()];
