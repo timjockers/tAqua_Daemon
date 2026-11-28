@@ -476,6 +476,8 @@ bool ioManager::getRelay(Relay relay)
 void ioManager::setRelaysManual(uint8_t states)
 {
 #ifdef HAS_GPIOD
+    auto relayGPIOs = toUIntArray(RELAYS);
+
     if (!setGPIOs(relayRequest, relayGPIOs, static_cast<unsigned int>(states)))
     {
         cerr << "Failed to manually set relays!" << endl;
